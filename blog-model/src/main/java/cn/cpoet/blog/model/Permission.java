@@ -8,10 +8,7 @@ import lombok.Data;
  * @author CPoet
  */
 @Data
-@Schema(title = "用户")
-public class User extends BaseEntity {
+@Schema(title = "权限/资源")
+public class Permission extends BaseEntity {
 
-
-    @Schema(title = "用户组id")
-    private Long groupId;
 }

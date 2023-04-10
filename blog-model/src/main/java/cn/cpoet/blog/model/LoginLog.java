@@ -1,4 +1,13 @@
 package cn.cpoet.blog.model;
 
-public class LoginLog {
+import cn.cpoet.blog.model.base.BaseRcEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+/**
+ * @author CPoet
+ */
+@Data
+@Schema(title = "登录日志")
+public class LoginLog extends BaseRcEntity {
 }
