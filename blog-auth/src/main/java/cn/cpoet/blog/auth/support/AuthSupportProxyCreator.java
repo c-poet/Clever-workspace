@@ -2,6 +2,7 @@ package cn.cpoet.blog.auth.support;
 
 import cn.cpoet.blog.api.annotation.Accessor;
 import cn.cpoet.blog.api.core.AccessorMeta;
+import cn.cpoet.blog.auth.util.MethodUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
@@ -46,17 +47,20 @@ public class AuthSupportProxyCreator extends AbstractAutoProxyCreator {
             return Collections.emptyMap();
         }
         List<AccessorMeta> accessorMetas = new ArrayList<>(methods.length);
-        Set<Accessor> beanAccessors = AnnotatedElementUtils.findAllMergedAnnotations(beanClass, Accessor.class);
+        Set<Accessor> beanAccessorSet = AnnotatedElementUtils.findAllMergedAnnotations(beanClass, Accessor.class);
+        Accessor[] beanAccessors = CollectionUtils.isEmpty(beanAccessorSet) ? null : beanAccessorSet.toArray(new Accessor[0]);
         for (Method method : methods) {
-            Set<Accessor> methodAccessors = AnnotatedElementUtils.findAllMergedAnnotations(method, Accessor.class);
-            if (!CollectionUtils.isEmpty(methodAccessors) || !CollectionUtils.isEmpty(beanAccessors)) {
-
+            Set<Accessor> methodAccessorSet = AnnotatedElementUtils.findAllMergedAnnotations(method, Accessor.class);
+            Accessor[] methodAccessors = CollectionUtils.isEmpty(methodAccessorSet) ? null : methodAccessorSet.toArray(new Accessor[0]);
+            if (beanAccessors != null || methodAccessors != null) {
+                String methodId = MethodUtil.getMethodId(beanClass, method);
+                accessorMetas.add(new AccessorMeta(methodId, beanAccessors, methodAccessors));
             }
         }
         if (CollectionUtils.isEmpty(accessorMetas)) {
             return Collections.emptyMap();
         }
         return accessorMetas.stream()
-            .collect(Collectors.toMap(AccessorMeta::getId, Function.identity()));
+            .collect(Collectors.toMap(AccessorMeta::getMethodId, Function.identity()));
     }
 }

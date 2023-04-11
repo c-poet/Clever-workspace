@@ -1,6 +1,8 @@
 package cn.cpoet.blog.api.core;
 
+import cn.cpoet.blog.api.annotation.Accessor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
@@ -10,6 +12,7 @@ import java.io.Serializable;
  * @author CPoet
  */
 @Data
+@RequiredArgsConstructor
 public class AccessorMeta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -17,5 +20,15 @@ public class AccessorMeta implements Serializable {
     /**
      * 获取特征id
      */
-    private String id;
+    private final String methodId;
+
+    /**
+     * 类上的访问信息
+     */
+    private final Accessor[] beanAccessor;
+
+    /**
+     * 方法上的访问信息
+     */
+    private final Accessor[] methodAccessor;
 }

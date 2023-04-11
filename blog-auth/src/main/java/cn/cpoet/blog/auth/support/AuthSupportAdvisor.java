@@ -1,6 +1,7 @@
 package cn.cpoet.blog.auth.support;
 
 import cn.cpoet.blog.api.core.AccessorMeta;
+import cn.cpoet.blog.auth.util.MethodUtil;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
@@ -29,5 +30,12 @@ public class AuthSupportAdvisor implements Advisor, MethodBeforeAdvice {
 
     @Override
     public void before(Method method, Object[] args, Object target) {
+        if (target != null) {
+            String methodId = MethodUtil.getMethodId(target.getClass(), method);
+            AccessorMeta accessorMeta = AMMapper.get(methodId);
+            if (accessorMeta != null) {
+                // 处理认证逻辑
+            }
+        }
     }
 }
