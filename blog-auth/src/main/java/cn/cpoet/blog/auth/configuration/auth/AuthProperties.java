@@ -1,0 +1,31 @@
+package cn.cpoet.blog.auth.configuration.auth;
+
+import lombok.Data;
+
+import java.time.Duration;
+
+/**
+ * @author CPoet
+ */
+@Data
+public class AuthProperties {
+    /**
+     * 认证头名称
+     */
+    private String authenticationHeader = "Access-Token";
+
+    /**
+     * 公钥
+     */
+    private String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl8GFb5aEB3An3dE11kXXMbwj/cUHcPEdn50DY9fvimtqVOKLjUd4HiH3LqSBDFK2sWOErhC8jQzF7QubMLVlmnVHx+uexidEweEOTtaethHiKb9XXDoobqFMwW0YYHTdzejYec1mFwU1l52YH5EtNqmNZViT273sBed88IOYVX5RxZ86AuL3cTpkdWF2ZdcebTzpW4WisDa4xHzNfIUJFx3YooqRJKjIU65akSDWROfABvPioy1ciJv4z50dAtuOHq/2swYMk1REqvOFLqcg9pJSAQaEh2G7jNNz+ppgZzCfrICkswr62rPX/cP6YGBth9V72fTMWyqV5zWQycsmrQIDAQAB";
+
+    /**
+     * 私钥
+     */
+    private String privateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCXwYVvloQHcCfd0TXWRdcxvCP9xQdw8R2fnQNj1++Ka2pU4ouNR3geIfcupIEMUraxY4SuELyNDMXtC5swtWWadUfH657GJ0TB4Q5O1p62EeIpv1dcOihuoUzBbRhgdN3N6Nh5zWYXBTWXnZgfkS02qY1lWJPbvewF53zwg5hVflHFnzoC4vdxOmR1YXZl1x5tPOlbhaKwNrjEfM18hQkXHdiiipEkqMhTrlqRINZE58AG8+KjLVyIm/jPnR0C244er/azBgyTVESq84UupyD2klIBBoSHYbuM03P6mmBnMJ+sgKSzCvras9f9w/pgYG2H1XvZ9MxbKpXnNZDJyyatAgMBAAECggEAMwyYdIcvdskVwBqGf8QStdpSSSWkcSvLCUxqPYYAQJINvOxQgYAPOiO24OvZtWmFp3qQwXVD2Db5xdnnpKUAvsrBENGEIahICuhIReEQlrLBX8XL/2xY+Y4tIcwvLRNjIcc4OxELTKcl9hC/ga72hLLYq8T2SC9FXF8YuleqQOeuVEG6ofrzIF2zhEXoEPy1GXsshkYLky1vRhfutFhOfPm/7J9KNmacdQz6/k8qnRGaXnRM2x7CgShMM8V/F8J9TrfFz66fEb388bWCcL7qInQdkmqZz+nD+/XVwcb9RVlKsSOSVSJyQRI8Btr/Hq/wPOreH61fWWzNRAdukaI9QQKBgQDVoiRVyXRB7lOGm+ovk3oNo23aCoSQAavigIO9Z7hWlGWGwuOV88wG3Rl9XVRhBsIoG765WpWbyx+0aLl32qnHDsFx4JAtTqiZuxYzGb6eD9JNZTiIseEHAmjnhDKYG+RrnjuSKbMhNGSVBcIH096X5JTvl4mRB7tBrYW1ZMmH1QKBgQC12fOfpZGr+WHFL4qYX+fmDbyA73qzH5X6tbAJaaYisRKa3OXQ7S1zIcvtlWhxqdunenJRiavej5u+TgUIDdzzVjIMbzIAnSpk34hdaX+HIrBRc4I5TWn+QeOkjOyW2JBRwSOosh2iYbkU1TqpQc5S/egNPXpcqqPOvxQV6DaneQKBgQCNpF9q8ZK/VADVMvLmcGVwPXdMJcUWpcUM/CBcqDQ0U1etLfIvLeGMe3O3BvY3DoAUj7C4vDKNhPOUbgrqSHRgoovnsPhm0cw/gSeK4frcWakZ347IMwf72cEsHx5cc8HTCKp+kl9OGKrHk3W+Mt9W3htRb6uqGPIy7ZXFWvmzsQKBgFxymcSuYjkARbD980J1dyngD9WoaUNIqnFTDlQqrnfydxfddsPY34MpSkfU7czi4jTpLda/220Aqtd7SFmI2qumRTlHCi9/tr6jWOrMKDXl76boxuokrd7BVl4f+mLRY8T8IAmxyxjy/ylVIUZMmvxb8i1Q9LTJVw9S2n4smCRZAoGAD8Uy+qTeGEFgT7hJrAvSz5SUBhM+dHKnrSAP50ocW+vq71s0Z56E7RKkGWFVevUMsP2S3MeZHZUIN9y4Ne1cu3s5ljTItZVOwW9h1v3mfrtSMr9DHqTymaPkG8N/k4kUCyaFtc6nmzm7R13R+VXpjHOVKEU/T6EQLzBXx3m2q7g=";
+
+    /**
+     * token存活时间，默认30分钟
+     */
+    private Duration tokenTtl = Duration.ofMinutes(30);
+}

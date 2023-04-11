@@ -60,7 +60,7 @@ public abstract class MapperUtil {
     @SuppressWarnings("unchecked")
     public static Long nextId() {
         if (idGenerator == null) {
-            idGenerator = AppContextHolder.appContext().getBean(SystemConst.ID_GENERATOR_SNOW_FLAKE, IdGenerator.class);
+            idGenerator = AppContextHolder.getBean(SystemConst.ID_GENERATOR_SNOW_FLAKE, IdGenerator.class);
         }
         return idGenerator.nextId();
     }
@@ -73,7 +73,7 @@ public abstract class MapperUtil {
     @SuppressWarnings("unchecked")
     public static String nextIdStr() {
         if (idStrGenerator == null) {
-            idStrGenerator = AppContextHolder.appContext().getBean(SystemConst.ID_GENERATOR_UUID, IdGenerator.class);
+            idStrGenerator = AppContextHolder.getBean(SystemConst.ID_GENERATOR_UUID, IdGenerator.class);
         }
         return idStrGenerator.nextId();
     }
@@ -132,7 +132,7 @@ public abstract class MapperUtil {
      */
     public static <T> T fillMeta(T entity, boolean isNew) {
         if (entity instanceof BaseRcEntity) {
-            Long userId = AppContextHolder.authContext().curSubject().getId();
+            Long userId = AppContextHolder.getAuthContext().curSubject().getId();
             LocalDateTime now = LocalDateTime.now();
             if (isNew) {
                 BaseRcEntity baseRcEntity = (BaseRcEntity) entity;

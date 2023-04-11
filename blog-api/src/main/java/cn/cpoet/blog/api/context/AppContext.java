@@ -9,7 +9,14 @@ public interface AppContext {
      *
      * @return 认证上下文
      */
-    AuthContext authContext();
+    AuthContext getAuthContext();
+
+    /**
+     * 获取当前请求上下文
+     *
+     * @return 请求上下文
+     */
+    WebContext getWebContext();
 
     /**
      * 获取bean

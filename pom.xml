@@ -29,8 +29,10 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- token -->
+    <jjwt.version>0.11.2</jjwt.version>
     <!-- open-api -->
-    <springdoc-openapi-webmvc-core.version>1.6.9</springdoc-openapi-webmvc-core.version>
+    <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
     <!-- mybatis -->
     <mybatis-spring-boot-starter.version>2.2.1</mybatis-spring-boot-starter.version>
   </properties>
@@ -41,6 +43,26 @@
         <groupId>org.mybatis.spring.boot</groupId>
         <artifactId>mybatis-spring-boot-starter</artifactId>
         <version>${mybatis-spring-boot-starter.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-impl</artifactId>
+        <version>${jjwt.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-jackson</artifactId>
+        <version>${jjwt.version}</version>
+        <scope>runtime</scope>
       </dependency>
 
       <!-- 内部模块 -->
@@ -83,9 +105,10 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- 使用webflux -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
 
     <dependency>
@@ -95,16 +118,16 @@
 
     <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-webmvc-core</artifactId>
-      <version>${springdoc-openapi-webmvc-core.version}</version>
+      <artifactId>springdoc-openapi-webflux-core</artifactId>
+      <version>${springdoc-openapi.version}</version>
       <exclusions>
         <exclusion>
+          <artifactId>spring-webflux</artifactId>
           <groupId>org.springframework</groupId>
-          <artifactId>spring-webmvc</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.springframework</groupId>
           <artifactId>spring-web</artifactId>
+          <groupId>org.springframework</groupId>
         </exclusion>
       </exclusions>
     </dependency>

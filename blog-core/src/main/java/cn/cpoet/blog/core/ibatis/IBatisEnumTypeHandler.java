@@ -19,7 +19,7 @@ public class IBatisEnumTypeHandler<E extends Enum<E>> implements TypeHandler<E> 
         this.type = type;
         // 获取枚举处理器
         if (enumHandler == null) {
-            enumHandler = AppContextHolder.appContext().getBean(EnumHandler.class);
+            enumHandler = AppContextHolder.getBean(EnumHandler.class);
         }
     }
 

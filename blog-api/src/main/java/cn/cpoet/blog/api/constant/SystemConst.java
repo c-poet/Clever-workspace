@@ -22,6 +22,11 @@ public interface SystemConst {
     long SYSTEM_USER_ID = DEFAULT_ID;
 
     /**
+     * 配置前缀
+     */
+    String CONF_PREFIX = "app.blog";
+
+    /**
      * bool值真
      */
     int BOOL_TRUE = 1;

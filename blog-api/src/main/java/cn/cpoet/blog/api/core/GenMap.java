@@ -213,7 +213,7 @@ public class GenMap implements Map<String, Object>, Serializable {
 
     private static ObjectMapper getObjMapper() {
         if (objMapper == null) {
-            objMapper = AppContextHolder.appContext().getBean(ObjectMapper.class);
+            objMapper = AppContextHolder.getBean(ObjectMapper.class);
         }
         return objMapper;
     }

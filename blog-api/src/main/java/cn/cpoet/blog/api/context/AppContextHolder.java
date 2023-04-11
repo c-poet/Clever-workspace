@@ -20,7 +20,7 @@ public abstract class AppContextHolder {
      *
      * @param appContext 设置上下文
      */
-    public static void setContext(AppContext appContext) {
+    public static void setAppContext(AppContext appContext) {
         AppContextHolder.appContext = appContext;
     }
 
@@ -29,7 +29,7 @@ public abstract class AppContextHolder {
      *
      * @return 应用上下文
      */
-    public static AppContext appContext() {
+    public static AppContext getAppContext() {
         if (appContext == null) {
             throw new AppException("应用上下文未初始化完成");
         }
@@ -41,8 +41,17 @@ public abstract class AppContextHolder {
      *
      * @return 认证上下文
      */
-    public static AuthContext authContext() {
-        return appContext.authContext();
+    public static AuthContext getAuthContext() {
+        return getAppContext().getAuthContext();
+    }
+
+    /**
+     * 获取请求上下文
+     *
+     * @return 请求上下文
+     */
+    public static WebContext getWebContext() {
+        return getAppContext().getWebContext();
     }
 
     /**
@@ -51,6 +60,29 @@ public abstract class AppContextHolder {
      * @return spring上下文
      */
     public static ApplicationContext applicationContext() {
-        return appContext().getBean(ApplicationContext.class);
+        return getAppContext().getBean(ApplicationContext.class);
+    }
+
+    /**
+     * 获取bean
+     *
+     * @param beanClass bean类型
+     * @param <T>       bean类型
+     * @return bean
+     */
+    public static <T> T getBean(Class<T> beanClass) {
+        return getAppContext().getBean(beanClass);
+    }
+
+    /**
+     * 获取bean
+     *
+     * @param beanName  bean名称
+     * @param beanClass bean类型
+     * @param <T>       bean类型
+     * @return bean
+     */
+    public static <T> T getBean(String beanName, Class<T> beanClass) {
+        return getAppContext().getBean(beanName, beanClass);
     }
 }
