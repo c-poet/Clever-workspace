@@ -6,8 +6,10 @@ import cn.cpoet.blog.api.context.Subject;
 import cn.cpoet.blog.api.core.AccessorHandler;
 import cn.cpoet.blog.api.core.AccessorMeta;
 import cn.cpoet.blog.auth.exception.AuthException;
+import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.Set;
 
 /**
  * 默认访问处理器
@@ -33,8 +35,12 @@ public class DefaultAccessorHandler implements AccessorHandler {
                 throw new AuthException("非目标主体类型");
             }
         }
-        String[] val = accessor.value();
-        if (val.length != 0) {
+        String[] values = accessor.value();
+        if (values.length != 0) {
+            Set<String> permissions = subject.getPermissions();
+            if (CollectionUtils.isEmpty(permissions)) {
+                throw new AuthException("权限不足");
+            }
 
         }
     }
