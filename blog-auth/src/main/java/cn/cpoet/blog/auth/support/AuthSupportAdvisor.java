@@ -1,5 +1,6 @@
 package cn.cpoet.blog.auth.support;
 
+import cn.cpoet.blog.api.core.AccessorMeta;
 import lombok.RequiredArgsConstructor;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
@@ -14,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthSupportAdvisor implements Advisor, MethodBeforeAdvice {
 
-    private final Map<String, AuthTargetInfo> ATIMapper;
+    private final Map<String, AccessorMeta> AMMapper;
 
     @Override
     public Advice getAdvice() {
@@ -27,6 +28,6 @@ public class AuthSupportAdvisor implements Advisor, MethodBeforeAdvice {
     }
 
     @Override
-    public void before(Method method, Object[] args, Object target) throws Throwable {
+    public void before(Method method, Object[] args, Object target) {
     }
 }
