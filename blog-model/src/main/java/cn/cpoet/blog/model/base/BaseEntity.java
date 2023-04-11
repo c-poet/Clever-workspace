@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.data.annotation.Version;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ public abstract class BaseEntity extends BaseRcEntity {
     private static final long serialVersionUID = -3243328282267904618L;
 
     @JsonIgnore
+    @Version
     @Schema(title = "数据版本号，采用时间戳格式")
     private Long version;
 

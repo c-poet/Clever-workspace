@@ -22,7 +22,7 @@
     <module>blog-api</module>
     <module>blog-plugin</module>
     <module>blog-model</module>
-    <module>blog-mapper</module>
+    <module>blog-repo</module>
   </modules>
 
   <properties>
@@ -80,7 +80,7 @@
 
       <dependency>
         <groupId>cn.cpoet.blog</groupId>
-        <artifactId>blog-mapper</artifactId>
+        <artifactId>blog-repo</artifactId>
         <version>${project.version}</version>
       </dependency>
 

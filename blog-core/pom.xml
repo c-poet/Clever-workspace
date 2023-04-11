@@ -22,11 +22,6 @@
       <groupId>cn.cpoet.blog</groupId>
       <artifactId>blog-api</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>cn.cpoet.blog</groupId>
-      <artifactId>blog-mapper</artifactId>
-    </dependency>
   </dependencies>
 
 </project>

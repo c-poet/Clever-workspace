@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +14,12 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(title = "记录型实体")
+@EnableReactiveMongoAuditing()
 public abstract class BaseRcEntity implements Entity<Long> {
 
     private static final long serialVersionUID = -2194295669512188184L;
 
+    @MongoId
     @Schema(title = "主键")
     private Long id;
 
