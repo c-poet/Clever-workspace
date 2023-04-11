@@ -1,5 +1,6 @@
 package cn.cpoet.blog.auth.support;
 
+import cn.cpoet.blog.api.annotation.Accessor;
 import cn.cpoet.blog.api.context.Subject;
 import cn.cpoet.blog.api.core.AccessorHandler;
 import cn.cpoet.blog.api.core.AccessorMeta;
@@ -16,7 +17,10 @@ public class DefaultAccessorHandler implements AccessorHandler {
     public final static AccessorHandler INSTANCE = new DefaultAccessorHandler();
 
     @Override
-    public boolean accept(Subject subject, Object obj, Method method, AccessorMeta meta) {
-        return false;
+    public void handle(Subject subject, Object obj, Method method, AccessorMeta meta, Accessor accessor) {
+        String[] val = accessor.value();
+        if (val.length != 0) {
+            
+        }
     }
 }

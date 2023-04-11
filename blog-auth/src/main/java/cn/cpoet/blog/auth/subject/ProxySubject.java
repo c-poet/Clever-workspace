@@ -6,6 +6,8 @@ import cn.cpoet.blog.api.context.Subject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 /**
  * 主体代理
  *
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProxySubject implements Subject {
 
+    private Set<String> permissions;
     private final AuthContext authContext;
 
     @Override
@@ -40,6 +43,14 @@ public class ProxySubject implements Subject {
     @Override
     public String getGroupName() {
         return getTarget().getGroupName();
+    }
+
+    @Override
+    public Set<String> getPermissions() {
+        if (permissions != null) {
+            return permissions;
+        }
+        return null;
     }
 
     @Override

@@ -5,6 +5,9 @@ import cn.cpoet.blog.api.constant.SystemConst;
 import cn.cpoet.blog.api.context.Subject;
 import cn.cpoet.blog.auth.exception.NotAuthException;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * @author CPoet
  */
@@ -38,6 +41,11 @@ public class SystemSubject implements Subject {
     @Override
     public String getGroupName() {
         throw notAuthException();
+    }
+
+    @Override
+    public Set<String> getPermissions() {
+        return Collections.emptySet();
     }
 
     @Override

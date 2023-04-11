@@ -2,6 +2,8 @@ package cn.cpoet.blog.api.context;
 
 import cn.cpoet.blog.api.constant.SubjectType;
 
+import java.util.Set;
+
 /**
  * 主体
  *
@@ -42,6 +44,13 @@ public interface Subject {
      * @return 用户组名称
      */
     String getGroupName();
+
+    /**
+     * 获取用户权限资源集合
+     *
+     * @return 权限资源集合
+     */
+    Set<String> getPermissions();
 
     /**
      * 获取当前主体类型

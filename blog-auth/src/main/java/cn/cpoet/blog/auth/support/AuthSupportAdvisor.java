@@ -34,7 +34,7 @@ public class AuthSupportAdvisor implements Advisor, MethodBeforeAdvice {
             String methodId = MethodUtil.getMethodId(target.getClass(), method);
             AccessorMeta accessorMeta = AMMapper.get(methodId);
             if (accessorMeta != null) {
-                // 处理认证逻辑
+                AccessorHandlerCaller.INSTANCE.call(target, method, accessorMeta);
             }
         }
     }
