@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(title = "操作型实体")
+@EnableReactiveMongoAuditing
 public abstract class BaseEntity extends BaseRcEntity {
 
     private static final long serialVersionUID = -3243328282267904618L;
@@ -24,9 +28,11 @@ public abstract class BaseEntity extends BaseRcEntity {
 
     @Schema(title = "更新用户")
     @JsonIgnoreProperties(allowGetters = true)
+    @LastModifiedBy
     private Long updateUser;
 
     @Schema(title = "更新时间")
     @JsonIgnoreProperties(allowGetters = true)
+    @LastModifiedDate
     private LocalDateTime updateTime;
 }

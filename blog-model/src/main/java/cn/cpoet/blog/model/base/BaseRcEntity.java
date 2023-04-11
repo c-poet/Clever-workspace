@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -25,10 +27,12 @@ public abstract class BaseRcEntity implements Entity<Long> {
 
     @Schema(title = "创建用户")
     @JsonIgnoreProperties(allowGetters = true)
+    @CreatedBy
     private Long createUser;
 
     @Schema(title = "创建时间")
     @JsonIgnoreProperties(allowGetters = true)
+    @CreatedDate
     private LocalDateTime createTime;
 
     @JsonIgnore
