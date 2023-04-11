@@ -1,6 +1,7 @@
 package cn.cpoet.blog.api.annotation;
 
 import cn.cpoet.blog.api.constant.Logic;
+import cn.cpoet.blog.api.constant.SubjectType;
 import cn.cpoet.blog.api.core.AccessorHandler;
 
 import java.lang.annotation.*;
@@ -28,6 +29,13 @@ public @interface Accessor {
      * @return 逻辑关系
      */
     Logic logic() default Logic.AND;
+
+    /**
+     * subject类型
+     *
+     * @return subject类型
+     */
+    SubjectType[] subjects() default {};
 
     /**
      * 自定义处理器
