@@ -22,6 +22,6 @@ public class SubjectArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Mono<Object> resolveArgument(MethodParameter parameter, BindingContext bindingContext, ServerWebExchange exchange) {
-        return Mono.fromSupplier(AppContextHolder.getAuthContext()::curSubject);
+        return Mono.just(AppContextHolder.getAuthContext().curSubject(exchange));
     }
 }
