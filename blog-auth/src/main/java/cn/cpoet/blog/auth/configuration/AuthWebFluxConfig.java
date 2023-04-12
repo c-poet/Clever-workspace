@@ -1,6 +1,5 @@
 package cn.cpoet.blog.auth.configuration;
 
-import cn.cpoet.blog.auth.resolver.AuthContextArgumentResolver;
 import cn.cpoet.blog.auth.resolver.SubjectArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,6 @@ public class AuthWebFluxConfig implements WebFluxConfigurer {
 
     @Override
     public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-        configurer.addCustomResolver(new AuthContextArgumentResolver());
         configurer.addCustomResolver(new SubjectArgumentResolver());
     }
 }
