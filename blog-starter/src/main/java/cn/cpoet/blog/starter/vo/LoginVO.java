@@ -8,7 +8,10 @@ import lombok.Data;
  */
 @Data
 @Schema(title = "身份凭证")
-public class TokenVO {
+public class LoginVO {
+    @Schema(title = "用户id")
+    private Long userId;
+
     @Schema(title = "凭证值")
     private String token;
 }

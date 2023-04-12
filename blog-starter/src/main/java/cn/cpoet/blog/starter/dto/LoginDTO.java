@@ -16,6 +16,6 @@ public class LoginDTO {
     private String username;
 
     @Schema(title = "密码")
-    @NotEmpty(message = "请输入用户密码")
+    @NotEmpty(message = "请输入密码")
     private String password;
 }

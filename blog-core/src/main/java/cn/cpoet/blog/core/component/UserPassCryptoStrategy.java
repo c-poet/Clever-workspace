@@ -13,7 +13,7 @@ public interface UserPassCryptoStrategy {
      * @param password 密码
      * @return 是否验证通过
      */
-    boolean valid(UserPassCryptoBean user, String password);
+    boolean valid(Object user, String password);
 
     /**
      * 对用户密码进行编码
@@ -22,5 +22,5 @@ public interface UserPassCryptoStrategy {
      * @param password 明文密码
      * @return 加密后的密码
      */
-    String encode(UserPassCryptoBean user, String password);
+    String encode(Object user, String password);
 }

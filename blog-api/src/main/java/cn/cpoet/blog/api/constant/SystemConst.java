@@ -37,6 +37,11 @@ public interface SystemConst {
     int BOOL_FALSE = 0;
 
     /**
+     * 默认id生成器
+     */
+    String ID_GENERATOR = "idGenerator";
+
+    /**
      * id生成器，雪花算法
      */
     String ID_GENERATOR_SNOW_FLAKE = "snowFlakeIdGenerator";

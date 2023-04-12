@@ -2,6 +2,7 @@ package cn.cpoet.blog.auth.context;
 
 import cn.cpoet.blog.api.context.AuthContext;
 import cn.cpoet.blog.api.context.Subject;
+import cn.cpoet.blog.api.core.ExchangeTool;
 import cn.cpoet.blog.auth.configuration.auth.AuthProperties;
 import cn.cpoet.blog.auth.constant.AuthSubjectConst;
 import cn.cpoet.blog.auth.subject.AuthSubject;
@@ -13,7 +14,8 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
+import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -30,21 +32,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SimpleAuthContext implements AuthContext {
 
-    private final static String AUTH_SUBJECT_REQS_CACHE = "_auth_subject_reqs_cache";
+    private final static String AUTH_SUBJECT_CONTEXT_CACHE = "_auth_subject_reqs_cache";
 
     private final KeyPairHolder keyPairHolder;
     private final AuthProperties authProperties;
 
     @Override
-    public Subject curSubject(ServerWebExchange exchange) {
-        if (webContext == null) {
+    public Subject curSubject(ContextView contextView) {
+        if (contextView == null || ExchangeTool.getWebExchange(contextView) == null) {
             return SystemSubject.INSTANCE;
         }
-        Subject subject = context.get(AUTH_SUBJECT_REQS_CACHE);
+        Subject subject = contextView.getOrDefault(AUTH_SUBJECT_CONTEXT_CACHE, null);
         if (subject != null) {
             return subject;
         }
-        String token = webContext.getHeader(authProperties.getAuthenticationHeader());
+        String token = ExchangeTool.getHeader(contextView, authProperties.getAuthenticationHeader());
         if (token != null) {
             try {
                 final KeyPair keyPair = keyPairHolder.getKeyPair();
@@ -57,7 +59,9 @@ public class SimpleAuthContext implements AuthContext {
         if (subject == null) {
             subject = GuestSubject.INSTANCE;
         }
-        webContext.setAttr(AUTH_SUBJECT_REQS_CACHE, subject);
+        if (contextView instanceof Context) {
+            ((Context) contextView).put(AUTH_SUBJECT_CONTEXT_CACHE, subject);
+        }
         return subject;
     }
 

@@ -1,13 +1,12 @@
 package cn.cpoet.blog.core.filter;
 
-import cn.cpoet.blog.api.context.RequestContextHolder;
-import cn.cpoet.blog.api.context.WebContext;
-import cn.cpoet.blog.core.context.RequestContextFactory;
+import cn.cpoet.blog.api.core.ExchangeTool;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 /**
  * 核心过滤器
@@ -18,13 +17,9 @@ import reactor.core.publisher.Mono;
 public class CoreFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        try {
-            WebContext requestContext = RequestContextFactory.create(exchange);
-            RequestContextHolder.set(requestContext);
+        return Mono.deferContextual(context -> {
+            ExchangeTool.setWebExchange((Context) context, exchange);
             return chain.filter(exchange);
-        } finally {
-            // 移出当前请求上下文信息
-            RequestContextHolder.clear();
-        }
+        });
     }
 }

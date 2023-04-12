@@ -2,7 +2,7 @@ package cn.cpoet.blog.starter.controller;
 
 import cn.cpoet.blog.starter.dto.LoginDTO;
 import cn.cpoet.blog.starter.service.AuthService;
-import cn.cpoet.blog.starter.vo.TokenVO;
+import cn.cpoet.blog.starter.vo.LoginVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public Mono<TokenVO> login(@RequestBody @Validated LoginDTO loginDTO) {
-        return authService.login(loginDTO)
-            .doOnSuccess(System.out::println)
-            .doOnError(Throwable::printStackTrace);
+    public Mono<LoginVO> login(@RequestBody @Validated LoginDTO loginDTO) {
+        return authService.login(loginDTO);
     }
 }

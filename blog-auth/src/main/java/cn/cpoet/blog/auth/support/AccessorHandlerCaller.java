@@ -27,15 +27,15 @@ public class AccessorHandlerCaller {
      */
     public void call(Object obj, Method method, AccessorMeta meta) {
         // 当前认证主体
-        Subject subject = AppContextHolder.getAuthContext().curSubject();
-        Accessor[] beanAccessor = meta.getBeanAccessor();
-        if (beanAccessor != null) {
-            call(subject, obj, method, meta, beanAccessor);
-        }
-        Accessor[] methodAccessor = meta.getMethodAccessor();
-        if (methodAccessor != null) {
-            call(subject, obj, method, meta, methodAccessor);
-        }
+//        Subject subject = AppContextHolder.getAuthContext().curSubject();
+//        Accessor[] beanAccessor = meta.getBeanAccessor();
+//        if (beanAccessor != null) {
+//            call(subject, obj, method, meta, beanAccessor);
+//        }
+//        Accessor[] methodAccessor = meta.getMethodAccessor();
+//        if (methodAccessor != null) {
+//            call(subject, obj, method, meta, methodAccessor);
+//        }
     }
 
     /**
