@@ -1,6 +1,8 @@
 package cn.cpoet.blog.core.context;
 
-import cn.cpoet.blog.api.context.*;
+import cn.cpoet.blog.api.context.AppContext;
+import cn.cpoet.blog.api.context.AppContextHolder;
+import cn.cpoet.blog.api.context.AuthContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -22,11 +24,6 @@ public class DefaultAppContext implements ApplicationContextAware, AppContext {
     @Override
     public AuthContext getAuthContext() {
         return authContext == null ? (authContext = getBean(AuthContext.class)) : authContext;
-    }
-
-    @Override
-    public WebContext getWebContext() {
-        return RequestContextHolder.get();
     }
 
     @Override

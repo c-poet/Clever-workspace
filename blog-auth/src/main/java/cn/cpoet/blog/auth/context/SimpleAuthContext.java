@@ -1,9 +1,7 @@
 package cn.cpoet.blog.auth.context;
 
-import cn.cpoet.blog.api.context.AppContextHolder;
 import cn.cpoet.blog.api.context.AuthContext;
 import cn.cpoet.blog.api.context.Subject;
-import cn.cpoet.blog.api.context.WebContext;
 import cn.cpoet.blog.auth.configuration.auth.AuthProperties;
 import cn.cpoet.blog.auth.constant.AuthSubjectConst;
 import cn.cpoet.blog.auth.subject.AuthSubject;
@@ -14,7 +12,9 @@ import cn.cpoet.blog.auth.util.TypeUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -37,30 +37,31 @@ public class SimpleAuthContext implements AuthContext {
     private final AuthProperties authProperties;
 
     @Override
-    public Subject curSubject() {
-        WebContext webContext = AppContextHolder.getWebContext();
-        if (webContext == null) {
-            return SystemSubject.INSTANCE;
-        }
-        Subject subject = webContext.getAttr(AUTH_SUBJECT_REQS_CACHE);
-        if (subject != null) {
-            return subject;
-        }
-        String token = webContext.getHeader(authProperties.getAuthenticationHeader());
-        if (token != null) {
-            try {
-                final KeyPair keyPair = keyPairHolder.getKeyPair();
-                Claims claims = JwtUtil.decode(keyPair.getPublic(), token);
-                subject = new AuthSubject(claims);
-            } catch (Exception e) {
-                log.debug("解析jwt[token = {}]失败，原因：{}", e.getMessage(), e);
+    public Mono<Subject> curSubject(ServerHttpRequest request) {
+        return Mono.deferContextual(context -> {
+            if (webContext == null) {
+                return SystemSubject.INSTANCE;
             }
-        }
-        if (subject == null) {
-            subject = GuestSubject.INSTANCE;
-        }
-        webContext.setAttr(AUTH_SUBJECT_REQS_CACHE, subject);
-        return subject;
+            Subject subject = context.get(AUTH_SUBJECT_REQS_CACHE);
+            if (subject != null) {
+                return subject;
+            }
+            String token = webContext.getHeader(authProperties.getAuthenticationHeader());
+            if (token != null) {
+                try {
+                    final KeyPair keyPair = keyPairHolder.getKeyPair();
+                    Claims claims = JwtUtil.decode(keyPair.getPublic(), token);
+                    subject = new AuthSubject(claims);
+                } catch (Exception e) {
+                    log.debug("解析jwt[token = {}]失败，原因：{}", e.getMessage(), e);
+                }
+            }
+            if (subject == null) {
+                subject = GuestSubject.INSTANCE;
+            }
+            webContext.setAttr(AUTH_SUBJECT_REQS_CACHE, subject);
+            return subject;
+        });
     }
 
     @Override

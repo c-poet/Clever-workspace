@@ -12,13 +12,6 @@ public interface AppContext {
     AuthContext getAuthContext();
 
     /**
-     * 获取当前请求上下文
-     *
-     * @return 请求上下文
-     */
-    WebContext getWebContext();
-
-    /**
      * 获取bean
      *
      * @param beanClass bean类型

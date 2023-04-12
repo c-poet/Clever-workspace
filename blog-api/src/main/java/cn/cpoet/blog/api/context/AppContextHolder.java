@@ -46,15 +46,6 @@ public abstract class AppContextHolder {
     }
 
     /**
-     * 获取请求上下文
-     *
-     * @return 请求上下文
-     */
-    public static WebContext getWebContext() {
-        return getAppContext().getWebContext();
-    }
-
-    /**
      * 获取spring上下文
      *
      * @return spring上下文
