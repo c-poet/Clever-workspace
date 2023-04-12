@@ -1,13 +1,23 @@
 package cn.cpoet.blog.starter.service.impl;
 
+import cn.cpoet.blog.api.context.AppContextHolder;
+import cn.cpoet.blog.auth.constant.AuthSubjectConst;
+import cn.cpoet.blog.core.component.UserPassCryptoBean;
+import cn.cpoet.blog.core.component.UserPassCryptoStrategy;
+import cn.cpoet.blog.core.exception.BusException;
+import cn.cpoet.blog.core.util.ReactorUtil;
 import cn.cpoet.blog.repo.repository.UserRepository;
 import cn.cpoet.blog.starter.dto.LoginDTO;
 import cn.cpoet.blog.starter.service.AuthService;
 import cn.cpoet.blog.starter.vo.TokenVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author CPoet
@@ -18,10 +28,38 @@ import reactor.core.publisher.Mono;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final UserPassCryptoStrategy userPassCryptoStrategy;
 
     @Override
     public Mono<TokenVO> login(LoginDTO loginDTO) {
-        userRepository.findByUsername(loginDTO.getUsername());
-        return Mono.empty();
+        return userRepository.findByUsername(loginDTO.getUsername())
+            .handle(ReactorUtil.handle(user -> {
+                if (user == null || !Boolean.TRUE.equals(user.getEnabled())) {
+                    throw new BusException("用户名或者密码错误");
+                }
+            }))
+            .handle(ReactorUtil.handle(user -> {
+                UserPassCryptoBean passCryptoBean = new UserPassCryptoBean();
+                BeanUtils.copyProperties(user, passCryptoBean);
+                if (!userPassCryptoStrategy.valid(passCryptoBean, loginDTO.getPassword())) {
+                    throw new BusException("用户名或者密码错误");
+                }
+            }))
+            .handle(ReactorUtil.handle(user -> {
+                if (Boolean.TRUE.equals(user.getLocked())) {
+                    throw new BusException("用户已锁定");
+                }
+            }))
+            .handle(ReactorUtil.handle((user, sink) -> {
+                Map<String, Object> claims = new HashMap<>(1 << 4);
+                claims.put(AuthSubjectConst.USER_ID, user.getId());
+                claims.put(AuthSubjectConst.NAME, user.getName());
+                claims.put(AuthSubjectConst.USER_NAME, user.getUsername());
+                claims.put(AuthSubjectConst.GROUP_ID, user.getGroupId());
+                String token = AppContextHolder.getAuthContext().authorize(claims);
+                TokenVO tokenVO = new TokenVO();
+                tokenVO.setToken(token);
+                sink.next(tokenVO);
+            }));
     }
 }

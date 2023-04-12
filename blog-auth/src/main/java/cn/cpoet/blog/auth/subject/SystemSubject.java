@@ -39,11 +39,6 @@ public class SystemSubject implements Subject {
     }
 
     @Override
-    public String getGroupName() {
-        throw notAuthException();
-    }
-
-    @Override
     public Set<String> getPermissions() {
         return Collections.emptySet();
     }

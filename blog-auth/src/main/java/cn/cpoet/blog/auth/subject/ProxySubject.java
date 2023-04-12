@@ -41,11 +41,6 @@ public class ProxySubject implements Subject {
     }
 
     @Override
-    public String getGroupName() {
-        return getTarget().getGroupName();
-    }
-
-    @Override
     public Set<String> getPermissions() {
         if (permissions != null) {
             return permissions;

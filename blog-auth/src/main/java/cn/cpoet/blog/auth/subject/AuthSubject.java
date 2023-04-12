@@ -15,14 +15,12 @@ public class AuthSubject extends GuestSubject {
     private final String name;
     private final String username;
     private final Long groupId;
-    private final String groupName;
 
     public AuthSubject(Map<String, Object> claims) {
         id = TypeUtil.toLong(claims.get(AuthSubjectConst.USER_ID));
         name = TypeUtil.toString(claims.get(AuthSubjectConst.NAME));
         username = TypeUtil.toString(claims.get(AuthSubjectConst.USER_NAME));
         groupId = TypeUtil.toLong(claims.get(AuthSubjectConst.GROUP_ID));
-        groupName = TypeUtil.toString(claims.get(AuthSubjectConst.GROUP_NAME));
     }
 
     @Override
@@ -43,11 +41,6 @@ public class AuthSubject extends GuestSubject {
     @Override
     public Long getGroupId() {
         return groupId;
-    }
-
-    @Override
-    public String getGroupName() {
-        return groupName;
     }
 
     @Override

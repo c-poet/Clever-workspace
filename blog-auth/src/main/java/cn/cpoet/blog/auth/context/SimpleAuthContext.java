@@ -67,7 +67,7 @@ public class SimpleAuthContext implements AuthContext {
     public String authorize(Map<String, Object> claims) {
         PrivateKey key = keyPairHolder.getKeyPair().getPrivate();
         Duration tokenTtl = authProperties.getTokenTtl();
-        String userName = TypeUtil.toString(AuthSubjectConst.USER_NAME);
+        String userName = TypeUtil.toString(claims.get(AuthSubjectConst.USER_NAME));
         return JwtUtil.encode(key, userName, tokenTtl.toMillis(), claims);
     }
 }

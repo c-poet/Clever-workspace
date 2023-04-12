@@ -25,14 +25,4 @@ public interface AuthSubjectConst {
      * 用户组id
      */
     String GROUP_ID = "groupId";
-
-    /**
-     * 用户组名称
-     */
-    String GROUP_NAME = "groupName";
-
-    /**
-     * 租户id
-     */
-    String TENANT_ID = "tenantId";
 }

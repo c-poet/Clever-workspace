@@ -39,13 +39,6 @@ public interface Subject {
     Long getGroupId();
 
     /**
-     * 获取当前用户组名称
-     *
-     * @return 用户组名称
-     */
-    String getGroupName();
-
-    /**
      * 获取用户权限资源集合
      *
      * @return 权限资源集合
