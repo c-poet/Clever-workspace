@@ -10,6 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Schema(title = "登录日志")
-@Document
+@Document("blog_login_log")
 public class LoginLog extends BaseRcEntity {
 }

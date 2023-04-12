@@ -10,6 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Schema(title = "操作日志")
-@Document
+@Document("blog_operator_log")
 public class OperatorLog extends BaseRcEntity {
 }

@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Schema(title = "权限/资源")
-@Document
+@Document("blog_permission")
 public class Permission extends BaseEntity {
 
 }

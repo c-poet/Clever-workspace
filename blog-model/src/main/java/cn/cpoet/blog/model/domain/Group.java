@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Schema(title = "用户组")
-@Document
+@Document("blog_group")
 public class Group extends BaseEntity {
     @Schema(title = "用户组编码")
     private String code;

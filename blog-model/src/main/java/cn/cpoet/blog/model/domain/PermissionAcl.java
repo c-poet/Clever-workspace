@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Schema(title = "资源访问控制")
-@Document
+@Document("blog_permission_acl")
 public class PermissionAcl extends BaseRcEntity {
 
     @Schema(title = "访问对象id")

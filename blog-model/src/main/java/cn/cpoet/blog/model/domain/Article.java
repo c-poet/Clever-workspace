@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Schema(title = "文章/博文")
-@Document()
+@Document("blog_article")
 public class Article extends BaseEntity {
+
 }
  

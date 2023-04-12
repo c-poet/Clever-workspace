@@ -10,6 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Schema(title = "文章分类")
-@Document
+@Document("blog_category")
 public class Category extends BaseEntity {
 }
