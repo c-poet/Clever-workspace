@@ -1,11 +1,8 @@
 package cn.cpoet.blog.repo.mongo;
 
-import cn.cpoet.blog.api.core.GenMap;
-import cn.cpoet.blog.api.exception.AppException;
 import cn.cpoet.blog.model.base.Entity;
 import cn.cpoet.blog.model.domain.Garbage;
-import cn.cpoet.blog.repo.repository.GarbageRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.cpoet.blog.repo.support.GarbageSupport;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -23,8 +20,7 @@ import org.springframework.util.CollectionUtils;
 @RequiredArgsConstructor
 public class MongoEventListener extends AbstractMongoEventListener<Entity<Long>> {
 
-    private final ObjectMapper objectMapper;
-    private final GarbageRepository garbageRepository;
+    private final GarbageSupport garbageSupport;
     private final ReactiveMongoTemplate mongoTemplate;
     private final MongoMappingContext mongoMappingContext;
 
@@ -37,26 +33,7 @@ public class MongoEventListener extends AbstractMongoEventListener<Entity<Long>>
             String fieldName = entity.getRequiredIdProperty().getFieldName();
             mongoTemplate
                 .findById(document.getLong(fieldName), entityClass)
-                .subscribe(e -> garbageRepository.save(genGarbage(event, e)).block());
-        }
-    }
-
-    /**
-     * 保存记录
-     *
-     * @param event  事件
-     * @param entity 实体
-     */
-    private Garbage genGarbage(BeforeDeleteEvent<Entity<Long>> event, Entity<Long> entity) {
-        try {
-            Garbage garbage = new Garbage();
-            garbage.setDocumentId(entity.getId());
-            garbage.setCollectionName(event.getCollectionName());
-            garbage.setEntityClass(entity.getClass().getName());
-            garbage.setEntity(GenMap.of(entity));
-            return garbage;
-        } catch (Exception e) {
-            throw new AppException("保存删除记录失败", e);
+                .subscribe(e -> garbageSupport.saveGarbage(event, e));
         }
     }
 }
