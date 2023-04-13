@@ -18,6 +18,9 @@ public class Group extends BaseEntity {
     @Schema(title = "用户组名")
     private String name;
 
+    @Schema(title = "是否启用")
+    private Boolean enabled;
+
     @Schema(title = "描述信息")
     private String description;
 }

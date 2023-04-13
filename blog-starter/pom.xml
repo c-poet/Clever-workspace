@@ -33,4 +33,16 @@
       <artifactId>blog-repo</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <finalName>${project.name}-${project.version}</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>src/main/resources/admin</exclude>
+        </excludes>
+      </resource>
+    </resources>
+  </build>
 </project>
