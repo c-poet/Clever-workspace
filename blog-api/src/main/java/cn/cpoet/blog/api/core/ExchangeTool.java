@@ -24,8 +24,8 @@ public abstract class ExchangeTool {
         return contextView.getOrDefault(WEB_EXCHANGE, null);
     }
 
-    public static void setWebExchange(Context context, ServerWebExchange webExchange) {
-        context.put(WEB_EXCHANGE, webExchange);
+    public static Context setWebExchange(Context context, ServerWebExchange webExchange) {
+        return context.put(WEB_EXCHANGE, webExchange);
     }
 
     public static String getHeader(ContextView contextView, String key) {

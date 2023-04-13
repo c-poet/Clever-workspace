@@ -1,6 +1,7 @@
-import { AxiosResponse } from 'axios'
-import { App } from 'vue'
-import request from './axios.config'
+import { AxiosResponse } from 'axios';
+import { App } from 'vue';
+import request from './axios.config';
+import { ElMessage } from "element-plus";
 
 export interface HttpOption {
   url: string
@@ -13,7 +14,7 @@ export interface HttpOption {
 
 export interface Response<T = any> {
   code: string
-  msg: string
+  message: string
   data: T
 }
 
@@ -29,11 +30,12 @@ function http<T = any>({
     if (res.data.code === '0') {
       return res.data
     }
-    throw new Error(res.data.msg || '请求失败，未知异常')
+    ElMessage.error(res.data.message);
+    throw new Error(res.data.message || '请求失败，未知异常')
   }
   const failHandler = (error: Response<Error>) => {
     afterRequest && afterRequest()
-    throw new Error(error.msg || '请求失败，未知异常')
+    throw new Error(error.message || '请求失败，未知异常')
   }
   beforeRequest && beforeRequest()
   method = method || 'GET'

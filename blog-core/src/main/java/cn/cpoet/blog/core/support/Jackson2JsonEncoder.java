@@ -36,6 +36,9 @@ public class Jackson2JsonEncoder extends org.springframework.http.codec.json.Jac
 
     @Override
     public DataBuffer encodeValue(Object value, DataBufferFactory bufferFactory, ResolvableType valueType, MimeType mimeType, Map<String, Object> hints) {
+        if (valueType.isAssignableFrom(RET_VO_RESOLVABLE_TYPE)) {
+            return super.encodeValue(value, bufferFactory, valueType, mimeType, hints);
+        }
         RetVO<Object> retVO = new RetVO<>();
         retVO.setCode(StatusConst.OK.code());
         retVO.setMessage(StatusConst.OK.message());

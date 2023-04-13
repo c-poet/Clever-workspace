@@ -67,7 +67,6 @@ import logo from "@/assets/logo.png";
 import { Response } from "@/api/http";
 import { login } from "@/api/Auth.api";
 import { ElMessage } from "element-plus";
-import { UserState } from "@/store/types";
 import setting from "../../setting";
 import useUserStore from "@/store/modules/user";
 import dayjs from "dayjs";
@@ -98,7 +97,7 @@ export default defineComponent({
       loading.value = true;
       login({ username: username.value, password: password.value })
         .then(({ data }: Response) => {
-          userStore.saveUser(data as UserState).then(() => {
+          userStore.setToken(data.token).then(() => {
             router
               .replace({
                 path: route.query.redirect
@@ -112,7 +111,6 @@ export default defineComponent({
         })
         .catch((error) => {
           loading.value = false;
-          ElMessage.error(error.message);
         });
     };
     return {

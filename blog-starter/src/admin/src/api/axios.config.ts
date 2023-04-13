@@ -1,5 +1,9 @@
 import Axios, { AxiosResponse } from "axios";
+import useUserStore from "@/store/modules/user";
+import pinia from "@/store/pinia";
 import qs from "qs";
+
+const userStore = useUserStore(pinia);
 
 export const CONTENT_TYPE = "Content-Type";
 
@@ -25,7 +29,10 @@ service.interceptors.request.use(
     if (config.headers[CONTENT_TYPE] === FORM_URLENCODED) {
       config.data = qs.stringify(config.data);
     }
-    config.headers[''] = '';
+    const token = userStore.token;
+    if (token) {
+      config.headers['Access-Token'] = token;
+    }
     return config;
   },
   (error) => {
