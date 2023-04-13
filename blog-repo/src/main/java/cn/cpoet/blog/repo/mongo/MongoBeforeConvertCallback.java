@@ -37,7 +37,6 @@ public class MongoBeforeConvertCallback implements ReactiveBeforeConvertCallback
             boolean isNew = mongoMappingContext.getRequiredPersistentEntity(entity.getClass()).isNew(entity);
             if (isNew) {
                 baseRcEntity.setId(idGenerator.nextId());
-                baseRcEntity.setDeleted(Boolean.FALSE);
             }
         }
         return entity;

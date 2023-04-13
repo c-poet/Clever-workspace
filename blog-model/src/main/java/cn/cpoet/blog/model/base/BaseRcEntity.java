@@ -1,6 +1,5 @@
 package cn.cpoet.blog.model.base;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -33,8 +32,4 @@ public abstract class BaseRcEntity implements Entity<Long> {
     @JsonIgnoreProperties(allowGetters = true)
     @CreatedDate
     private LocalDateTime createTime;
-
-    @JsonIgnore
-    @Schema(title = "软删除标识")
-    private Boolean deleted;
 }

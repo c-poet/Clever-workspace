@@ -1,6 +1,5 @@
 package cn.cpoet.blog.starter.service;
 
-import cn.cpoet.blog.api.core.IdGenerator;
 import cn.cpoet.blog.core.component.UserPassCryptoStrategy;
 import cn.cpoet.blog.core.util.UUIDUtil;
 import cn.cpoet.blog.model.domain.User;
@@ -16,9 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Slf4j
 @SpringBootTest
 public class UserServiceTest {
-    @Autowired
-    private IdGenerator<Long> idGenerator;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -39,9 +35,16 @@ public class UserServiceTest {
     @Test
     public void updateUser() {
         userRepository.findByUsername("cpoet")
-                .flatMap(user -> {
-                    user.setEnabled(Boolean.TRUE);
-                    return userRepository.save(user);
-                }).subscribe();
+            .flatMap(user -> {
+                user.setEnabled(Boolean.TRUE);
+                return userRepository.save(user);
+            }).block();
+    }
+
+    @Test
+    public void deleteUser() {
+        userRepository.findByUsername("cpoet")
+            .flatMap(user -> userRepository.delete(user))
+            .block();
     }
 }
