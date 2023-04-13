@@ -1,7 +1,7 @@
-package cn.cpoet.blog.starter.service.impl;
+package cn.cpoet.blog.starter.admin.service.impl;
 
 import cn.cpoet.blog.repo.repository.UserRepository;
-import cn.cpoet.blog.starter.service.UserService;
+import cn.cpoet.blog.starter.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package cn.cpoet.blog.starter.service;
+package cn.cpoet.blog.starter.admin.service;
 
 /**
  * @author CPoet

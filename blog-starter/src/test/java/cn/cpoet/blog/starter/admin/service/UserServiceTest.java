@@ -1,4 +1,4 @@
-package cn.cpoet.blog.starter.service;
+package cn.cpoet.blog.starter.admin.service;
 
 import cn.cpoet.blog.core.component.UserPassCryptoStrategy;
 import cn.cpoet.blog.core.util.UUIDUtil;

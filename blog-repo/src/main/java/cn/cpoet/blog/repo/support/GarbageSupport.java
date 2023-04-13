@@ -28,7 +28,7 @@ public class GarbageSupport {
      * @param entity 删除的实体
      */
     public void saveGarbage(BeforeDeleteEvent<Entity<Long>> event, Entity<Long> entity) {
-        threadPoolTaskExecutor.submit(() -> {
+        threadPoolTaskExecutor.execute(() -> {
             Garbage garbage = genGarbage(event, entity);
             garbageRepository.save(garbage)
                 .doOnSuccess(gb -> log.info("保存删除记录成功:[{},{}]", gb.getEntityClass(), gb.getDocumentId()))

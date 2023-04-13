@@ -1,8 +1,8 @@
-package cn.cpoet.blog.starter.controller;
+package cn.cpoet.blog.starter.admin.controller;
 
-import cn.cpoet.blog.starter.dto.LoginDTO;
-import cn.cpoet.blog.starter.service.AuthService;
-import cn.cpoet.blog.starter.vo.LoginVO;
+import cn.cpoet.blog.starter.admin.dto.LoginDTO;
+import cn.cpoet.blog.starter.admin.service.AuthService;
+import cn.cpoet.blog.starter.admin.vo.LoginVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

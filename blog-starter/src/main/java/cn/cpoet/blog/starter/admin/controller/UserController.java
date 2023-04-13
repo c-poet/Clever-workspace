@@ -1,4 +1,4 @@
-package cn.cpoet.blog.starter.controller;
+package cn.cpoet.blog.starter.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
