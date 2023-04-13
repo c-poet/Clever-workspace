@@ -4,7 +4,7 @@ console.log(process.env.NODE_ENV)
 module.exports = {
   // publicPath: process.env.NODE_ENV === 'development' ? '/' : "/vue-admin-work-x",
   publicPath: './',
-  outputDir: "../static/admin",
+  outputDir: "./main/resources/static/admin",
   assetsDir: "static",
   lintOnSave: true,
   productionSourceMap: false,
