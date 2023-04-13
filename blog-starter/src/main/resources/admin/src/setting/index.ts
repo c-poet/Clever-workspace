@@ -21,7 +21,7 @@ export const primaryColors = [
   "#008792",
 ];
 
-const projectName = "Admin Work X";
+const projectName = "Clever-Blog";
 const version = packageInfo.version;
 
 const defaultSetting = JSON.parse(localStorage.getItem("sys_setting") || "{}");
@@ -31,7 +31,7 @@ export default Object.assign(
     projectName,
     version,
     primaryColor: "#409eff",
-    layoutMode: "ttb",
+    layoutMode: "ltr",
     theme: "light",
   },
   defaultSetting

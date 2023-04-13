@@ -1,7 +1,7 @@
-package cn.cpoet.blog.starter.admin.service;
+package cn.cpoet.blog.starter.common.service;
 
-import cn.cpoet.blog.starter.admin.dto.LoginDTO;
-import cn.cpoet.blog.starter.admin.vo.LoginVO;
+import cn.cpoet.blog.starter.common.dto.LoginDTO;
+import cn.cpoet.blog.starter.common.vo.LoginVO;
 import reactor.core.publisher.Mono;
 
 /**

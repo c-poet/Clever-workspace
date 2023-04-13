@@ -1,15 +1,11 @@
 <template>
   <div class="login-container">
     <div class="left">
-      <img :src="ImageBg1" />
       <div class="content">
         <img :src="logo" />
         <div class="proj-name">{{ projectName }}</div>
-        <div class="desc">Vue3 + Webpack + Typescript + Element Plus</div>
-        <div class="ttiipp">博观而约取 厚积而薄发</div>
-        <div class="bottom">
-          {{ projectName + "    " + version }} · Made by qingqingxuan
-        </div>
+        <div class="desc">{{ curTime }}</div>
+        <div class="ttiipp">路漫漫其修远矣 吾将上下而求索</div>
       </div>
     </div>
     <div class="right">
@@ -67,7 +63,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import ImageBg1 from "@/assets/img_login_bg_01.jpg";
 import logo from "@/assets/logo.png";
 import { post, Response } from "@/api/http";
 import { login } from "@/api/url";
@@ -75,18 +70,29 @@ import { ElMessage } from "element-plus";
 import { UserState } from "@/store/types";
 import setting from "../../setting";
 import useUserStore from "@/store/modules/user";
+import dayjs from 'dayjs';
 export default defineComponent({
   name: "Login",
   setup() {
     const projectName = setting.projectName;
     const version = setting.version;
-    const username = ref("admin");
-    const password = ref("123456");
+    const username = ref("cpoet");
+    const password = ref("12345678");
     const autoLogin = ref(true);
     const loading = ref(false);
     const router = useRouter();
     const route = useRoute();
     const userStore = useUserStore();
+
+    const getCurTime = () => {
+        return dayjs().format('YYYY-MM-DD HH:mm:ss');
+    };
+
+    const curTime = ref(getCurTime());
+
+    window.setInterval(() => {
+        curTime.value = getCurTime();
+    }, 1000);
 
     const onLogin = () => {
       loading.value = true;
@@ -123,8 +129,8 @@ export default defineComponent({
       autoLogin,
       loading,
       onLogin,
-      ImageBg1,
       logo,
+      curTime
     };
   },
 });
@@ -207,15 +213,7 @@ $leftWith: 35%;
         color: #fff;
         font-weight: 500;
         font-size: 30px;
-        text-shadow: 0 0 5px var(--el-color-primary),
-          0 0 15px var(--el-color-primary), 0 0 50px var(--el-color-primary),
-          0 0 150px var(--el-color-primary);
         animation: scale-to 1s linear;
-      }
-      .bottom {
-        color: silver;
-        margin-bottom: 5%;
-        font-size: 16px;
       }
     }
   }

@@ -1,13 +1,13 @@
-package cn.cpoet.blog.starter.admin.service.impl;
+package cn.cpoet.blog.starter.common.service.impl;
 
 import cn.cpoet.blog.api.context.AppContextHolder;
 import cn.cpoet.blog.auth.constant.AuthSubjectConst;
 import cn.cpoet.blog.core.component.UserPassCryptoStrategy;
 import cn.cpoet.blog.core.exception.BusException;
 import cn.cpoet.blog.repo.repository.UserRepository;
-import cn.cpoet.blog.starter.admin.dto.LoginDTO;
-import cn.cpoet.blog.starter.admin.service.AuthService;
-import cn.cpoet.blog.starter.admin.vo.LoginVO;
+import cn.cpoet.blog.starter.common.dto.LoginDTO;
+import cn.cpoet.blog.starter.common.service.AuthService;
+import cn.cpoet.blog.starter.common.vo.LoginVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

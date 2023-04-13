@@ -1,4 +1,4 @@
-package cn.cpoet.blog.starter.admin.vo;
+package cn.cpoet.blog.starter.common.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
