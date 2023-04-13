@@ -28,7 +28,6 @@ public class UserServiceTest {
     @Test
     public void initUser() {
         User user = new User();
-        user.setId(idGenerator.nextId());
         user.setName("CPoet");
         user.setUsername("cpoet");
         user.setEnabled(Boolean.TRUE);
@@ -40,9 +39,9 @@ public class UserServiceTest {
     @Test
     public void updateUser() {
         userRepository.findByUsername("cpoet")
-            .flatMap(user -> {
-                user.setEnabled(Boolean.TRUE);
-                return userRepository.save(user);
-            }).subscribe();
+                .flatMap(user -> {
+                    user.setEnabled(Boolean.TRUE);
+                    return userRepository.save(user);
+                }).subscribe();
     }
 }
