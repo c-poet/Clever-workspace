@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @Slf4j
 @SpringBootTest
-public class UserServiceTest {
+public class AdminUserServiceTest {
     @Autowired
     private UserRepository userRepository;
 
