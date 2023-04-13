@@ -3,12 +3,14 @@ package cn.cpoet.blog.repo.support;
 import cn.cpoet.blog.api.core.GenMap;
 import cn.cpoet.blog.model.base.Entity;
 import cn.cpoet.blog.model.domain.Garbage;
-import cn.cpoet.blog.repo.repository.GarbageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
+
+import java.time.Year;
 
 /**
  * @author CPoet
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GarbageSupport {
 
-    private final GarbageRepository garbageRepository;
+    private final ReactiveMongoTemplate mongoTemplate;
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     /**
@@ -30,11 +32,23 @@ public class GarbageSupport {
     public void saveGarbage(BeforeDeleteEvent<Entity<Long>> event, Entity<Long> entity) {
         threadPoolTaskExecutor.execute(() -> {
             Garbage garbage = genGarbage(event, entity);
-            garbageRepository.save(garbage)
+            String collectionName = getCurGarbageCollectionName();
+            mongoTemplate.save(garbage, collectionName)
                 .doOnSuccess(gb -> log.info("保存删除记录成功:[{},{}]", gb.getEntityClass(), gb.getDocumentId()))
                 .doOnError(error -> log.warn("保存删除记录失败:{}", error.getMessage(), error))
                 .block();
         });
+    }
+
+    /**
+     * 获取当前使用的集合名称
+     *
+     * @return 集合名称
+     */
+    private String getCurGarbageCollectionName() {
+        String collectionName = mongoTemplate.getCollectionName(Garbage.class);
+        // 默认按年度记录
+        return collectionName + "_" + Year.now().getValue();
     }
 
     /**
