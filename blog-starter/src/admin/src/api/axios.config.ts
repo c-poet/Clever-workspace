@@ -1,8 +1,6 @@
 import Axios, { AxiosResponse } from "axios";
 import qs from "qs";
 
-const baseIp = "http://api.vueadminwork.com/";
-
 export const CONTENT_TYPE = "Content-Type";
 
 export const FORM_URLENCODED =
@@ -13,7 +11,7 @@ export const APPLICATION_JSON = "application/json; charset=UTF-8";
 export const TEXT_PLAIN = "text/plain; charset=UTF-8";
 
 const service = Axios.create({
-  baseURL: baseIp,
+  baseURL: '/',
   timeout: 10 * 60 * 1000,
 });
 

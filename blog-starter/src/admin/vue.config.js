@@ -12,6 +12,12 @@ module.exports = {
     hot: true,
     port: 5567,
     open: true,
+    proxy: {
+        "/api": {
+            target: "http://127.0.0.1:8077",
+            changeOrigin: true
+        }
+    }
   },
   configureWebpack: {
     devtool: 'source-map',

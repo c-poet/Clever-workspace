@@ -1,5 +1,6 @@
 package cn.cpoet.blog.starter.common.controller;
 
+import cn.cpoet.blog.core.vo.RetVO;
 import cn.cpoet.blog.starter.common.dto.LoginDTO;
 import cn.cpoet.blog.starter.common.service.AuthService;
 import cn.cpoet.blog.starter.common.vo.LoginVO;
@@ -16,13 +17,13 @@ import reactor.core.publisher.Mono;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/login")
-    public Mono<LoginVO> login(@RequestBody @Validated LoginDTO loginDTO) {
-        return authService.login(loginDTO);
+    public Mono<RetVO<LoginVO>> login(@RequestBody @Validated LoginDTO loginDTO) {
+        return RetVO.of(authService.login(loginDTO));
     }
 }

@@ -4,6 +4,7 @@ import cn.cpoet.blog.api.constant.SystemConst;
 import cn.cpoet.blog.core.common.SnowFlakeIdGenerator;
 import cn.cpoet.blog.core.common.UUIDGenerator;
 import cn.cpoet.blog.core.configuration.auto.SnowFlakeProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class IdGeneratorConfig {
 
     @Bean
+    @ConfigurationProperties(prefix = SystemConst.CONF_PREFIX + ".id-generator.snow-flake")
     public SnowFlakeProperties snowFlakeProperties() {
         return new SnowFlakeProperties();
     }

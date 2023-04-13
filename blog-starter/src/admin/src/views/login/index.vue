@@ -64,13 +64,13 @@
 import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import logo from "@/assets/logo.png";
-import { post, Response } from "@/api/http";
-import { login } from "@/api/url";
+import { Response } from "@/api/http";
+import { login } from "@/api/Auth.api";
 import { ElMessage } from "element-plus";
 import { UserState } from "@/store/types";
 import setting from "../../setting";
 import useUserStore from "@/store/modules/user";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 export default defineComponent({
   name: "Login",
   setup() {
@@ -85,24 +85,18 @@ export default defineComponent({
     const userStore = useUserStore();
 
     const getCurTime = () => {
-        return dayjs().format('YYYY-MM-DD HH:mm:ss');
+      return dayjs().format("YYYY-MM-DD HH:mm:ss");
     };
 
     const curTime = ref(getCurTime());
 
     window.setInterval(() => {
-        curTime.value = getCurTime();
+      curTime.value = getCurTime();
     }, 1000);
 
     const onLogin = () => {
       loading.value = true;
-      post({
-        url: login,
-        data: {
-          username: username.value,
-          password: password.value,
-        },
-      })
+      login({ username: username.value, password: password.value })
         .then(({ data }: Response) => {
           userStore.saveUser(data as UserState).then(() => {
             router
