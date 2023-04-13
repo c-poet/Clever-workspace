@@ -12,7 +12,7 @@ export interface HttpOption {
 }
 
 export interface Response<T = any> {
-  code: number
+  code: string
   msg: string
   data: T
 }
@@ -26,7 +26,7 @@ function http<T = any>({
   afterRequest,
 }: HttpOption) {
   const successHandler = (res: AxiosResponse<Response<T>>) => {
-    if (res.data.code === 200) {
+    if (res.data.code === '0') {
       return res.data
     }
     throw new Error(res.data.msg || '请求失败，未知异常')

@@ -1,6 +1,5 @@
 package cn.cpoet.blog.starter.common.controller;
 
-import cn.cpoet.blog.core.vo.RetVO;
 import cn.cpoet.blog.starter.common.dto.LoginDTO;
 import cn.cpoet.blog.starter.common.service.AuthService;
 import cn.cpoet.blog.starter.common.vo.LoginVO;
@@ -23,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public Mono<RetVO<LoginVO>> login(@RequestBody @Validated LoginDTO loginDTO) {
-        return RetVO.of(authService.login(loginDTO));
+    public Mono<LoginVO> login(@RequestBody @Validated LoginDTO loginDTO) {
+        return authService.login(loginDTO);
     }
 }

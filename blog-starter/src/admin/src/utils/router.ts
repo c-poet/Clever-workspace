@@ -89,6 +89,7 @@ function isTokenExpired(): boolean {
   const token = Cookies.get("x-admin-token");
   return !!token;
 }
+
 router.beforeEach(async (to) => {
   NProgress.start();
   if (whiteRoutes.includes(to.path)) {
@@ -102,6 +103,11 @@ router.beforeEach(async (to) => {
         query: { redirect: to.fullPath },
       };
     } else {
+      // 判断用户信息是否已经初始化
+      console.log(userStore.isInit);
+      if (!userStore.isInit) {
+        userStore.initUser();
+      }
       const isEmptyRoute = LayoutStore.isEmptyPermissionRoute();
       if (isEmptyRoute) {
         // 加载路由

@@ -18,13 +18,14 @@ const service = Axios.create({
 service.interceptors.request.use(
   (config) => {
     !config.headers && (config.headers = {});
-    config.headers["Admin-Work-Version"] = "x";
+  
     if (!config.headers[CONTENT_TYPE]) {
       config.headers[CONTENT_TYPE] = APPLICATION_JSON;
     }
     if (config.headers[CONTENT_TYPE] === FORM_URLENCODED) {
       config.data = qs.stringify(config.data);
     }
+    config.headers[''] = '';
     return config;
   },
   (error) => {

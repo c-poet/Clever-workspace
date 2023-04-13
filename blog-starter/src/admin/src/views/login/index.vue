@@ -124,7 +124,7 @@ export default defineComponent({
       loading,
       onLogin,
       logo,
-      curTime
+      curTime,
     };
   },
 });

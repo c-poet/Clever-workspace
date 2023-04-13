@@ -20,6 +20,7 @@ const userInfo: UserState = JSON.parse(
 const useUserStore = defineStore("user", {
   state: () => {
     return {
+      isInit: false,
       userId: userInfo.userId || 0,
       roleId: userInfo.roleId || 0,
       roles: userInfo.roles || null,
@@ -38,6 +39,12 @@ const useUserStore = defineStore("user", {
     },
   },
   actions: {
+    initUser() {
+      return new Promise<void>((res) => {
+        
+        res();
+      });
+    },
     saveUser(userInfo: UserState) {
       return new Promise<void>((res) => {
         this.userId = userInfo.userId;
@@ -58,6 +65,7 @@ const useUserStore = defineStore("user", {
     },
     logout() {
       return new Promise<void>((res) => {
+        this.isInit = false;
         this.userId = 0;
         this.avatar = "";
         this.roleId = 0;
