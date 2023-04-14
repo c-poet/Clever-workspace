@@ -17,6 +17,9 @@ public class PermissionAcl extends BaseRcEntity {
     @Schema(title = "访问对象id")
     private Long itemId;
 
+    @Schema(title = "权限id")
+    private Long permissionId;
+
     @Schema(title = "类型")
     private PermissionAclType type;
 }

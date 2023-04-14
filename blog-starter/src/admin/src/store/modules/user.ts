@@ -1,25 +1,21 @@
 import LayoutStore from "@/layouts";
-import Cookies from "js-cookie";
-
+import { getPersonInfo } from '@/api/Person.api';
 import Avatar from "@/assets/img_avatar.gif";
 import { defineStore } from "pinia";
+import { USER_INFO_KEY } from "../keys";
 import { UserState } from "../types";
-import { getPersonInfo } from '@/api/Person.api';
-import {
-  ROLE_ID_KEY,
-  USER_ID_KEY,
-  USER_INFO_KEY,
-  USER_TOKEN_KEY,
-} from "../keys";
+import pinia from '@/store/pinia';
+import useTokenStore from "@/store/modules/token";
 
+const tokenStore = useTokenStore(pinia);
 const defaultAvatar = Avatar;
 
-const token = Cookies.get(USER_TOKEN_KEY);
-
+// 获取保存的本地用户信息
 const userInfo: UserState = JSON.parse(
   localStorage.getItem(USER_INFO_KEY) || "{}"
 );
 
+// 用户信息
 const useUserStore = defineStore("user", {
   state: () => {
     return {
@@ -27,7 +23,6 @@ const useUserStore = defineStore("user", {
       userId: userInfo.userId || 0,
       roleId: userInfo.roleId || 0,
       roles: userInfo.roles || null,
-      token: token || "",
       userName: userInfo.userName || "",
       nickName: userInfo.nickName || "",
       avatar: userInfo.avatar || defaultAvatar,
@@ -47,11 +42,6 @@ const useUserStore = defineStore("user", {
       const { data } = await getPersonInfo();
       this.saveUser(data as UserState);
       this.isInit = true;
-    },
-    /** 保存token */
-    async setToken(token: string) {
-      this.token = token;
-      Cookies.set(USER_TOKEN_KEY, token);
     },
     /** 记录当前用户信息 */
     saveUser(userInfo: UserState) {
@@ -74,15 +64,14 @@ const useUserStore = defineStore("user", {
     /** 用户登出 */
     logout() {
       return new Promise<void>((res) => {
+        tokenStore.clear();
         this.isInit = false;
         this.userId = 0;
-        this.avatar = "";
+        this.avatar = '';
         this.roleId = 0;
         this.roles = [];
-        this.userName = "";
-        this.nickName = "";
-        this.token = "";
-        Cookies.remove(USER_TOKEN_KEY);
+        this.userName = '';
+        this.nickName = '';
         localStorage.clear();
         LayoutStore.reset();
         res();

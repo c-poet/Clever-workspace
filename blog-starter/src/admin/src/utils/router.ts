@@ -3,16 +3,17 @@ import { isExternal, mapTwoLevelRouter } from "@/layouts/utils";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import router, { asyncRoutes, constantRoutes } from "../router";
-import Cookies from "js-cookie";
 import { post } from "@/api/http";
 import { getMenuListByRoleId } from "@/api/url";
 import { RouteRecordRaw } from "vue-router";
 import { toHump } from ".";
 import { RouteRecordRawWithHidden } from "@/layouts/types";
 import useUserStore from "@/store/modules/user";
+import useTokenStore from "@/store/modules/token";
 import pinia from "@/store/pinia";
 
 const userStore = useUserStore(pinia);
+const tokenStore = useTokenStore(pinia);
 
 NProgress.configure({
   showSpinner: false,
@@ -86,8 +87,7 @@ function generatorRoutes(res: Array<OriginRoute>) {
 const whiteRoutes: string[] = ["/login"];
 
 function isTokenExpired(): boolean {
-  const token = Cookies.get("x-admin-token");
-  return !!token;
+  return !!tokenStore.getToken;
 }
 
 router.beforeEach(async (to) => {

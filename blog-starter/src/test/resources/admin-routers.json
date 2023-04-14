@@ -1,0 +1,332 @@
+[
+    {
+        "menuUrl": "/system",
+        "menuName": "系统管理",
+        "icon": "SettingIcon",
+        "tip": "new",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/system",
+                "menuUrl": "/system/department",
+                "menuName": "部门管理"
+            },
+            {
+                "parentPath": "/system",
+                "menuUr": "/system/user",
+                "menuName": "用户管理"
+            },
+            {
+                "parentPath": "/system",
+                "menuUr": "/system/role",
+                "menuName": "角色管理"
+            },
+            {
+                "parentPath": "/system",
+                "menuUr": "/system/menu",
+                "menuName": "菜单管理",
+                "cacheable": true
+            }
+        ]
+    },
+    {
+        "menuUr": "/list",
+        "menuName": "列表页面",
+        "icon": "OperationIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/list",
+                "menuUr": "/list/table-with-search",
+                "menuName": "表格搜索"
+            },
+            {
+                "parentPath": "/list",
+                "menuUr": "/list/table-custom",
+                "menuName": "自定义表格"
+            },
+            {
+                "parentPath": "/list",
+                "menuUr": "/list/list",
+                "menuName": "普通列表"
+            },
+            {
+                "parentPath": "/list",
+                "menuUr": "/list/card-list",
+                "menuName": "卡片列表"
+            }
+        ]
+    },
+    {
+        "menuUr": "/form",
+        "menuName": "表单页面",
+        "tip": "dot",
+        "icon": "PostcardIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/form",
+                "menuUr": "/form/base-form-view",
+                "menuName": "基本表单",
+                "cacheable": true
+            },
+            {
+                "parentPath": "/form",
+                "menuUr": "/form/advance-form",
+                "menuName": "高级表单",
+                "cacheable": true
+            },
+            {
+                "parentPath": "/form",
+                "menuUr": "/form/step-form",
+                "menuName": "分步表单"
+            },
+            {
+                "parentPath": "/form",
+                "menuUr": "/form/form-component",
+                "menuName": "表单组件"
+            }
+        ]
+    },
+    {
+        "menuUr": "/other",
+        "menuName": "功能/组件",
+        "icon": "GridIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/chart",
+                "menuName": "图表",
+                "children": [
+                    {
+                        "parentPath": "/other/chart",
+                        "menuUr": "/other/chart/icon",
+                        "menuName": "图标",
+                        "children": [
+                            {
+                                "parentPath": "/other/chart",
+                                "menuUr": "/other/chart/icon-font",
+                                "menuName": "IconFont"
+                            },
+                            {
+                                "parentPath": "/other/chart",
+                                "menuUr": "/other/chart/element-plus",
+                                "menuName": "ElementPlus"
+                            },
+                            {
+                                "parentPath": "/other/chart",
+                                "menuUr": "/other/chart/icon-select",
+                                "menuName": "图标选择器"
+                            }
+                        ]
+                    },
+                    {
+                        "parentPath": "/other/chart",
+                        "menuUr": "/other/chart/echarts",
+                        "menuName": "echarts"
+                    }
+                ]
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/print",
+                "menuName": "打印"
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/tip",
+                "menuName": "消息提示"
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/clipboard",
+                "menuName": "剪切板"
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "http://www.baidu.com",
+                "menuName": "外链"
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/cropper",
+                "menuName": "图片裁剪"
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/qrcode",
+                "menuName": "二维码"
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/css-animation",
+                "menuName": "Css动画"
+            },
+            {
+                "parentPath": "/other",
+                "menuUr": "/other/descriptions",
+                "menuName": "详情页面"
+            }
+        ]
+    },
+    {
+        "menuUr": "/result",
+        "menuName": "结果页面",
+        "icon": "TakeawayBoxIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/result",
+                "menuUr": "/result/success",
+                "menuName": "成功页面"
+            },
+            {
+                "parentPath": "/result",
+                "menuUr": "/result/fail",
+                "menuName": "失败页面"
+            }
+        ]
+    },
+    {
+        "menuUr": "/exception",
+        "menuName": "异常页面",
+        "icon": "WarningIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/exception",
+                "menuUr": "/exception/404",
+                "menuName": "404页面"
+            },
+            {
+                "parentPath": "/exception",
+                "menuUr": "/exception/403",
+                "menuName": "403页面"
+            },
+            {
+                "parentPath": "/exception",
+                "menuUr": "/exception/500",
+                "menuName": "500页面"
+            }
+        ]
+    },
+    {
+        "menuUr": "/editor",
+        "menuName": "编辑器",
+        "tip": "12",
+        "icon": "EditIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/editor",
+                "menuUr": "/editor/rich-text",
+                "menuName": "富文本"
+            },
+            {
+                "parentPath": "/editor",
+                "menuUr": "/editor/markdown",
+                "menuName": "markdown"
+            }
+        ]
+    },
+    {
+        "menuUr": "/excel",
+        "menuName": "Excel",
+        "icon": "NotebookIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/excel",
+                "menuUr": "/excel/export-excel",
+                "menuName": "导出Excel"
+            },
+            {
+                "parentPath": "/excel",
+                "menuUr": "/excel/export-rows-excel",
+                "menuName": "导出选中行"
+            }
+        ]
+    },
+    {
+        "menuUr": "/draggable",
+        "menuName": "拖拽",
+        "icon": "PointerIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/draggable",
+                "menuUr": "/draggable/dialog-draggable",
+                "menuName": "拖拽对话框"
+            },
+            {
+                "parentPath": "/draggable",
+                "menuUr": "/draggable/card-draggable",
+                "menuName": "卡片拖拽",
+                "cacheable": true
+            }
+        ]
+    },
+    {
+        "menuUr": "/next",
+        "menuName": "多级菜单",
+        "icon": "ShareIcon",
+        "parentPath": "",
+        "children": [
+            {
+                "parentPath": "/next",
+                "menuUr": "/next/menu1",
+                "menuName": "menu-1",
+                "cacheable": true
+            },
+            {
+                "parentPath": "/next",
+                "menuUr": "/next/menu2",
+                "menuName": "menu-2",
+                "children": [
+                    {
+                        "parentPath": "/next/menu2",
+                        "menuUr": "/next/menu2/menu-2-1",
+                        "menuName": "menu-2-1",
+                        "children": [
+                            {
+                                "parentPath": "/next/menu2/menu-2-1",
+                                "menuUr": "/next/menu2/menu-2-1/menu-2-1-1",
+                                "menuName": "menu-2-1-1",
+                                "cacheable": true
+                            },
+                            {
+                                "parentPath": "/next/menu2/menu-2-1",
+                                "menuUr": "/next/menu2/menu-2-1/menu-2-1-2",
+                                "menuName": "menu-2-1-2"
+                            }
+                        ]
+                    },
+                    {
+                        "parentPath": "/next/menu2",
+                        "menuUr": "/next/menu2/menu-2-2",
+                        "menuName": "menu-2-2",
+                        "cacheable": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "menuUr": "/map",
+        "menuName": "地图",
+        "icon": "MapLocationIcon",
+        "children": [
+            {
+                "parentPath": "/map",
+                "menuUr": "/map/gaode",
+                "menuName": "高德地图"
+            },
+            {
+                "parentPath": "/map",
+                "menuUr": "/map/baidu",
+                "menuName": "百度地图"
+            }
+        ]
+    }
+]
