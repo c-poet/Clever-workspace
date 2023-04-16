@@ -1,5 +1,5 @@
 import LayoutStore from "@/layouts";
-import { getPersonInfo } from '@/api/Person.api';
+import { getPersonInfo } from '@/api/common/Person.api';
 import Avatar from "@/assets/img_avatar.gif";
 import { defineStore } from "pinia";
 import { USER_INFO_KEY } from "../keys";

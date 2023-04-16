@@ -65,11 +65,11 @@ import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import logo from "@/assets/logo.png";
 import { Response } from "@/api/http";
-import { login } from "@/api/Auth.api";
-import { ElMessage } from "element-plus";
+import { login } from "@/api/common/Auth.api";
 import setting from "../../setting";
-import useUserStore from "@/store/modules/user";
 import dayjs from "dayjs";
+import useTokenStore from "@/store/modules/token";
+
 export default defineComponent({
   name: "Login",
   setup() {
@@ -81,7 +81,7 @@ export default defineComponent({
     const loading = ref(false);
     const router = useRouter();
     const route = useRoute();
-    const userStore = useUserStore();
+    const tokenStore = useTokenStore();
 
     const getCurTime = () => {
       return dayjs().format("YYYY-MM-DD HH:mm:ss");
@@ -97,7 +97,7 @@ export default defineComponent({
       loading.value = true;
       login({ username: username.value, password: password.value })
         .then(({ data }: Response) => {
-          userStore.setToken(data.token).then(() => {
+          tokenStore.setToken(data.token).then(() => {
             router
               .replace({
                 path: route.query.redirect

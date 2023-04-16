@@ -3,10 +3,9 @@ import { isExternal, mapTwoLevelRouter } from "@/layouts/utils";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import router, { asyncRoutes, constantRoutes } from "../router";
-import { post } from "@/api/http";
-import { getMenuListByRoleId } from "@/api/url";
+import { listMenu } from "@/api/admin/Person.api";
+import { MenuNodeVO } from '@/api/admin/models';
 import { RouteRecordRaw } from "vue-router";
-import { toHump } from ".";
 import { RouteRecordRawWithHidden } from "@/layouts/types";
 import useUserStore from "@/store/modules/user";
 import useTokenStore from "@/store/modules/token";
@@ -19,60 +18,35 @@ NProgress.configure({
   showSpinner: false,
 });
 
-interface OriginRoute {
-  menuUrl: string;
-  menuName?: string;
-  hidden?: boolean;
-  outLink?: string;
-  affix?: boolean;
-  cacheable?: boolean;
-  icon?: string;
-  tip?: string | number;
-  isSingle?: boolean;
-  children: Array<OriginRoute>;
+async function getRoutes() {
+  const { data } = await listMenu();
+  console.log(data);
+  return generatorRoutes( data );
 }
 
-function getRoutes() {
-  return post({
-    url: getMenuListByRoleId,
-    method: "POST",
-    data: {
-      userId: userStore.getUserId,
-      roleId: userStore.getUserId,
-    },
-  }).then((res) => {
-    return generatorRoutes(res.data);
-  });
+function getComponent(it: MenuNodeVO) {
+  return (): any => import("@/views" + it.path + ".vue");
 }
 
-function getComponent(it: OriginRoute) {
-  return (): any => import("@/views" + it.menuUrl + ".vue");
-}
-
-function isMenu(route: OriginRoute) {
+function isMenu(route: MenuNodeVO) {
   return route.children && route.children.length > 0;
 }
 
-function getNameByUrl(menuUrl: string) {
-  const temp = menuUrl.split("/");
-  return toHump(temp[temp.length - 1]);
-}
-
-function generatorRoutes(res: Array<OriginRoute>) {
+function generatorRoutes(res: Array<MenuNodeVO>) {
   const tempRoutes: Array<RouteRecordRawWithHidden> = [];
   res.forEach((it) => {
     const route: RouteRecordRawWithHidden = {
-      path: it.outLink && isExternal(it.outLink) ? it.outLink : it.menuUrl,
-      name: getNameByUrl(it.menuUrl),
+      path: it.url && isExternal(it.url) ? it.url : it.path,
+      name: it.code,
       hidden: !!it.hidden,
       component: isMenu(it) ? Layout : getComponent(it),
       children: [],
       meta: {
-        title: it.menuName,
+        title: it.name,
         affix: !!it.affix,
         cacheable: !!it.cacheable,
         icon: it.icon || "",
-        badge: it.tip,
+        badge: it.badge,
         isSingle: !!it.isSingle,
       },
     };
@@ -104,7 +78,6 @@ router.beforeEach(async (to) => {
       };
     } else {
       // 判断用户信息是否已经初始化
-      console.log(userStore.isInit);
       if (!userStore.isInit) {
         userStore.initUser();
       }

@@ -18,7 +18,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -74,7 +76,7 @@ public class PermissionServiceTest {
 
     @Test
     public void initPermissionAcl() {
-        long userId = 16011366025924608L;
+        long userId = 15999398334435328L;
         permissionRepository
             .findAll()
             .flatMap(permission -> {
@@ -84,6 +86,17 @@ public class PermissionServiceTest {
                 permissionAcl.setType(PermissionAclType.PERSON_PERMISSION);
                 return permissionAclRepository.save(permissionAcl);
             }).blockFirst();
+    }
+
+    @Test
+    public void exportPermission() throws IOException {
+        String path = "/Users/cpoet/OpenSource/Clever-blog/blog-starter/src/test/resources/export-permission.json";
+        List<Permission> permissions = new ArrayList<>();
+        permissionRepository
+            .findAll()
+            .map(permissions::add)
+            .blockLast();
+        objectMapper.writeValue(new File(path), permissions);
     }
 
     @Data

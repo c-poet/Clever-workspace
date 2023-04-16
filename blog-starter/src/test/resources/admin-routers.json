@@ -13,52 +13,52 @@
             },
             {
                 "parentPath": "/system",
-                "menuUr": "/system/user",
+                "menuUrl": "/system/user",
                 "menuName": "用户管理"
             },
             {
                 "parentPath": "/system",
-                "menuUr": "/system/role",
+                "menuUrl": "/system/role",
                 "menuName": "角色管理"
             },
             {
                 "parentPath": "/system",
-                "menuUr": "/system/menu",
+                "menuUrl": "/system/menu",
                 "menuName": "菜单管理",
                 "cacheable": true
             }
         ]
     },
     {
-        "menuUr": "/list",
+        "menuUrl": "/list",
         "menuName": "列表页面",
         "icon": "OperationIcon",
         "parentPath": "",
         "children": [
             {
                 "parentPath": "/list",
-                "menuUr": "/list/table-with-search",
+                "menuUrl": "/list/table-with-search",
                 "menuName": "表格搜索"
             },
             {
                 "parentPath": "/list",
-                "menuUr": "/list/table-custom",
+                "menuUrl": "/list/table-custom",
                 "menuName": "自定义表格"
             },
             {
                 "parentPath": "/list",
-                "menuUr": "/list/list",
+                "menuUrl": "/list/list",
                 "menuName": "普通列表"
             },
             {
                 "parentPath": "/list",
-                "menuUr": "/list/card-list",
+                "menuUrl": "/list/card-list",
                 "menuName": "卡片列表"
             }
         ]
     },
     {
-        "menuUr": "/form",
+        "menuUrl": "/form",
         "menuName": "表单页面",
         "tip": "dot",
         "icon": "PostcardIcon",
@@ -66,153 +66,153 @@
         "children": [
             {
                 "parentPath": "/form",
-                "menuUr": "/form/base-form-view",
+                "menuUrl": "/form/base-form-view",
                 "menuName": "基本表单",
                 "cacheable": true
             },
             {
                 "parentPath": "/form",
-                "menuUr": "/form/advance-form",
+                "menuUrl": "/form/advance-form",
                 "menuName": "高级表单",
                 "cacheable": true
             },
             {
                 "parentPath": "/form",
-                "menuUr": "/form/step-form",
+                "menuUrl": "/form/step-form",
                 "menuName": "分步表单"
             },
             {
                 "parentPath": "/form",
-                "menuUr": "/form/form-component",
+                "menuUrl": "/form/form-component",
                 "menuName": "表单组件"
             }
         ]
     },
     {
-        "menuUr": "/other",
+        "menuUrl": "/other",
         "menuName": "功能/组件",
         "icon": "GridIcon",
         "parentPath": "",
         "children": [
             {
                 "parentPath": "/other",
-                "menuUr": "/other/chart",
+                "menuUrl": "/other/chart",
                 "menuName": "图表",
                 "children": [
                     {
                         "parentPath": "/other/chart",
-                        "menuUr": "/other/chart/icon",
+                        "menuUrl": "/other/chart/icon",
                         "menuName": "图标",
                         "children": [
                             {
                                 "parentPath": "/other/chart",
-                                "menuUr": "/other/chart/icon-font",
+                                "menuUrl": "/other/chart/icon-font",
                                 "menuName": "IconFont"
                             },
                             {
                                 "parentPath": "/other/chart",
-                                "menuUr": "/other/chart/element-plus",
+                                "menuUrl": "/other/chart/element-plus",
                                 "menuName": "ElementPlus"
                             },
                             {
                                 "parentPath": "/other/chart",
-                                "menuUr": "/other/chart/icon-select",
+                                "menuUrl": "/other/chart/icon-select",
                                 "menuName": "图标选择器"
                             }
                         ]
                     },
                     {
                         "parentPath": "/other/chart",
-                        "menuUr": "/other/chart/echarts",
+                        "menuUrl": "/other/chart/echarts",
                         "menuName": "echarts"
                     }
                 ]
             },
             {
                 "parentPath": "/other",
-                "menuUr": "/other/print",
+                "menuUrl": "/other/print",
                 "menuName": "打印"
             },
             {
                 "parentPath": "/other",
-                "menuUr": "/other/tip",
+                "menuUrl": "/other/tip",
                 "menuName": "消息提示"
             },
             {
                 "parentPath": "/other",
-                "menuUr": "/other/clipboard",
+                "menuUrl": "/other/clipboard",
                 "menuName": "剪切板"
             },
             {
                 "parentPath": "/other",
-                "menuUr": "http://www.baidu.com",
+                "menuUrl": "http://www.baidu.com",
                 "menuName": "外链"
             },
             {
                 "parentPath": "/other",
-                "menuUr": "/other/cropper",
+                "menuUrl": "/other/cropper",
                 "menuName": "图片裁剪"
             },
             {
                 "parentPath": "/other",
-                "menuUr": "/other/qrcode",
+                "menuUrl": "/other/qrcode",
                 "menuName": "二维码"
             },
             {
                 "parentPath": "/other",
-                "menuUr": "/other/css-animation",
+                "menuUrl": "/other/css-animation",
                 "menuName": "Css动画"
             },
             {
                 "parentPath": "/other",
-                "menuUr": "/other/descriptions",
+                "menuUrl": "/other/descriptions",
                 "menuName": "详情页面"
             }
         ]
     },
     {
-        "menuUr": "/result",
+        "menuUrl": "/result",
         "menuName": "结果页面",
         "icon": "TakeawayBoxIcon",
         "parentPath": "",
         "children": [
             {
                 "parentPath": "/result",
-                "menuUr": "/result/success",
+                "menuUrl": "/result/success",
                 "menuName": "成功页面"
             },
             {
                 "parentPath": "/result",
-                "menuUr": "/result/fail",
+                "menuUrl": "/result/fail",
                 "menuName": "失败页面"
             }
         ]
     },
     {
-        "menuUr": "/exception",
+        "menuUrl": "/exception",
         "menuName": "异常页面",
         "icon": "WarningIcon",
         "parentPath": "",
         "children": [
             {
                 "parentPath": "/exception",
-                "menuUr": "/exception/404",
+                "menuUrl": "/exception/404",
                 "menuName": "404页面"
             },
             {
                 "parentPath": "/exception",
-                "menuUr": "/exception/403",
+                "menuUrl": "/exception/403",
                 "menuName": "403页面"
             },
             {
                 "parentPath": "/exception",
-                "menuUr": "/exception/500",
+                "menuUrl": "/exception/500",
                 "menuName": "500页面"
             }
         ]
     },
     {
-        "menuUr": "/editor",
+        "menuUrl": "/editor",
         "menuName": "编辑器",
         "tip": "12",
         "icon": "EditIcon",
@@ -220,91 +220,91 @@
         "children": [
             {
                 "parentPath": "/editor",
-                "menuUr": "/editor/rich-text",
+                "menuUrl": "/editor/rich-text",
                 "menuName": "富文本"
             },
             {
                 "parentPath": "/editor",
-                "menuUr": "/editor/markdown",
+                "menuUrl": "/editor/markdown",
                 "menuName": "markdown"
             }
         ]
     },
     {
-        "menuUr": "/excel",
+        "menuUrl": "/excel",
         "menuName": "Excel",
         "icon": "NotebookIcon",
         "parentPath": "",
         "children": [
             {
                 "parentPath": "/excel",
-                "menuUr": "/excel/export-excel",
+                "menuUrl": "/excel/export-excel",
                 "menuName": "导出Excel"
             },
             {
                 "parentPath": "/excel",
-                "menuUr": "/excel/export-rows-excel",
+                "menuUrl": "/excel/export-rows-excel",
                 "menuName": "导出选中行"
             }
         ]
     },
     {
-        "menuUr": "/draggable",
+        "menuUrl": "/draggable",
         "menuName": "拖拽",
         "icon": "PointerIcon",
         "parentPath": "",
         "children": [
             {
                 "parentPath": "/draggable",
-                "menuUr": "/draggable/dialog-draggable",
+                "menuUrl": "/draggable/dialog-draggable",
                 "menuName": "拖拽对话框"
             },
             {
                 "parentPath": "/draggable",
-                "menuUr": "/draggable/card-draggable",
+                "menuUrl": "/draggable/card-draggable",
                 "menuName": "卡片拖拽",
                 "cacheable": true
             }
         ]
     },
     {
-        "menuUr": "/next",
+        "menuUrl": "/next",
         "menuName": "多级菜单",
         "icon": "ShareIcon",
         "parentPath": "",
         "children": [
             {
                 "parentPath": "/next",
-                "menuUr": "/next/menu1",
+                "menuUrl": "/next/menu1",
                 "menuName": "menu-1",
                 "cacheable": true
             },
             {
                 "parentPath": "/next",
-                "menuUr": "/next/menu2",
+                "menuUrl": "/next/menu2",
                 "menuName": "menu-2",
                 "children": [
                     {
                         "parentPath": "/next/menu2",
-                        "menuUr": "/next/menu2/menu-2-1",
+                        "menuUrl": "/next/menu2/menu-2-1",
                         "menuName": "menu-2-1",
                         "children": [
                             {
                                 "parentPath": "/next/menu2/menu-2-1",
-                                "menuUr": "/next/menu2/menu-2-1/menu-2-1-1",
+                                "menuUrl": "/next/menu2/menu-2-1/menu-2-1-1",
                                 "menuName": "menu-2-1-1",
                                 "cacheable": true
                             },
                             {
                                 "parentPath": "/next/menu2/menu-2-1",
-                                "menuUr": "/next/menu2/menu-2-1/menu-2-1-2",
+                                "menuUrl": "/next/menu2/menu-2-1/menu-2-1-2",
                                 "menuName": "menu-2-1-2"
                             }
                         ]
                     },
                     {
                         "parentPath": "/next/menu2",
-                        "menuUr": "/next/menu2/menu-2-2",
+                        "menuUrl": "/next/menu2/menu-2-2",
                         "menuName": "menu-2-2",
                         "cacheable": true
                     }
@@ -313,18 +313,18 @@
         ]
     },
     {
-        "menuUr": "/map",
+        "menuUrl": "/map",
         "menuName": "地图",
         "icon": "MapLocationIcon",
         "children": [
             {
                 "parentPath": "/map",
-                "menuUr": "/map/gaode",
+                "menuUrl": "/map/gaode",
                 "menuName": "高德地图"
             },
             {
                 "parentPath": "/map",
-                "menuUr": "/map/baidu",
+                "menuUrl": "/map/baidu",
                 "menuName": "百度地图"
             }
         ]

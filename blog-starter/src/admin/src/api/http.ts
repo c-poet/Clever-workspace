@@ -13,9 +13,9 @@ export interface HttpOption {
 }
 
 export interface Response<T = any> {
-  code: string
-  message: string
-  data: T
+  code: string | number;
+  message: string;
+  data: T;
 }
 
 function http<T = any>({
@@ -27,7 +27,7 @@ function http<T = any>({
   afterRequest,
 }: HttpOption) {
   const successHandler = (res: AxiosResponse<Response<T>>) => {
-    if (res.data.code === '0') {
+    if (res.data.code === '0' || res.data.code === 200) {
       return res.data
     }
     ElMessage.error(res.data.message);
