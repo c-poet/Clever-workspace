@@ -3,6 +3,7 @@ package cn.cpoet.blog.model.base;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Schema(title = "记录型实体")
+@FieldNameConstants
 public abstract class BaseRcEntity implements Entity<Long> {
 
     private static final long serialVersionUID = -2194295669512188184L;

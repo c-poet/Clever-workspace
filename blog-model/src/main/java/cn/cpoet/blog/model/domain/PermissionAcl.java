@@ -4,6 +4,7 @@ import cn.cpoet.blog.model.base.BaseRcEntity;
 import cn.cpoet.blog.model.constant.PermissionAclType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Schema(title = "资源访问控制")
 @Document("blog_permission_acl")
+@FieldNameConstants
 public class PermissionAcl extends BaseRcEntity {
 
     @Schema(title = "访问对象id")

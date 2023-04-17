@@ -4,6 +4,7 @@ import cn.cpoet.blog.api.core.GenMap;
 import cn.cpoet.blog.model.base.BaseRcEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Document("blog_garbage")
+@FieldNameConstants
 public class Garbage extends BaseRcEntity {
 
     @Indexed

@@ -4,6 +4,7 @@ import cn.cpoet.blog.model.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Pattern;
 @Data
 @Schema(title = "用户")
 @Document("blog_user")
+@FieldNameConstants
 public class User extends BaseEntity {
 
     @Schema(title = "姓名")

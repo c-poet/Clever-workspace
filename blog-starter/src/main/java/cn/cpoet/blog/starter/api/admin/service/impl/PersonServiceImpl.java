@@ -2,7 +2,9 @@ package cn.cpoet.blog.starter.api.admin.service.impl;
 
 import cn.cpoet.blog.api.constant.SystemConst;
 import cn.cpoet.blog.api.context.Subject;
+import cn.cpoet.blog.core.service.PermissionService;
 import cn.cpoet.blog.model.constant.PermissionAclType;
+import cn.cpoet.blog.model.constant.PermissionType;
 import cn.cpoet.blog.model.domain.PermissionAcl;
 import cn.cpoet.blog.repo.repository.PermissionAclRepository;
 import cn.cpoet.blog.repo.repository.PermissionRepository;
@@ -26,17 +28,14 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
-    private final PermissionRepository permissionRepository;
-    private final PermissionAclRepository permissionAclRepository;
+    private final PermissionService permissionService;
 
     @Override
     public Flux<MenuNodeVO> listMenu(Subject subject) {
         PermissionAcl permissionAcl = new PermissionAcl();
         permissionAcl.setItemId(subject.getId());
         permissionAcl.setType(PermissionAclType.PERSON_PERMISSION);
-        return permissionAclRepository.findAll(Example.of(permissionAcl))
-            .map(PermissionAcl::getPermissionId)
-            .transform(permissionRepository::findAllById)
+        return permissionService.listByPerson(subject.getId(), subject.getGroupId(), PermissionType.MENU)
             .map(MenuNodeVO::of)
             .reduceWith(() -> new HashMap<Long, ArrayList<MenuNodeVO>>(1 << 4), (mapper, menu) -> {
                 mapper.computeIfAbsent(menu.getParentId(), k -> new ArrayList<>()).add(menu);

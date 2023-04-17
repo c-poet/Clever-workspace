@@ -1,6 +1,7 @@
 package cn.cpoet.blog.repo.base;
 
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.querydsl.ReactiveQuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 /**
