@@ -8,6 +8,7 @@ import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.convert.NoOpDbRefResolver;
@@ -58,6 +59,8 @@ public class MongoConfig {
         converter.addConverterFactory(EnumConverters.ENUM_CONVERTER_FACTORY);
         converter.setCustomConversions(customConversions);
         EnumConverters.CUSTOM_ENUM_CONVERTERS.forEach(converter::addConverter);
+        // 去除_class列
+        converter.setTypeMapper(new DefaultMongoTypeMapper(null));
         return converter;
     }
 }
