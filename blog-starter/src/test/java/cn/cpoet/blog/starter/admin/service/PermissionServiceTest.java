@@ -90,7 +90,7 @@ public class PermissionServiceTest {
 
     @Test
     public void exportPermission() throws IOException {
-        String path = "/Users/cpoet/OpenSource/Clever-blog/blog-starter/src/test/resources/export-permission.json";
+        String path = "E:\\OpenSource\\Clever-blog\\blog-starter\\src\\test\\resources\\export-permission.json";
         List<Permission> permissions = new ArrayList<>();
         permissionRepository
             .findAll()

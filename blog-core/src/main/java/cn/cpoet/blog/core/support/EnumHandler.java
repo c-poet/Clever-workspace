@@ -98,10 +98,10 @@ public class EnumHandler {
     }
 
     private <T extends Enum<T>> EnumMeta getEnumMeta(Class<T> tClass) {
-        if (ENUM_ID_META_CACHE.containsKey(tClass)) {
-            return ENUM_ID_META_CACHE.get(tClass);
+        EnumMeta enumMeta = ENUM_ID_META_CACHE.get(tClass);
+        if (enumMeta != null) {
+            return enumMeta;
         }
-        EnumMeta enumMeta = null;
         final Field[] fields = tClass.getDeclaredFields();
         if (fields.length > 0) {
             Field enumIdField = null;
