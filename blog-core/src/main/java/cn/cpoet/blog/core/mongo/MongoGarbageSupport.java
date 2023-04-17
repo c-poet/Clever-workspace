@@ -1,4 +1,4 @@
-package cn.cpoet.blog.repo.support;
+package cn.cpoet.blog.core.mongo;
 
 import cn.cpoet.blog.api.core.GenMap;
 import cn.cpoet.blog.model.base.Entity;
@@ -18,7 +18,7 @@ import java.time.Year;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class GarbageSupport {
+public class MongoGarbageSupport {
 
     private final ReactiveMongoTemplate mongoTemplate;
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;

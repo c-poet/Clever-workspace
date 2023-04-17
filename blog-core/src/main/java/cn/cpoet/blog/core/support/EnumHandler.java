@@ -39,7 +39,7 @@ public class EnumHandler {
     }
 
     public <T extends Enum<T>> Object getId(Enum<T> enumObj) {
-        final EnumMeta enumMeta = getEnumIdMeta(enumObj.getClass());
+        final EnumMeta enumMeta = getEnumMeta(enumObj.getClass());
         try {
             return enumMeta.getIdMethod().invoke(enumObj);
         } catch (Exception e) {
@@ -48,11 +48,15 @@ public class EnumHandler {
     }
 
     public Class<?> getIdType(Class<? extends Enum> clazz) {
-        return getEnumIdMeta(clazz).getIdClass();
+        return getEnumMeta(clazz).getIdClass();
+    }
+
+    public boolean isTargetEnum(Class<?> clazz) {
+        return clazz != null && clazz.isEnum() && getEnumMeta((Class) clazz) != null;
     }
 
     public <T extends Enum<T>> Map<String, Object> getEnumAppear(Enum<T> enumObj) {
-        final EnumMeta enumMeta = getEnumIdMeta(enumObj.getClass());
+        final EnumMeta enumMeta = getEnumMeta(enumObj.getClass());
         try {
             Map<String, Object> enumAppear = new HashMap<>(enumMeta.getAppearMap().size() + 1);
             final Object idValue = enumMeta.getIdMethod().invoke(enumObj);
@@ -70,7 +74,7 @@ public class EnumHandler {
     public <T extends Enum<T>> T enumOfId(Class<T> tClass, Object id) {
         Map<Object, Enum> objectEnumMap = ENUM_CACHE.get(tClass);
         if (CollectionUtils.isEmpty(objectEnumMap)) {
-            final EnumMeta enumMeta = getEnumIdMeta(tClass);
+            final EnumMeta enumMeta = getEnumMeta(tClass);
             final T[] enumConstants = tClass.getEnumConstants();
             if (enumConstants.length == 0) {
                 throw new IllegalStateException("未定义枚举值");
@@ -93,12 +97,11 @@ public class EnumHandler {
         return (T) anEnum;
     }
 
-    private <T extends Enum<T>> EnumMeta getEnumIdMeta(Class<T> tClass) {
-        EnumMeta enumMeta = ENUM_ID_META_CACHE.get(tClass);
-        if (enumMeta != null) {
-            return enumMeta;
+    private <T extends Enum<T>> EnumMeta getEnumMeta(Class<T> tClass) {
+        if (ENUM_ID_META_CACHE.containsKey(tClass)) {
+            return ENUM_ID_META_CACHE.get(tClass);
         }
-        enumMeta = new EnumMeta();
+        EnumMeta enumMeta = null;
         final Field[] fields = tClass.getDeclaredFields();
         if (fields.length > 0) {
             Field enumIdField = null;
@@ -115,33 +118,29 @@ public class EnumHandler {
                 }
             }
             if (enumIdField != null) {
-                final String fieldName = enumIdField.getName();
-                enumMeta.setIdName(fieldName);
+                enumMeta = new EnumMeta();
+                final String idName = enumIdField.getName();
+                enumMeta.setIdName(idName);
                 // 获取get方法
-                Method fieldGetMethod = findFieldGetMethod(tClass, fieldName);
+                Method fieldGetMethod = findFieldGetMethod(tClass, idName);
                 enumMeta.setIdClass(getPackageClass(enumIdField.getType()));
                 enumMeta.setIdMethod(fieldGetMethod);
-            } else {
-                enumMeta.setIdName("name");
-                enumMeta.setIdClass(String.class);
-                try {
-                    enumMeta.setIdMethod(tClass.getDeclaredMethod("name"));
-                } catch (NoSuchMethodException ignored) {
+                // 其他展示的字段
+                if (!CollectionUtils.isEmpty(appearFields)) {
+                    Map<String, Method> appearMap = new HashMap<>(appearFields.size());
+                    for (Field appearField : appearFields) {
+                        final String fieldName = appearField.getName();
+                        appearMap.put(fieldName, findFieldGetMethod(tClass, fieldName));
+                    }
+                    enumMeta.setAppearMap(appearMap);
+                } else {
+                    enumMeta.setAppearMap(Collections.emptyMap());
                 }
-            }
-            // 其他展示的字段
-            if (!CollectionUtils.isEmpty(appearFields)) {
-                Map<String, Method> appearMap = new HashMap<>(appearFields.size());
-                for (Field appearField : appearFields) {
-                    final String fieldName = appearField.getName();
-                    appearMap.put(fieldName, findFieldGetMethod(tClass, fieldName));
-                }
-                enumMeta.setAppearMap(appearMap);
-            } else {
-                enumMeta.setAppearMap(Collections.emptyMap());
             }
         }
-        ENUM_ID_META_CACHE.put(tClass, enumMeta);
+        if (enumMeta != null) {
+            ENUM_ID_META_CACHE.put(tClass, enumMeta);
+        }
         return enumMeta;
     }
 

@@ -27,11 +27,6 @@
       <groupId>cn.cpoet.blog</groupId>
       <artifactId>blog-auth</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>cn.cpoet.blog</groupId>
-      <artifactId>blog-repo</artifactId>
-    </dependency>
   </dependencies>
 
   <build>

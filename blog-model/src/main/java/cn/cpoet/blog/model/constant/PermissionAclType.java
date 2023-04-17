@@ -27,7 +27,6 @@ public enum PermissionAclType {
 
     @EnumId
     private final int id;
-
     @EnumAppear
     private final String desc;
 }

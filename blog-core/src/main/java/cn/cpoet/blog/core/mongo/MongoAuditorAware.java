@@ -1,4 +1,4 @@
-package cn.cpoet.blog.repo.mongo;
+package cn.cpoet.blog.core.mongo;
 
 import cn.cpoet.blog.api.context.AppContextHolder;
 import org.springframework.data.domain.ReactiveAuditorAware;

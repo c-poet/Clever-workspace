@@ -1,8 +1,7 @@
-package cn.cpoet.blog.repo.mongo;
+package cn.cpoet.blog.core.mongo;
 
 import cn.cpoet.blog.model.base.Entity;
 import cn.cpoet.blog.model.domain.Garbage;
-import cn.cpoet.blog.repo.support.GarbageSupport;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -20,7 +19,7 @@ import org.springframework.util.CollectionUtils;
 @RequiredArgsConstructor
 public class MongoEventListener extends AbstractMongoEventListener<Entity<Long>> {
 
-    private final GarbageSupport garbageSupport;
+    private final MongoGarbageSupport mongoGarbageSupport;
     private final ReactiveMongoTemplate mongoTemplate;
     private final MongoMappingContext mongoMappingContext;
 
@@ -33,7 +32,7 @@ public class MongoEventListener extends AbstractMongoEventListener<Entity<Long>>
             String fieldName = entity.getRequiredIdProperty().getFieldName();
             mongoTemplate
                 .findById(document.getLong(fieldName), entityClass)
-                .subscribe(e -> garbageSupport.saveGarbage(event, e));
+                .subscribe(e -> mongoGarbageSupport.saveGarbage(event, e));
         }
     }
 }

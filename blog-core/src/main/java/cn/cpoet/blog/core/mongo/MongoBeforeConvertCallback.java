@@ -1,4 +1,4 @@
-package cn.cpoet.blog.repo.mongo;
+package cn.cpoet.blog.core.mongo;
 
 import cn.cpoet.blog.api.core.IdGenerator;
 import cn.cpoet.blog.model.base.BaseRcEntity;
