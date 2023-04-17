@@ -76,7 +76,7 @@ public class PermissionServiceTest {
 
     @Test
     public void initPermissionAcl() {
-        long userId = 15999398334435328L;
+        long userId = 16109742123126784L;
         permissionRepository
             .findAll()
             .flatMap(permission -> {
@@ -85,12 +85,12 @@ public class PermissionServiceTest {
                 permissionAcl.setPermissionId(permission.getId());
                 permissionAcl.setType(PermissionAclType.PERSON_PERMISSION);
                 return permissionAclRepository.save(permissionAcl);
-            }).blockFirst();
+            }).blockLast();
     }
 
     @Test
     public void exportPermission() throws IOException {
-        String path = "E:\\OpenSource\\Clever-blog\\blog-starter\\src\\test\\resources\\export-permission.json";
+        String path = "/Users/cpoet/OpenSource/Clever-blog/blog-starter/src/test/resources/export-permission.json";
         List<Permission> permissions = new ArrayList<>();
         permissionRepository
             .findAll()
