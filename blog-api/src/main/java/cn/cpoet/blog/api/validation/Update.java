@@ -1,4 +1,4 @@
-package cn.cpoet.blog.api.scene;
+package cn.cpoet.blog.api.validation;
 
 /**
  * 更新场景

@@ -1,8 +1,8 @@
 package cn.cpoet.blog.model.base;
 
-import cn.cpoet.blog.api.scene.Delete;
-import cn.cpoet.blog.api.scene.Insert;
-import cn.cpoet.blog.api.scene.Update;
+import cn.cpoet.blog.api.validation.Delete;
+import cn.cpoet.blog.api.validation.Insert;
+import cn.cpoet.blog.api.validation.Update;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

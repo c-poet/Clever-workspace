@@ -1,7 +1,7 @@
 package cn.cpoet.blog.starter.api.admin.controller;
 
-import cn.cpoet.blog.api.scene.Insert;
-import cn.cpoet.blog.api.scene.Update;
+import cn.cpoet.blog.api.validation.Insert;
+import cn.cpoet.blog.api.validation.Update;
 import cn.cpoet.blog.core.dto.IdDTO;
 import cn.cpoet.blog.core.dto.IdsDTO;
 import cn.cpoet.blog.core.vo.PageVO;

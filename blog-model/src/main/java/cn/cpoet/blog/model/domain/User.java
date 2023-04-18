@@ -1,5 +1,7 @@
 package cn.cpoet.blog.model.domain;
 
+import cn.cpoet.blog.api.validation.Insert;
+import cn.cpoet.blog.api.validation.Update;
 import cn.cpoet.blog.model.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.groups.Default;
 
 /**
  * @author CPoet
@@ -23,8 +26,8 @@ import javax.validation.constraints.Pattern;
 public class User extends BaseEntity {
 
     @Schema(title = "姓名")
-    @NotEmpty(message = "姓名不能为空")
-    @Length(min = 1, max = 8, message = "姓名长度在${min}-${max}之间")
+    @NotEmpty(message = "姓名不能为空", groups = {Insert.class, Update.class, Default.class})
+    @Length(min = 1, max = 8, message = "姓名长度在${min}-${max}之间", groups = {Insert.class, Update.class})
     private String name;
 
     @Schema(title = "昵称")

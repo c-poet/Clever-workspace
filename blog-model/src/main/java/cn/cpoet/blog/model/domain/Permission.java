@@ -1,7 +1,7 @@
 package cn.cpoet.blog.model.domain;
 
-import cn.cpoet.blog.api.scene.Insert;
-import cn.cpoet.blog.api.scene.Update;
+import cn.cpoet.blog.api.validation.Insert;
+import cn.cpoet.blog.api.validation.Update;
 import cn.cpoet.blog.model.base.BaseEntity;
 import cn.cpoet.blog.model.constant.BadgeType;
 import cn.cpoet.blog.model.constant.PermissionType;
