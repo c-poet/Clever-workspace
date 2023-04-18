@@ -21,10 +21,6 @@ public class Jackson2JsonEncoder extends org.springframework.http.codec.json.Jac
 
     private final static ResolvableType RET_VO_RESOLVABLE_TYPE = ResolvableType.forClass(RetVO.class);
 
-    public Jackson2JsonEncoder() {
-        super();
-    }
-
     public Jackson2JsonEncoder(ObjectMapper mapper, MimeType... mimeTypes) {
         super(mapper, mimeTypes);
     }
@@ -35,14 +31,18 @@ public class Jackson2JsonEncoder extends org.springframework.http.codec.json.Jac
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public DataBuffer encodeValue(Object value, DataBufferFactory bufferFactory, ResolvableType valueType, MimeType mimeType, Map<String, Object> hints) {
+        RetVO<Object> retVO;
         if (valueType.isAssignableFrom(RET_VO_RESOLVABLE_TYPE)) {
-            return super.encodeValue(value, bufferFactory, valueType, mimeType, hints);
+            retVO = (RetVO<Object>) value;
+        } else {
+            retVO = new RetVO<>();
+            retVO.setCode(StatusConst.OK.code());
+            retVO.setMessage(StatusConst.OK.message());
+            retVO.setData(value);
         }
-        RetVO<Object> retVO = new RetVO<>();
-        retVO.setCode(StatusConst.OK.code());
-        retVO.setMessage(StatusConst.OK.message());
-        retVO.setData(value);
+        retVO.setTimestamp(System.currentTimeMillis());
         return super.encodeValue(retVO, bufferFactory, RET_VO_RESOLVABLE_TYPE, mimeType, hints);
     }
 }

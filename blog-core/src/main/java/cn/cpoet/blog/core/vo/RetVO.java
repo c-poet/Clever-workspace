@@ -22,4 +22,7 @@ public class RetVO<T> implements Serializable {
 
     @Schema(title = "响应数据")
     private T data;
+
+    @Schema(title = "响应时间")
+    private Long timestamp;
 }

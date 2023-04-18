@@ -8,6 +8,7 @@ import cn.cpoet.blog.model.domain.Permission;
 import cn.cpoet.blog.model.domain.PermissionAcl;
 import cn.cpoet.blog.repo.repository.PermissionAclRepository;
 import cn.cpoet.blog.repo.repository.PermissionRepository;
+import cn.cpoet.blog.repo.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -28,6 +29,8 @@ public class PermissionServiceTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private PermissionRepository permissionRepository;
     @Autowired
@@ -76,16 +79,18 @@ public class PermissionServiceTest {
 
     @Test
     public void initPermissionAcl() {
-        long userId = 16109742123126784L;
-        permissionRepository
-            .findAll()
-            .flatMap(permission -> {
-                PermissionAcl permissionAcl = new PermissionAcl();
-                permissionAcl.setItemId(userId);
-                permissionAcl.setPermissionId(permission.getId());
-                permissionAcl.setType(PermissionAclType.PERSON_PERMISSION);
-                return permissionAclRepository.save(permissionAcl);
-            }).blockLast();
+        userRepository
+            .findByUsername("cpoet")
+            .flatMapMany(user -> permissionRepository
+                .findAll()
+                .flatMap(permission -> {
+                    PermissionAcl permissionAcl = new PermissionAcl();
+                    permissionAcl.setItemId(user.getId());
+                    permissionAcl.setPermissionId(permission.getId());
+                    permissionAcl.setType(PermissionAclType.PERSON_PERMISSION);
+                    return permissionAclRepository.save(permissionAcl);
+                })).blockLast();
+
     }
 
     @Test
