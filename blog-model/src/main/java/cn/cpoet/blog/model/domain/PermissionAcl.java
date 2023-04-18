@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author CPoet
  */
@@ -17,11 +19,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class PermissionAcl extends BaseRcEntity {
 
     @Schema(title = "访问对象id")
+    @NotNull(message = "授权对象的id不能为空")
     private Long itemId;
 
     @Schema(title = "权限id")
+    @NotNull(message = "权限id不能为空")
     private Long permissionId;
 
     @Schema(title = "类型")
+    @NotNull(message = "授权对象类型不能为空")
     private PermissionAclType type;
 }

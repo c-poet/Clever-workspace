@@ -51,5 +51,5 @@ public interface PermissionService {
      * @param ids id列表
      * @return void
      */
-    Mono<Void> batchDeletePermission(List<Long> ids);
+    Mono<Void> deletePermissionByIds(List<Long> ids);
 }

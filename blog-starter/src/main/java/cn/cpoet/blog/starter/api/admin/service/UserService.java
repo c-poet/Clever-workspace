@@ -1,7 +1,8 @@
 package cn.cpoet.blog.starter.api.admin.service;
 
-import cn.cpoet.blog.api.context.Subject;
+import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.User;
+import cn.cpoet.blog.starter.api.admin.param.UserParam;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -11,20 +12,50 @@ import java.util.List;
  */
 public interface UserService {
     /**
-     * 保存用户
+     * 根据id查询用户
      *
-     * @param subject 当前登录主体
-     * @param user    用户信息
+     * @param userId 用户id
      * @return 用户信息
      */
-    Mono<User> save(Subject subject, User user);
+    Mono<User> getUserById(Long userId);
+
+    /**
+     * 查询用户
+     *
+     * @param userParam 查询参数
+     * @return 用户列表
+     */
+    Mono<PageVO<User>> listUser(UserParam userParam);
+
+    /**
+     * 保存用户
+     *
+     * @param user 用户信息
+     * @return 用户信息
+     */
+    Mono<User> insertUser(User user);
+
+    /**
+     * 更新用户
+     *
+     * @param user 用户信息
+     * @return 用户信息
+     */
+    Mono<User> updateUser(User user);
 
     /**
      * 删除用户
      *
-     * @param subject 当前登录主体
-     * @param ids     id信息
+     * @param id 用户id
      * @return 删除结果
      */
-    Mono<Void> deleteById(Subject subject, List<Long> ids);
+    Mono<Void> deleteUserById(Long id);
+
+    /**
+     * 批量删除用户
+     *
+     * @param ids 用户id列表
+     * @return 删除结果
+     */
+    Mono<Void> deleteUserByIds(List<Long> ids);
 }

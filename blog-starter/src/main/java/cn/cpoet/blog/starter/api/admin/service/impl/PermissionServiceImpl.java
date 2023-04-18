@@ -50,7 +50,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Transactional(rollbackFor = Exception.class)
     public Mono<Permission> insertPermission(Permission permission) {
         permission.setBuildIn(Boolean.FALSE);
-        return permissionRepository.save(permission);
+        return permissionRepository.insert(permission);
     }
 
     @Override
@@ -65,11 +65,8 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionRepository
             .findById(id)
             .doOnSuccess(permission -> {
-                if (permission == null) {
-                    throw new BusException("删除的数据不存在");
-                }
                 if (Boolean.TRUE.equals(permission.getBuildIn())) {
-                    throw new BusException("系统内置数据不允许删除");
+                    throw new BusException("内置权限不允许删除");
                 }
             })
             .flatMap(permissionRepository::delete);
@@ -77,19 +74,17 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Mono<Void> batchDeletePermission(List<Long> ids) {
+    public Mono<Void> deletePermissionByIds(List<Long> ids) {
         return permissionRepository
             .findAllById(ids)
             .collectList()
             .doOnSuccess(permissions -> {
-                if (permissions.size() != ids.size()) {
-                    throw new BusException("删除的数据不存在");
-                }
                 for (Permission permission : permissions) {
                     if (Boolean.TRUE.equals(permission.getBuildIn())) {
-                        throw new BusException("系统内置数据不允许删除");
+                        throw new BusException("内置权限不允许删除");
                     }
                 }
-            }).flatMap(permissionRepository::deleteAll);
+            })
+            .flatMap(permissionRepository::deleteAll);
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.groups.Default;
 
 /**
  * @author CPoet
@@ -26,24 +26,24 @@ import javax.validation.groups.Default;
 public class User extends BaseEntity {
 
     @Schema(title = "姓名")
-    @NotEmpty(message = "姓名不能为空", groups = {Insert.class, Update.class, Default.class})
+    @NotEmpty(message = "姓名不能为空", groups = {Insert.class, Update.class,})
     @Length(min = 1, max = 8, message = "姓名长度在${min}-${max}之间", groups = {Insert.class, Update.class})
     private String name;
 
     @Schema(title = "昵称")
-    @NotEmpty(message = "昵称不能为空")
-    @Length(min = 1, max = 48, message = "昵称长度在${min}-${max}之间")
+    @NotEmpty(message = "昵称不能为空", groups = {Insert.class, Update.class})
+    @Length(min = 1, max = 48, message = "昵称长度在${min}-${max}之间", groups = {Insert.class, Update.class})
     private String nickName;
 
     @Schema(title = "用户名")
     @Indexed(unique = true)
-    @NotEmpty(message = "用户名不能为空")
-    @Pattern(regexp = "^[a-zA-Z_][0-9a-zA-Z_]+$", message = "用户名由字母、数字及下划线组成，且首字符不能为数字")
+    @NotEmpty(message = "用户名不能为空", groups = {Insert.class, Update.class})
+    @Pattern(regexp = "^[a-zA-Z_][0-9a-zA-Z_]+$", message = "用户名由字母、数字及下划线组成，且首字符不能为数字", groups = {Insert.class, Update.class})
     private String username;
 
     @Schema(title = "密码")
-    @NotEmpty(message = "密码不能为空")
-    @Pattern(regexp = "^[a-zA-Z0-9_!@#$%^&*]{6}$", message = "密码由字母、数字及_!@#$%^&*字符组成，且长度不少于6位")
+    @NotEmpty(message = "密码不能为空", groups = {Insert.class, Update.class})
+    @Pattern(regexp = "^[a-zA-Z0-9_!@#$%^&*]{6}$", message = "密码由字母、数字及_!@#$%^&*字符组成，且长度不少于6位", groups = {Insert.class, Update.class})
     private String password;
 
     @JsonIgnore
@@ -54,15 +54,19 @@ public class User extends BaseEntity {
     private String avatar;
 
     @Schema(title = "邮箱")
-    @NotEmpty(message = "邮箱不能为空")
-    @Email(message = "邮箱格式不正确")
+    @NotEmpty(message = "邮箱不能为空", groups = {Insert.class, Update.class})
+    @Email(message = "邮箱格式不正确", groups = {Insert.class, Update.class})
     private String email;
 
     @Schema(title = "手机号")
     private String mobile;
 
     @Schema(title = "用户组id")
+    @NotNull(message = "用户组不能为空", groups = {Insert.class, Update.class})
     private Long groupId;
+
+    @Schema(title = "是否内置")
+    private Boolean buildIn;
 
     @Schema(title = "是否锁定")
     private Boolean locked;

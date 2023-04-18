@@ -55,8 +55,8 @@ public class PermissionController {
         return permissionService.deletePermissionById(idDTO.getId());
     }
 
-    @PostMapping("/batchDeletePermission")
-    public Mono<Void> batchDeletePermission(@RequestBody @Validated IdsDTO idsDTO) {
-        return permissionService.batchDeletePermission(idsDTO.getIds());
+    @PostMapping("/deletePermissionByIds")
+    public Mono<Void> deletePermissionByIds(@RequestBody @Validated IdsDTO idsDTO) {
+        return permissionService.deletePermissionByIds(idsDTO.getIds());
     }
 }
