@@ -1,5 +1,8 @@
 package cn.cpoet.blog.model.base;
 
+import cn.cpoet.blog.api.scene.Delete;
+import cn.cpoet.blog.api.scene.Insert;
+import cn.cpoet.blog.api.scene.Update;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -9,6 +12,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 
 /**
@@ -23,6 +28,8 @@ public abstract class BaseRcEntity implements Entity<Long> {
 
     @Schema(title = "主键")
     @MongoId(FieldType.INT64)
+    @Null(message = "不允许的ID", groups = {Insert.class})
+    @NotNull(message = "ID不能为空", groups = {Update.class, Delete.class})
     private Long id;
 
     @Schema(title = "创建用户")

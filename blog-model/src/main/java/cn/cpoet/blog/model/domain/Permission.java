@@ -1,5 +1,7 @@
 package cn.cpoet.blog.model.domain;
 
+import cn.cpoet.blog.api.scene.Insert;
+import cn.cpoet.blog.api.scene.Update;
 import cn.cpoet.blog.model.base.BaseEntity;
 import cn.cpoet.blog.model.constant.BadgeType;
 import cn.cpoet.blog.model.constant.PermissionType;
@@ -10,6 +12,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author CPoet
@@ -21,15 +24,16 @@ import javax.validation.constraints.NotEmpty;
 public class Permission extends BaseEntity {
 
     @Schema(title = "父级id")
+    @NotNull(message = "父级不能为空", groups = {Insert.class, Update.class})
     private Long parentId;
 
     @Indexed(unique = true)
     @Schema(title = "权限编码")
-    @NotEmpty(message = "权限编码不能为空")
+    @NotEmpty(message = "权限编码不能为空", groups = {Insert.class, Update.class})
     private String code;
 
     @Schema(title = "权限名称")
-    @NotEmpty(message = "权限名称不能为空")
+    @NotEmpty(message = "权限名称不能为空", groups = {Insert.class, Update.class})
     private String name;
 
     @Schema(title = "图标")
@@ -42,6 +46,7 @@ public class Permission extends BaseEntity {
     private String url;
 
     @Schema(title = "徽标类型")
+    @NotEmpty(message = "徽标类型不能为空", groups = {Insert.class, Update.class})
     private BadgeType badgeType;
 
     @Schema(title = "徽标")
@@ -60,9 +65,11 @@ public class Permission extends BaseEntity {
     private Boolean cacheable;
 
     @Schema(title = "类型")
+    @NotNull(message = "权限类型不能为空", groups = {Insert.class, Update.class})
     private PermissionType type;
 
     @Schema(title = "排序值")
+    @NotNull(message = "排序值不能为空", groups = {Insert.class, Update.class})
     private Integer order;
 
     @Schema(title = "权限描述")

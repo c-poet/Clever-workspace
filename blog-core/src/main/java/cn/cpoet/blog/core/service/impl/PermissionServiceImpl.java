@@ -1,5 +1,6 @@
 package cn.cpoet.blog.core.service.impl;
 
+import cn.cpoet.blog.core.mongo.MongoTemplate;
 import cn.cpoet.blog.core.service.PermissionAclService;
 import cn.cpoet.blog.core.service.PermissionService;
 import cn.cpoet.blog.model.base.BaseRcEntity;
@@ -10,7 +11,6 @@ import cn.cpoet.blog.repo.repository.PermissionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class PermissionServiceImpl implements PermissionService {
 
-    private final ReactiveMongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
     private final PermissionRepository permissionRepository;
     private final PermissionAclService permissionAclService;
 

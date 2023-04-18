@@ -1,5 +1,7 @@
 package cn.cpoet.blog.starter.api.admin.controller;
 
+import cn.cpoet.blog.api.scene.Insert;
+import cn.cpoet.blog.api.scene.Update;
 import cn.cpoet.blog.core.dto.IdDTO;
 import cn.cpoet.blog.core.dto.IdsDTO;
 import cn.cpoet.blog.core.vo.PageVO;
@@ -32,19 +34,19 @@ public class PermissionController {
 
     @GetMapping("/listPermission")
     @Operation(summary = "查询权限列表")
-    public Mono<PageVO<Permission>> listPermission(PermissionParam permissionParam) {
+    public Mono<PageVO<Permission>> listPermission(@Validated PermissionParam permissionParam) {
         return permissionService.listPermission(permissionParam);
     }
 
     @PostMapping("/insertPermission")
     @Operation(summary = "新增功能权限")
-    public Mono<Permission> insertPermission(@RequestBody @Validated Permission permission) {
+    public Mono<Permission> insertPermission(@RequestBody @Validated(Insert.class) Permission permission) {
         return permissionService.insertPermission(permission);
     }
 
     @PostMapping("/updatePermission")
     @Operation(summary = "更新功能权限")
-    public Mono<Permission> updatePermission(@RequestBody @Validated Permission permission) {
+    public Mono<Permission> updatePermission(@RequestBody @Validated(Update.class) Permission permission) {
         return permissionService.updatePermission(permission);
     }
 

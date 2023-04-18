@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.data.mongodb.core.query.Query;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -16,9 +17,11 @@ public class PageParam implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(title = "当前页号")
+    @NotNull(message = "页号不能为空")
     private Integer pageNo;
 
     @Schema(title = "每页大小")
+    @NotNull(message = "每页大小不能为空")
     private Integer pageSize;
 
     /**

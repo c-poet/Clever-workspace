@@ -1,9 +1,11 @@
 package cn.cpoet.blog.core.configuration;
 
 import cn.cpoet.blog.core.mongo.CustomMappingMongoConverter;
+import cn.cpoet.blog.core.mongo.MongoTemplate;
 import cn.cpoet.blog.core.support.EnumConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
@@ -29,6 +31,14 @@ import java.util.Collections;
 @EnableReactiveMongoAuditing
 @EnableReactiveMongoRepositories("cn.cpoet.blog.repo.repository")
 public class MongoConfig {
+
+    @Primary
+    @Bean({"reactiveMongoTemplate", "mongoTemplate"})
+    public MongoTemplate monoTemplate(ReactiveMongoDatabaseFactory databaseFactory,
+                                      MappingMongoConverter mongoConverter) {
+        return new MongoTemplate(databaseFactory, mongoConverter);
+    }
+
     /**
      * 事务配置
      *

@@ -1,6 +1,7 @@
 package cn.cpoet.blog.starter.api.admin.service.impl;
 
 import cn.cpoet.blog.core.exception.BusException;
+import cn.cpoet.blog.core.mongo.MongoTemplate;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Permission;
 import cn.cpoet.blog.repo.repository.PermissionRepository;
@@ -8,11 +9,11 @@ import cn.cpoet.blog.starter.api.admin.param.PermissionParam;
 import cn.cpoet.blog.starter.api.admin.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PermissionServiceImpl implements PermissionService {
 
-    private final ReactiveMongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
     private final PermissionRepository permissionRepository;
 
     @Override
@@ -35,21 +36,20 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Mono<PageVO<Permission>> listPermission(PermissionParam permissionParam) {
-        Criteria criteria = Criteria
-            .where(Permission.Fields.name).is(permissionParam.getName())
-            .and(Permission.Fields.code).is(permissionParam.getCode());
-        return mongoTemplate.find(permissionParam.fillQuery(Query.query(criteria)), Permission.class)
-            .collectList()
-            .map(permissions -> {
-                PageVO<Permission> pageVO = new PageVO<>();
-                pageVO.setData(permissions);
-                return pageVO;
-            });
+        Criteria criteria = new Criteria();
+        if (StringUtils.hasText(permissionParam.getName())) {
+            criteria = criteria.and(Permission.Fields.name).is(permissionParam.getName());
+        }
+        if (StringUtils.hasText(permissionParam.getCode())) {
+            criteria = criteria.and(Permission.Fields.code).is(permissionParam.getCode());
+        }
+        return mongoTemplate.find(Query.query(criteria), permissionParam, Permission.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Mono<Permission> insertPermission(Permission permission) {
+        permission.setBuildIn(Boolean.FALSE);
         return permissionRepository.save(permission);
     }
 
