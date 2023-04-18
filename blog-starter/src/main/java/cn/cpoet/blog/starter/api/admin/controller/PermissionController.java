@@ -1,14 +1,16 @@
 package cn.cpoet.blog.starter.api.admin.controller;
 
+import cn.cpoet.blog.core.dto.IdDTO;
+import cn.cpoet.blog.core.dto.IdsDTO;
+import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Permission;
+import cn.cpoet.blog.starter.api.admin.param.PermissionParam;
 import cn.cpoet.blog.starter.api.admin.service.PermissionService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 /**
@@ -22,8 +24,37 @@ public class PermissionController {
 
     private final PermissionService permissionService;
 
-    @PostMapping("/save")
-    public Mono<Permission> save(@RequestBody @Validated Permission permission) {
-        return permissionService.save(permission);
+    @GetMapping("/getPermissionById")
+    @Operation(summary = "根据id查询权限")
+    public Mono<Permission> getPermissionById(@RequestParam Long id) {
+        return permissionService.getPermissionById(id);
+    }
+
+    @GetMapping("/listPermission")
+    @Operation(summary = "查询权限列表")
+    public Mono<PageVO<Permission>> listPermission(PermissionParam permissionParam) {
+        return permissionService.listPermission(permissionParam);
+    }
+
+    @PostMapping("/insertPermission")
+    @Operation(summary = "新增功能权限")
+    public Mono<Permission> insertPermission(@RequestBody @Validated Permission permission) {
+        return permissionService.insertPermission(permission);
+    }
+
+    @PostMapping("/updatePermission")
+    @Operation(summary = "更新功能权限")
+    public Mono<Permission> updatePermission(@RequestBody @Validated Permission permission) {
+        return permissionService.updatePermission(permission);
+    }
+
+    @PostMapping("/deletePermissionById")
+    public Mono<Void> deletePermissionById(@RequestBody @Validated IdDTO idDTO) {
+        return permissionService.deletePermissionById(idDTO.getId());
+    }
+
+    @PostMapping("/batchDeletePermission")
+    public Mono<Void> batchDeletePermission(@RequestBody @Validated IdsDTO idsDTO) {
+        return permissionService.batchDeletePermission(idsDTO.getIds());
     }
 }

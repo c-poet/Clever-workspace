@@ -68,6 +68,9 @@ public class Permission extends BaseEntity {
     @Schema(title = "权限描述")
     private String description;
 
+    @Schema(title = "是否内置")
+    private Boolean buildIn;
+
     @Schema(title = "是否启用")
     private Boolean enabled;
 }
