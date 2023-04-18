@@ -24,7 +24,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalErrorAdvice {
     @ExceptionHandler(BusException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Mono<RetVO<?>> busException(BusException e) {
         log.info("业务异常：{}", e.getMessage(), e);
         return Mono.fromSupplier(() -> {
@@ -37,7 +36,6 @@ public class GlobalErrorAdvice {
     }
 
     @ExceptionHandler(WebExchangeBindException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Mono<RetVO<?>> webExchangeBindException(WebExchangeBindException e) {
         RetVO<Object> retVO = new RetVO<>();
         retVO.setCode(StatusConst.FAILED.code());
@@ -55,7 +53,6 @@ public class GlobalErrorAdvice {
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Mono<RetVO<?>> exception(Exception e) {
         log.warn("系统异常：{}", e.getMessage(), e);
         return Mono.fromSupplier(() -> {

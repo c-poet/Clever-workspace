@@ -67,6 +67,7 @@ public class PermissionServiceTest {
                 permission.setAffix(router.getAffix());
                 permission.setCacheable(router.getCacheable());
                 permission.setType(PermissionType.MENU);
+                permission.setBuildIn(Boolean.TRUE);
                 permission.setDescription("来自admin模板");
                 permission.setEnabled(Boolean.TRUE);
                 flux = flux.concatWith(permissionRepository

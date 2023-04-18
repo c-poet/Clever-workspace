@@ -33,8 +33,8 @@ public class MongoGarbageSupport {
         threadPoolTaskExecutor.execute(() -> {
             Garbage garbage = genGarbage(event, entity);
             String collectionName = getCurGarbageCollectionName();
-            mongoTemplate.save(garbage, collectionName)
-                .doOnSuccess(gb -> log.info("保存删除记录成功:[{},{}]", gb.getEntityClass(), gb.getDocumentId()))
+            mongoTemplate.insert(garbage, collectionName)
+                .doOnSuccess(gb -> log.info("保存删除记录成功:[{},{}]", gb.getCollectionName(), gb.getDocumentId()))
                 .doOnError(error -> log.warn("保存删除记录失败:{}", error.getMessage(), error))
                 .block();
         });
@@ -61,8 +61,7 @@ public class MongoGarbageSupport {
         Garbage garbage = new Garbage();
         garbage.setDocumentId(entity.getId());
         garbage.setCollectionName(event.getCollectionName());
-        garbage.setEntityClass(entity.getClass().getName());
-        garbage.setEntity(GenMap.of(entity));
+        garbage.setDocument(GenMap.of(entity));
         return garbage;
     }
 }

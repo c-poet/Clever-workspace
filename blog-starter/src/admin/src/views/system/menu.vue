@@ -26,7 +26,7 @@
           :size="tableConfig.size"
           :stripe="tableConfig.stripe"
           :border="tableConfig.border"
-          row-key="menuUrl"
+          row-key="id"
           :tree-props="{ children: 'children' }"
         >
           <el-table-column align="center" label="序号" fixed="left" width="150">
@@ -34,9 +34,10 @@
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="菜单名称" prop="menuName" />
-          <el-table-column align="center" label="菜单地址" prop="menuUrl" />
-          <el-table-column align="center" label="图标" prop="menuUrl">
+          <el-table-column align="center" label="编码" prop="code" />
+          <el-table-column align="center" label="名称" prop="name" />
+          <el-table-column align="center" label="路径" prop="path" />
+          <el-table-column align="center" label="图标" prop="id">
             <template #default="scope">
               <el-icon
                 v-if="scope.row.icon"
@@ -70,11 +71,11 @@
               <div class="menu-badge__wrapper">
                 <el-badge
                   :value="
-                    parseInt(scope.row.tip)
-                      ? parseInt(scope.row.tip)
-                      : scope.row.tip
+                    parseInt(scope.row.badge)
+                      ? parseInt(scope.row.badge)
+                      : scope.row.badge
                   "
-                  :is-dot="scope.row.tip === 'dot'"
+                  :is-dot="scope.row.badge === 'dot'"
                 >
                 </el-badge>
               </div>
@@ -110,52 +111,86 @@
       <template #content>
         <el-form
           class="base-form-container"
+          ref="permissionForm"
           :model="permissionModel"
+          :rules="rules"
           label-width="80px"
           label-position="right"
         >
-          <el-form-item label="上级菜单">
+          <el-form-item label="上级功能">
             <TreeSelector
               v-model:value="permissionModel.parentId"
-              placeholder="请选择上级菜单"
+              placeholder="请选择上级功能"
               :data="dataList"
               :dataFields="{
-                label: 'menuName',
-                value: 'menuUrl',
+                label: 'name',
+                value: 'id',
                 children: 'children',
               }"
             />
           </el-form-item>
           <el-form-item label="功能编码" prop="code">
-            <el-input v-model="permissionModel.code" placeholder="请输入功能编码" />
+            <el-input
+              v-model="permissionModel.code"
+              placeholder="请输入功能编码"
+            />
           </el-form-item>
           <el-form-item label="功能名称" prop="name">
-            <el-input v-model="permissionModel.name" placeholder="请输入功能名称" />
+            <el-input
+              v-model="permissionModel.name"
+              placeholder="请输入功能名称"
+            />
+          </el-form-item>
+          <el-form-item label="功能类型" prop="type">
+            <el-radio-group v-model="permissionModel.type">
+              <el-radio
+                v-for="(item, name) in PermissionType"
+                v-bind:key="name"
+                :label="item.id"
+                >{{ item.desc }}</el-radio
+              >
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="功能地址" prop="path">
-            <el-input v-model="permissionModel.path" placeholder="请输入功能地址">
+            <el-input
+              v-model="permissionModel.path"
+              placeholder="请输入功能地址"
+            >
             </el-input>
           </el-form-item>
           <el-form-item label="外链地址">
-            <el-input v-model="permissionModel.url" placeholder="请输入外链地址">
+            <el-input
+              v-model="permissionModel.url"
+              placeholder="请输入外链地址"
+            >
             </el-input>
+          </el-form-item>
+          <el-form-item label="排序值" prop="order">
+            <el-input-number
+              v-model="permissionModel.order"
+              placeholder="请输入排序值"
+              :max="99"
+              :min="0"
+            />
           </el-form-item>
           <el-form-item label="badge提示">
             <el-radio-group v-model="permissionModel.badgeType" size="small">
-              <el-radio-button label="">无</el-radio-button>
-              <el-radio-button label="dot">圆点</el-radio-button>
-              <el-radio-button label="new">new</el-radio-button>
-              <el-radio-button label="number">数字</el-radio-button>
+              <el-radio-button
+                v-for="(item, name) in BadgeType"
+                v-bind:key="name"
+                :label="item.id"
+                >{{ item.desc }}</el-radio-button
+              >
             </el-radio-group>
             <el-input-number
               v-model="permissionModel.badge"
-              v-show="permissionModel.badgeType === 'number'"
+              v-show="permissionModel.badgeType === BadgeType['NUMBER'].id"
               class="margin-left-sm"
               :max="99"
               :min="1"
             />
           </el-form-item>
-          <el-form-item label="菜单图标">
+          <el-form-item label="功能图标">
             <IconSelector v-model:value="permissionModel.icon" />
           </el-form-item>
           <el-form-item label="是否缓存">
@@ -181,52 +216,69 @@ import type { DialogType } from "@/components/types";
 import { onMounted, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { usePost, useDataTable } from "@/hooks";
-import { getMenuList } from "@/api/url";
-import { save } from '@/api/admin/Permission.api';
+import {
+  listPermissionTree,
+  insertPermission,
+  updatePermission,
+  deletePermissionById,
+} from "@/api/admin/Permission.api";
+import { BadgeType, PermissionType } from "@/api/constant";
 import { Permission } from "@/api/models";
 import { assign } from "lodash";
 
 const DEFAULT_PERMISSION = {
   id: null,
   parentId: -1,
-  code: '',
-  name: '',
-  icon: '',
-  path: '',
-  url: '',
-  badgeType: 'none',
-  badge: '',
+  code: "",
+  name: "",
+  icon: "",
+  path: "",
+  url: "",
+  badgeType: BadgeType["NONE"].id,
+  badge: "",
   isSingle: false,
   hidden: false,
   affix: false,
   cacheable: false,
-  description: '',
+  description: "",
   enabled: true,
+  order: 99,
+  type: PermissionType["NONE"].id,
 };
 
+const rules = {
+  parentId: [],
+  code: [
+    { required: true, message: "请输入功能编码", trigger: "blur" },
+    {
+      pattern: "^[a-zA-Z0-9_]+$",
+      message: "功能编码由数字、字母及下划线组成",
+      trigger: "blur",
+    },
+  ],
+};
+
+const permissionForm = ref();
 const permissionModel = reactive<Permission>(assign({}, DEFAULT_PERMISSION));
 
 const { tableLoading, tableConfig, dataList, handleSuccess } = useDataTable();
 const disableLoad = ref(false);
 const dialogRef = ref<DialogType>();
-const menuList = ref([]);
-const post = usePost();
+
 function doRefresh() {
-  post({
-    url: getMenuList,
-    data: {},
-  })
-    .then(handleSuccess)
-    .catch(console.log);
+  listPermissionTree().then(handleSuccess);
 }
 
 function onAddItem() {
   assign(permissionModel, DEFAULT_PERMISSION);
   dialogRef.value?.show(() => {
-    save(permissionModel)
-    .then(({ data }) => {
-      assign(permissionModel, data);
-      dialogRef.value?.close();
+    permissionForm.value.validate((valid: boolean) => {
+      if (valid) {
+        insertPermission(permissionModel).then(() => {
+          doRefresh();
+          dialogRef.value?.close();
+        });
+      }
     });
   });
 }
@@ -234,17 +286,23 @@ function onAddItem() {
 function onUpdateItem(item: any) {
   assign(permissionModel, DEFAULT_PERMISSION, item);
   dialogRef.value?.show(() => {
-    ElMessageBox.confirm(
-      "模拟数据修改成功，参数为：" + JSON.stringify(permissionModel)
-    );
-    dialogRef.value?.close();
+    permissionForm.value.validate((valid: boolean) => {
+      if (valid) {
+        updatePermission(permissionModel).then(({ data }) => {
+          assign(item, data);
+          dialogRef.value?.close();
+        });
+      }
+    });
   });
 }
+
 function onDeleteItem(item: any) {
-  ElMessageBox.confirm("是否要删除此数据？").then(() => {
-    ElMessageBox.confirm("模拟删除成功，参数为：" + JSON.stringify(item));
+  ElMessageBox.confirm(`确定删除编码为[${item.code}]的功能权限？`).then(() => {
+    deletePermissionById(item.id).then(() => doRefresh());
   });
 }
+
 onMounted(doRefresh);
 </script>
 <style>

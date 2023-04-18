@@ -6,6 +6,9 @@ export const getPermissionById = (id: number) => get({ url: '/api/admin/permisio
 /** 获取权限列表 */
 export const listPermission = (data: any) => get({ url: '/api/admin/permission/listPermission', data });
 
+/** 查询权限树 */
+export const listPermissionTree = () => get({ url: '/api/admin/permission/listPermissionTree' });
+
 /** 新增功能权限 */
 export const insertPermission = (data: any) => post({ url: '/api/admin/permission/insertPermission', data });
 
@@ -13,7 +16,7 @@ export const insertPermission = (data: any) => post({ url: '/api/admin/permissio
 export const updatePermission = (data: any) => post({ url: '/api/admin/permission/updatePermission', data });
 
 /** 根据id删除权限 */
-export const deletePermissionById = (id: number) => post({ url: '/api/admin/permisison/deletePermissionById', data: { id } });
+export const deletePermissionById = (id: number) => post({ url: '/api/admin/permission/deletePermissionById', data: { id } });
 
 /** 批量删除权限 */
-export const batchDeletePermission = (ids: number[]) => post({ url: '/api/admin/permisin/batchDeletePermission', data: ids }); 
+export const batchDeletePermission = (ids: number[]) => post({ url: '/api/admin/permission/batchDeletePermission', data: { ids } }); 

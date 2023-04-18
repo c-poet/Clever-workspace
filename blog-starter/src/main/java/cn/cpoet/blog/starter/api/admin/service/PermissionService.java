@@ -3,6 +3,8 @@ package cn.cpoet.blog.starter.api.admin.service;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Permission;
 import cn.cpoet.blog.starter.api.admin.param.PermissionParam;
+import cn.cpoet.blog.starter.api.admin.vo.PermissionNodeVO;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -19,7 +21,20 @@ public interface PermissionService {
      */
     Mono<Permission> getPermissionById(Long id);
 
+    /**
+     * 分页查询权限列表
+     *
+     * @param permissionParam 查询参数
+     * @return 权限列表
+     */
     Mono<PageVO<Permission>> listPermission(PermissionParam permissionParam);
+
+    /**
+     * 查询权限树形
+     *
+     * @return 权限树形
+     */
+    Flux<PermissionNodeVO> listPermissionTree();
 
     /**
      * 新增权限信息

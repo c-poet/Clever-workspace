@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
-import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
@@ -16,7 +15,6 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.convert.NoOpDbRefResolver;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
-import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Collections;
@@ -37,17 +35,6 @@ public class MongoConfig {
     public MongoTemplate monoTemplate(ReactiveMongoDatabaseFactory databaseFactory,
                                       MappingMongoConverter mongoConverter) {
         return new MongoTemplate(databaseFactory, mongoConverter);
-    }
-
-    /**
-     * 事务配置
-     *
-     * @param mongoDatabaseFactory MongoDb数据库工厂
-     * @return 事务管理器
-     */
-    @Bean
-    public TransactionManager transactionManager(ReactiveMongoDatabaseFactory mongoDatabaseFactory) {
-        return new ReactiveMongoTransactionManager(mongoDatabaseFactory);
     }
 
     @Bean

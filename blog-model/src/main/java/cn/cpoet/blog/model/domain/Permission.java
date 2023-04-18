@@ -1,5 +1,6 @@
 package cn.cpoet.blog.model.domain;
 
+import cn.cpoet.blog.api.annotation.Editable;
 import cn.cpoet.blog.api.validation.Insert;
 import cn.cpoet.blog.api.validation.Update;
 import cn.cpoet.blog.model.base.BaseEntity;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * @author CPoet
@@ -20,6 +22,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Schema(title = "权限/资源")
 @Document("blog_permission")
+@Editable
 @FieldNameConstants
 public class Permission extends BaseEntity {
 
@@ -30,6 +33,7 @@ public class Permission extends BaseEntity {
     @Indexed(unique = true)
     @Schema(title = "权限编码")
     @NotEmpty(message = "权限编码不能为空", groups = {Insert.class, Update.class})
+    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "功能编码由数字、字母及下划线组成")
     private String code;
 
     @Schema(title = "权限名称")
@@ -46,7 +50,7 @@ public class Permission extends BaseEntity {
     private String url;
 
     @Schema(title = "徽标类型")
-    @NotEmpty(message = "徽标类型不能为空", groups = {Insert.class, Update.class})
+    @NotNull(message = "徽标类型不能为空", groups = {Insert.class, Update.class})
     private BadgeType badgeType;
 
     @Schema(title = "徽标")
@@ -76,6 +80,7 @@ public class Permission extends BaseEntity {
     private String description;
 
     @Schema(title = "是否内置")
+    @Editable(value = false)
     private Boolean buildIn;
 
     @Schema(title = "是否启用")

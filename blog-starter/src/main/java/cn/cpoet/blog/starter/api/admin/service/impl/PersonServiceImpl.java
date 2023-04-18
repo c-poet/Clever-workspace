@@ -6,13 +6,10 @@ import cn.cpoet.blog.core.service.PermissionService;
 import cn.cpoet.blog.model.constant.PermissionAclType;
 import cn.cpoet.blog.model.constant.PermissionType;
 import cn.cpoet.blog.model.domain.PermissionAcl;
-import cn.cpoet.blog.repo.repository.PermissionAclRepository;
-import cn.cpoet.blog.repo.repository.PermissionRepository;
 import cn.cpoet.blog.starter.api.admin.service.PersonService;
 import cn.cpoet.blog.starter.api.admin.vo.MenuNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
@@ -41,16 +38,16 @@ public class PersonServiceImpl implements PersonService {
                 mapper.computeIfAbsent(menu.getParentId(), k -> new ArrayList<>()).add(menu);
                 return mapper;
             })
-            .flatMapIterable(mapper -> {
-                for (ArrayList<MenuNodeVO> children : mapper.values()) {
+            .flatMapIterable(mapping -> {
+                for (ArrayList<MenuNodeVO> children : mapping.values()) {
                     for (MenuNodeVO child : children) {
-                        ArrayList<MenuNodeVO> curChildren = mapper.get(child.getId());
+                        ArrayList<MenuNodeVO> curChildren = mapping.get(child.getId());
                         if (!CollectionUtils.isEmpty(curChildren)) {
                             child.setChildren(curChildren);
                         }
                     }
                 }
-                return mapper.get(SystemConst.DEFAULT_PID);
+                return mapping.get(SystemConst.DEFAULT_PID);
             });
     }
 }

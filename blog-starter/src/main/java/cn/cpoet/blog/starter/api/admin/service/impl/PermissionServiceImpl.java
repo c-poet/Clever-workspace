@@ -1,21 +1,28 @@
 package cn.cpoet.blog.starter.api.admin.service.impl;
 
+import cn.cpoet.blog.api.constant.SystemConst;
 import cn.cpoet.blog.core.exception.BusException;
 import cn.cpoet.blog.core.mongo.MongoTemplate;
+import cn.cpoet.blog.core.util.EditableUtil;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Permission;
 import cn.cpoet.blog.repo.repository.PermissionRepository;
 import cn.cpoet.blog.starter.api.admin.param.PermissionParam;
 import cn.cpoet.blog.starter.api.admin.service.PermissionService;
+import cn.cpoet.blog.starter.api.admin.vo.PermissionNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,20 +54,41 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    public Flux<PermissionNodeVO> listPermissionTree() {
+        return permissionRepository.findAll()
+            .map(PermissionNodeVO::of)
+            .reduceWith(() -> new HashMap<Long, ArrayList<PermissionNodeVO>>(1 << 4), (mapper, permission) -> {
+                mapper.computeIfAbsent(permission.getParentId(), k -> new ArrayList<>()).add(permission);
+                return mapper;
+            })
+            .flatMapIterable(mapping -> {
+                for (ArrayList<PermissionNodeVO> children : mapping.values()) {
+                    for (PermissionNodeVO child : children) {
+                        ArrayList<PermissionNodeVO> curChildren = mapping.get(child.getId());
+                        if (!CollectionUtils.isEmpty(curChildren)) {
+                            child.setChildren(curChildren);
+                        }
+                    }
+                }
+                return mapping.get(SystemConst.DEFAULT_PID);
+            });
+    }
+
+    @Override
     public Mono<Permission> insertPermission(Permission permission) {
         permission.setBuildIn(Boolean.FALSE);
         return permissionRepository.insert(permission);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Mono<Permission> updatePermission(Permission permission) {
-        return permissionRepository.save(permission);
+        return permissionRepository
+            .findById(permission.getId())
+            .doOnSuccess(old -> BeanUtils.copyProperties(permission, old, EditableUtil.getIgnoreFieldByObj(old)))
+            .flatMap(permissionRepository::save);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Mono<Void> deletePermissionById(Long id) {
         return permissionRepository
             .findById(id)
@@ -73,7 +101,6 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Mono<Void> deletePermissionByIds(List<Long> ids) {
         return permissionRepository
             .findAllById(ids)

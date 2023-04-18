@@ -1,6 +1,5 @@
 package cn.cpoet.blog.core.support;
 
-import cn.cpoet.blog.api.annotation.EnumAppear;
 import cn.cpoet.blog.api.annotation.EnumId;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -8,7 +7,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -55,22 +55,6 @@ public class EnumHandler {
         return clazz != null && clazz.isEnum() && getEnumMeta((Class) clazz) != null;
     }
 
-    public <T extends Enum<T>> Map<String, Object> getEnumAppear(Enum<T> enumObj) {
-        final EnumMeta enumMeta = getEnumMeta(enumObj.getClass());
-        try {
-            Map<String, Object> enumAppear = new HashMap<>(enumMeta.getAppearMap().size() + 1);
-            final Object idValue = enumMeta.getIdMethod().invoke(enumObj);
-            enumAppear.put(enumMeta.getIdName(), idValue);
-            for (Map.Entry<String, Method> entry : enumMeta.getAppearMap().entrySet()) {
-                final Object appearValue = entry.getValue().invoke(enumObj);
-                enumAppear.put(entry.getKey(), appearValue);
-            }
-            return enumAppear;
-        } catch (Exception e) {
-            throw new IllegalStateException("获取枚举信息失败", e);
-        }
-    }
-
     public <T extends Enum<T>> T enumOfId(Class<T> tClass, Object id) {
         Map<Object, Enum> objectEnumMap = ENUM_CACHE.get(tClass);
         if (CollectionUtils.isEmpty(objectEnumMap)) {
@@ -105,16 +89,11 @@ public class EnumHandler {
         final Field[] fields = tClass.getDeclaredFields();
         if (fields.length > 0) {
             Field enumIdField = null;
-            List<Field> appearFields = new ArrayList<>();
             for (Field field : fields) {
                 final EnumId enumId = field.getDeclaredAnnotation(EnumId.class);
                 if (enumId != null) {
                     enumIdField = field;
-                } else {
-                    final EnumAppear enumAppear = field.getDeclaredAnnotation(EnumAppear.class);
-                    if (enumAppear != null) {
-                        appearFields.add(field);
-                    }
+                    break;
                 }
             }
             if (enumIdField != null) {
@@ -125,17 +104,6 @@ public class EnumHandler {
                 Method fieldGetMethod = findFieldGetMethod(tClass, idName);
                 enumMeta.setIdClass(getPackageClass(enumIdField.getType()));
                 enumMeta.setIdMethod(fieldGetMethod);
-                // 其他展示的字段
-                if (!CollectionUtils.isEmpty(appearFields)) {
-                    Map<String, Method> appearMap = new HashMap<>(appearFields.size());
-                    for (Field appearField : appearFields) {
-                        final String fieldName = appearField.getName();
-                        appearMap.put(fieldName, findFieldGetMethod(tClass, fieldName));
-                    }
-                    enumMeta.setAppearMap(appearMap);
-                } else {
-                    enumMeta.setAppearMap(Collections.emptyMap());
-                }
             }
         }
         if (enumMeta != null) {
@@ -174,7 +142,5 @@ public class EnumHandler {
         private String idName;
 
         private Method idMethod;
-
-        private Map<String, Method> appearMap;
     }
 }

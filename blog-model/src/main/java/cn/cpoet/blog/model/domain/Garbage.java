@@ -26,8 +26,5 @@ public class Garbage extends BaseRcEntity {
     private String collectionName;
 
     @Schema(title = "文档内容")
-    private GenMap entity;
-
-    @Schema(title = "实体类型")
-    private String entityClass;
+    private GenMap document;
 }

@@ -5,10 +5,7 @@ import cn.cpoet.blog.core.support.EnumHandler;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
@@ -23,6 +20,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -102,24 +100,20 @@ public class JacksonConvertersConfig {
             builder.serializerByType(Enum.class, new JsonSerializer<Enum>() {
                 @Override
                 public void serialize(Enum value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-                    gen.writeObject(enumHandler.getEnumAppear(value));
+                    gen.writeObject(enumHandler.getId(value));
                 }
             }).deserializerByType(Enum.class, new JsonDeserializer<Object>() {
                 @Override
                 public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
-                    return null;
-                }
-            });
-            // bool值处理
-            builder.serializerByType(Boolean.class, new JsonSerializer<Boolean>() {
-                @Override
-                public void serialize(Boolean value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-                    gen.writeNumber(Boolean.TRUE.equals(value) ? SystemConst.BOOL_TRUE : SystemConst.BOOL_FALSE);
-                }
-            }).deserializerByType(Boolean.class, new JsonDeserializer<Object>() {
-                @Override
-                public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
-                    return null;
+                    try {
+                        Object entity = p.getCurrentValue();
+                        Field field = entity.getClass().getDeclaredField(p.getCurrentName());
+                        Class clazz = field.getType();
+                        Class idType = enumHandler.getIdType(clazz);
+                        return enumHandler.enumOfId(clazz, p.readValueAs(idType));
+                    } catch (Exception e) {
+                        throw new JsonMappingException("反序列化失败", e);
+                    }
                 }
             });
         };

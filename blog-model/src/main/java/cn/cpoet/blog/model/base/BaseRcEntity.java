@@ -1,5 +1,6 @@
 package cn.cpoet.blog.model.base;
 
+import cn.cpoet.blog.api.annotation.Editable;
 import cn.cpoet.blog.api.validation.Delete;
 import cn.cpoet.blog.api.validation.Insert;
 import cn.cpoet.blog.api.validation.Update;
@@ -30,15 +31,18 @@ public abstract class BaseRcEntity implements Entity<Long> {
     @MongoId(FieldType.INT64)
     @Null(message = "不允许的ID", groups = {Insert.class})
     @NotNull(message = "ID不能为空", groups = {Update.class, Delete.class})
+    @Editable(value = false)
     private Long id;
 
     @Schema(title = "创建用户")
     @JsonIgnoreProperties(allowGetters = true)
     @CreatedBy
+    @Editable(value = false)
     private Long createUser;
 
     @Schema(title = "创建时间")
     @JsonIgnoreProperties(allowGetters = true)
     @CreatedDate
+    @Editable(value = false)
     private LocalDateTime createTime;
 }

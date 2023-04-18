@@ -35,7 +35,7 @@ function http<T = any>({
   }
   const failHandler = (error: Response<Error>) => {
     afterRequest && afterRequest()
-    throw new Error(error.message || '请求失败，未知异常')
+    throw new Error(error.data.message || '请求失败，未知异常')
   }
   beforeRequest && beforeRequest()
   method = method || 'GET'

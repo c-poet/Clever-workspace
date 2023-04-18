@@ -8,11 +8,13 @@ import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Permission;
 import cn.cpoet.blog.starter.api.admin.param.PermissionParam;
 import cn.cpoet.blog.starter.api.admin.service.PermissionService;
+import cn.cpoet.blog.starter.api.admin.vo.PermissionNodeVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -36,6 +38,12 @@ public class PermissionController {
     @Operation(summary = "查询权限列表")
     public Mono<PageVO<Permission>> listPermission(@Validated PermissionParam permissionParam) {
         return permissionService.listPermission(permissionParam);
+    }
+
+    @GetMapping("/listPermissionTree")
+    @Operation(summary = "查询权限树")
+    public Flux<PermissionNodeVO> listPermissionTree() {
+        return permissionService.listPermissionTree();
     }
 
     @PostMapping("/insertPermission")

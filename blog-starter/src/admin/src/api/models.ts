@@ -7,7 +7,7 @@ export interface Permission {
     icon: string;
     path: string;
     url: string;
-    badgeType: string;
+    badgeType: number;
     badge: string;
     isSingle: boolean;
     hidden: boolean;
@@ -15,4 +15,6 @@ export interface Permission {
     cacheable: boolean;
     description: string;
     enabled: boolean;
+    order: number;
+    type: number
 }

@@ -1,6 +1,5 @@
 package cn.cpoet.blog.auth.constant;
 
-import cn.cpoet.blog.api.annotation.EnumAppear;
 import cn.cpoet.blog.api.annotation.EnumId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +27,7 @@ public enum AclType {
     @EnumId
     private final int id;
 
-    @EnumAppear
     private final String code;
 
-    @EnumAppear
     private final String desc;
 }
