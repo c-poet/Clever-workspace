@@ -1,5 +1,6 @@
 package cn.cpoet.blog.model.constant;
 
+import cn.cpoet.blog.api.annotation.Dict;
 import cn.cpoet.blog.api.annotation.EnumId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * @author CPoet
  */
+@Dict
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
