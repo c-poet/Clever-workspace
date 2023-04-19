@@ -3,6 +3,8 @@ package cn.cpoet.blog.starter.api.admin.service;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Group;
 import cn.cpoet.blog.starter.api.admin.param.GroupParam;
+import cn.cpoet.blog.starter.api.admin.vo.GroupNodeVO;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -26,6 +28,13 @@ public interface GroupService {
      * @return 查询结果
      */
     Mono<PageVO<Group>> listGroup(GroupParam groupParam);
+
+    /**
+     * 查询用户分组树
+     *
+     * @return 用户分组树
+     */
+    Flux<GroupNodeVO> listGroupTree();
 
     /**
      * 新增分组

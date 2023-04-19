@@ -8,10 +8,12 @@ import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Group;
 import cn.cpoet.blog.starter.api.admin.param.GroupParam;
 import cn.cpoet.blog.starter.api.admin.service.GroupService;
+import cn.cpoet.blog.starter.api.admin.vo.GroupNodeVO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -33,6 +35,12 @@ public class GroupController {
     @Operation(summary = "分页查询分组")
     public Mono<PageVO<Group>> listGroup(@RequestBody @Validated GroupParam groupParam) {
         return groupService.listGroup(groupParam);
+    }
+
+    @GetMapping("/listGroupTree")
+    @Operation(summary = "查询分组树")
+    public Flux<GroupNodeVO> listGroupTree() {
+        return groupService.listGroupTree();
     }
 
     @PostMapping("/insertGroup")

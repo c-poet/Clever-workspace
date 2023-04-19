@@ -35,6 +35,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     private final MongoTemplate mongoTemplate;
     private final PermissionRepository permissionRepository;
+    private final cn.cpoet.blog.core.service.PermissionService permissionService;
 
     @Override
     public Mono<Permission> getPermissionById(Long id) {
@@ -55,7 +56,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Flux<PermissionNodeVO> listPermissionTree() {
-        return permissionRepository.findAll()
+        return permissionService.listByOrder()
             .map(PermissionNodeVO::of)
             .reduceWith(() -> new HashMap<Long, ArrayList<PermissionNodeVO>>(1 << 4), (mapper, permission) -> {
                 mapper.computeIfAbsent(permission.getParentId(), k -> new ArrayList<>()).add(permission);

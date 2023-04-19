@@ -9,6 +9,13 @@ import reactor.core.publisher.Flux;
  */
 public interface PermissionService {
     /**
+     * 获取所有功能权限并排序
+     *
+     * @return 功能权限列表
+     */
+    Flux<Permission> listByOrder();
+
+    /**
      * 获取用户权限列表
      *
      * @param userId         用户id

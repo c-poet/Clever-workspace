@@ -29,9 +29,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Flux<MenuNodeVO> listMenu(Subject subject) {
-        PermissionAcl permissionAcl = new PermissionAcl();
-        permissionAcl.setItemId(subject.getId());
-        permissionAcl.setType(PermissionAclType.PERSON_PERMISSION);
         return permissionService.listByPerson(subject.getId(), subject.getGroupId(), PermissionType.MENU)
             .map(MenuNodeVO::of)
             .reduceWith(() -> new HashMap<Long, ArrayList<MenuNodeVO>>(1 << 4), (mapper, menu) -> {

@@ -29,6 +29,11 @@ public class PermissionServiceImpl implements PermissionService {
     private final PermissionAclService permissionAclService;
 
     @Override
+    public Flux<Permission> listByOrder() {
+        return permissionRepository.findAll(Sort.by(Permission.Fields.order));
+    }
+
+    @Override
     public Flux<Permission> listByPerson(Long userId, Long groupId, PermissionType permissionType) {
         return permissionAclService
             .listByPerson(userId, groupId)
