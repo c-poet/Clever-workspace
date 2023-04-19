@@ -1,6 +1,5 @@
 package cn.cpoet.blog.core.support;
 
-import cn.cpoet.blog.api.constant.SystemConst;
 import cn.cpoet.blog.core.module.Module;
 import cn.cpoet.blog.core.module.ModuleHolder;
 import cn.cpoet.blog.core.module.Rewrite;

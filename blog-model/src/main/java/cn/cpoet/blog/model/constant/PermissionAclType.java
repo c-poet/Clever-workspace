@@ -3,7 +3,6 @@ package cn.cpoet.blog.model.constant;
 import cn.cpoet.blog.api.annotation.EnumId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
 
 /**
  * 资源访问控制类型
@@ -11,7 +10,6 @@ import lombok.experimental.Accessors;
  * @author CPoet
  */
 @Getter
-@Accessors(fluent = true)
 @RequiredArgsConstructor
 public enum PermissionAclType {
     /**
