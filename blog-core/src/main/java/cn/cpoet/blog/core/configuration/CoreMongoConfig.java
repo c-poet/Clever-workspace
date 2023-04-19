@@ -15,7 +15,6 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.convert.NoOpDbRefResolver;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Collections;
 
@@ -25,7 +24,6 @@ import java.util.Collections;
  * @author CPoet
  */
 @Configuration
-@EnableTransactionManagement
 @EnableReactiveMongoAuditing
 @EnableReactiveMongoRepositories("cn.cpoet.blog.repo.repository")
 public class CoreMongoConfig {
