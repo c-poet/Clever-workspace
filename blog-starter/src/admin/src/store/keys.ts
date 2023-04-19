@@ -1,4 +1,6 @@
 // 用户信息
-export const USER_INFO_KEY = "#user-info";
+export const USER_INFO_KEY = '#user-info';
 // 用户token
-export const USER_TOKEN_KEY = "#user_token";
+export const USER_TOKEN_KEY = '#user_token';
+// 字典存储前缀
+export const DICT_PREFIX_KEY = '#dicts';
