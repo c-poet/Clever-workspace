@@ -144,7 +144,7 @@
           <el-form-item label="功能类型" prop="type">
             <el-radio-group v-model="permissionModel.type">
               <el-radio
-                v-for="(item, name) in PermissionType"
+                v-for="(item, name) in permissionTypes"
                 v-bind:key="name"
                 :label="item.id"
                 >{{ item.desc }}</el-radio
@@ -176,7 +176,7 @@
           <el-form-item label="badge提示">
             <el-radio-group v-model="permissionModel.badgeType" size="small">
               <el-radio-button
-                v-for="(item, name) in BadgeType"
+                v-for="(item, name) in badgeTypes"
                 v-bind:key="name"
                 :label="item.id"
                 >{{ item.desc }}</el-radio-button
@@ -212,19 +212,20 @@
 </template>
 
 <script lang="ts" setup>
-import type { DialogType } from "@/components/types";
-import { onMounted, reactive, ref } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { usePost, useDataTable } from "@/hooks";
 import {
-  listPermissionTree,
-  insertPermission,
-  updatePermission,
   deletePermissionById,
+  insertPermission,
+  listPermissionTree,
+  updatePermission,
 } from "@/api/admin/Permission.api";
-import { BadgeType, PermissionType } from "@/api/constant";
-import { Permission } from "@/api/models";
+import { BADGE_TYPE, PERMISSION_TYPE } from "@/api/dicts";
+import { Dict, Permission } from "@/api/models";
+import type { DialogType } from "@/components/types";
+import { useDataTable } from "@/hooks";
+import useDictStore from "@/store/modules/dict";
+import { ElMessageBox } from "element-plus";
 import { assign } from "lodash";
+import { onMounted, reactive, ref } from "vue";
 
 const DEFAULT_PERMISSION = {
   id: null,
@@ -234,7 +235,7 @@ const DEFAULT_PERMISSION = {
   icon: "",
   path: "",
   url: "",
-  badgeType: BadgeType["NONE"].id,
+  badgeType: "",
   badge: "",
   isSingle: false,
   hidden: false,
@@ -243,7 +244,7 @@ const DEFAULT_PERMISSION = {
   description: "",
   enabled: true,
   order: 99,
-  type: PermissionType["NONE"].id,
+  type: "",
 };
 
 const rules = {
@@ -258,8 +259,14 @@ const rules = {
   ],
 };
 
+const dictStore = useDictStore();
 const permissionForm = ref();
 const permissionModel = reactive<Permission>(assign({}, DEFAULT_PERMISSION));
+const permissionTypes = reactive<Dict[]>([]);
+const badgeTypes = reactive<Dict[]>([]);
+
+dictStore.getDict(PERMISSION_TYPE).then(data => permissionTypes.push(...data));
+dictStore.getDict(BADGE_TYPE).then(data => badgeTypes.push(...data));
 
 const { tableLoading, tableConfig, dataList, handleSuccess } = useDataTable();
 const disableLoad = ref(false);

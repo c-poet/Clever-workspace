@@ -1,4 +1,12 @@
-/** 功能 */
+/** 字典 */
+export interface Dict {
+  code: string;
+  label: string;
+  value: string;
+  desc: string;
+}
+
+/** 功能权限 */
 export interface Permission {
     id: number | null;
     parentId: number;
@@ -7,7 +15,8 @@ export interface Permission {
     icon: string;
     path: string;
     url: string;
-    badgeType: number;
+    type: string
+    badgeType: string;
     badge: string;
     isSingle: boolean;
     hidden: boolean;
@@ -16,5 +25,4 @@ export interface Permission {
     description: string;
     enabled: boolean;
     order: number;
-    type: number
 }

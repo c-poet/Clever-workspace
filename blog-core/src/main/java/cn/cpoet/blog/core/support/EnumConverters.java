@@ -31,8 +31,8 @@ public class EnumConverters {
     static {
         ENUM_CONVERTER_FACTORY = new Obj2EnumConverterFactory();
         CUSTOM_ENUM_CONVERTERS = new ArrayList<>();
-        CUSTOM_ENUM_CONVERTERS.add(new Enum2IntegerConverter());
         CUSTOM_ENUM_CONVERTERS.add(new Enum2StrConverter());
+        CUSTOM_ENUM_CONVERTERS.add(new Enum2IntegerConverter());
         CUSTOM_ENUM_CONVERTERS.add(new FakeEnumConverterImpl());
     }
 

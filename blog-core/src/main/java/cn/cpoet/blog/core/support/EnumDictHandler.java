@@ -65,7 +65,6 @@ public class EnumDictHandler implements InitializingBean {
                     }
                 }
             }
-            System.out.println(PACKAGE_PREFIX);
         } catch (Exception e) {
             log.warn("扫描枚举字典失败：{}", e.getMessage(), e);
         }
@@ -83,6 +82,7 @@ public class EnumDictHandler implements InitializingBean {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     private void genEnumDict(Class<?> clazz) {
         Object[] constants = clazz.getEnumConstants();
         if (constants.length > 0) {
@@ -104,7 +104,7 @@ public class EnumDictHandler implements InitializingBean {
     private static class DictImpl implements Dict {
         private final String code;
         private final String label;
-        private final String value;
+        private final Object value;
         private final String desc;
 
         public DictImpl(Dict dict) {

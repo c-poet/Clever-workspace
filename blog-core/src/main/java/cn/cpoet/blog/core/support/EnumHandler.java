@@ -1,9 +1,11 @@
 package cn.cpoet.blog.core.support;
 
 import cn.cpoet.blog.api.annotation.EnumId;
+import cn.cpoet.blog.api.core.Dict;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -67,14 +69,14 @@ public class EnumHandler {
                 objectEnumMap = new HashMap<>(enumConstants.length);
                 for (T enumConstant : enumConstants) {
                     final Object enumId = enumMeta.getIdMethod().invoke(enumConstant);
-                    objectEnumMap.put(enumId, enumConstant);
+                    objectEnumMap.put(String.valueOf(enumId), enumConstant);
                 }
                 ENUM_CACHE.put(tClass, objectEnumMap);
             } catch (Exception e) {
                 throw new IllegalStateException("读取枚举id值失败", e);
             }
         }
-        final Enum anEnum = objectEnumMap.get(id);
+        final Enum anEnum = objectEnumMap.get(String.valueOf(id));
         if (anEnum == null) {
             throw new IllegalStateException("未找到Id值为" + id + "的枚举");
         }
@@ -86,24 +88,31 @@ public class EnumHandler {
         if (enumMeta != null) {
             return enumMeta;
         }
-        final Field[] fields = tClass.getDeclaredFields();
-        if (fields.length > 0) {
-            Field enumIdField = null;
-            for (Field field : fields) {
-                final EnumId enumId = field.getDeclaredAnnotation(EnumId.class);
-                if (enumId != null) {
-                    enumIdField = field;
-                    break;
+        // 判断枚举是否实现了字典接口
+        if (Dict.class.isAssignableFrom(tClass)) {
+            enumMeta = new EnumMeta();
+            Method getMethod = ReflectionUtils.findMethod(tClass, "getValue");
+            enumMeta.setIdMethod(getMethod);
+        } else {
+            final Field[] fields = tClass.getDeclaredFields();
+            if (fields.length > 0) {
+                Field enumIdField = null;
+                for (Field field : fields) {
+                    final EnumId enumId = field.getDeclaredAnnotation(EnumId.class);
+                    if (enumId != null) {
+                        enumIdField = field;
+                        break;
+                    }
                 }
-            }
-            if (enumIdField != null) {
-                enumMeta = new EnumMeta();
-                final String idName = enumIdField.getName();
-                enumMeta.setIdName(idName);
-                // 获取get方法
-                Method fieldGetMethod = findFieldGetMethod(tClass, idName);
-                enumMeta.setIdClass(getPackageClass(enumIdField.getType()));
-                enumMeta.setIdMethod(fieldGetMethod);
+                if (enumIdField != null) {
+                    enumMeta = new EnumMeta();
+                    final String idName = enumIdField.getName();
+                    enumMeta.setIdName(idName);
+                    // 获取get方法
+                    Method fieldGetMethod = findFieldGetMethod(tClass, idName);
+                    enumMeta.setIdClass(getPackageClass(enumIdField.getType()));
+                    enumMeta.setIdMethod(fieldGetMethod);
+                }
             }
         }
         if (enumMeta == null) {

@@ -11,7 +11,9 @@ public interface Dict {
      *
      * @return 字典编码
      */
-    String getCode();
+    default String getCode() {
+        return String.valueOf(getValue());
+    }
 
     /**
      * 字典名称
@@ -25,9 +27,7 @@ public interface Dict {
      *
      * @return 字典值
      */
-    default String getValue() {
-        return getCode();
-    }
+    Object getValue();
 
     /**
      * 字典描述
