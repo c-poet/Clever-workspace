@@ -28,7 +28,7 @@ import java.util.Collections;
 @EnableTransactionManagement
 @EnableReactiveMongoAuditing
 @EnableReactiveMongoRepositories("cn.cpoet.blog.repo.repository")
-public class MongoConfig {
+public class CoreMongoConfig {
 
     @Primary
     @Bean({"reactiveMongoTemplate", "mongoTemplate"})
