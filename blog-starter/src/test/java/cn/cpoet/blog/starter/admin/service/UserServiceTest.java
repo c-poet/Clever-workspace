@@ -27,6 +27,7 @@ public class UserServiceTest {
         user.setName("CPoet");
         user.setUsername("cpoet");
         user.setEnabled(Boolean.TRUE);
+        user.setBuildIn(Boolean.TRUE);
         user.setSalt(UUIDUtil.random());
         user.setPassword(userPassCryptoStrategy.encode(user, "12345678"));
         userRepository.insert(user).subscribe(System.out::println);

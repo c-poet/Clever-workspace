@@ -184,7 +184,7 @@
             </el-radio-group>
             <el-input-number
               v-model="permissionModel.badge"
-              v-show="permissionModel.badgeType === BadgeType['NUMBER'].id"
+              v-show="permissionModel.badgeType === 4"
               class="margin-left-sm"
               :max="99"
               :min="1"
@@ -219,7 +219,7 @@ import {
   updatePermission,
 } from "@/api/admin/Permission.api";
 import { BADGE_TYPE, PERMISSION_TYPE } from "@/api/dicts";
-import { Dict, Permission } from "@/api/models";
+import { Permission } from "@/api/models";
 import type { DialogType } from "@/components/types";
 import { useDataTable } from "@/hooks";
 import useDictStore from "@/store/modules/dict";
@@ -235,7 +235,7 @@ const DEFAULT_PERMISSION = {
   icon: "",
   path: "",
   url: "",
-  badgeType: "",
+  badgeType: -1,
   badge: "",
   isSingle: false,
   hidden: false,
@@ -244,7 +244,7 @@ const DEFAULT_PERMISSION = {
   description: "",
   enabled: true,
   order: 99,
-  type: "",
+  type: -1,
 };
 
 const rules = {
@@ -262,11 +262,17 @@ const rules = {
 const dictStore = useDictStore();
 const permissionForm = ref();
 const permissionModel = reactive<Permission>(assign({}, DEFAULT_PERMISSION));
-const permissionTypes = reactive<Dict[]>([]);
-const badgeTypes = reactive<Dict[]>([]);
+const permissionTypes = reactive<any[]>([]);
+const badgeTypes = reactive<any[]>([]);
 
-dictStore.getDict(PERMISSION_TYPE).then(data => permissionTypes.push(...data));
-dictStore.getDict(BADGE_TYPE).then(data => badgeTypes.push(...data));
+dictStore.getDict(PERMISSION_TYPE).then(data => {
+  permissionTypes.push(...data);
+  DEFAULT_PERMISSION.type = permissionTypes[0].id;
+});
+dictStore.getDict(BADGE_TYPE).then(data => {
+  badgeTypes.push(...data);
+  DEFAULT_PERMISSION.badgeType = badgeTypes[0].id;
+});
 
 const { tableLoading, tableConfig, dataList, handleSuccess } = useDataTable();
 const disableLoad = ref(false);

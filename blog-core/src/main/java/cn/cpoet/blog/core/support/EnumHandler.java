@@ -1,16 +1,15 @@
 package cn.cpoet.blog.core.support;
 
+import cn.cpoet.blog.api.annotation.EnumAppear;
 import cn.cpoet.blog.api.annotation.EnumId;
-import cn.cpoet.blog.api.core.Dict;
+import cn.cpoet.blog.api.core.GenMap;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -28,7 +27,7 @@ public class EnumHandler {
      * 枚举id类型缓存
      */
     private final Map<Class<?>, EnumMeta> ENUM_ID_META_CACHE = new ConcurrentHashMap<>();
-    private final Map<Class<?>, Map<Object, Enum>> ENUM_CACHE = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Map<String, Enum>> ENUM_CACHE = new ConcurrentHashMap<>();
 
     static {
         TYPE_PACK_MAPPER.put(int.class, Integer.class);
@@ -57,8 +56,24 @@ public class EnumHandler {
         return clazz != null && clazz.isEnum() && getEnumMeta((Class) clazz) != EnumMeta.EMPTY;
     }
 
+    public <T extends Enum<T>> GenMap getEnumAppear(Enum<T> enumObj) {
+        final EnumMeta enumMeta = getEnumMeta(enumObj.getClass());
+        try {
+            GenMap enumAppear = new GenMap();
+            final Object idValue = enumMeta.getIdMethod().invoke(enumObj);
+            enumAppear.put(enumMeta.getIdName(), idValue);
+            for (Map.Entry<String, Method> entry : enumMeta.getAppearMap().entrySet()) {
+                final Object appearValue = entry.getValue().invoke(enumObj);
+                enumAppear.put(entry.getKey(), appearValue);
+            }
+            return enumAppear;
+        } catch (Exception e) {
+            throw new IllegalStateException("获取枚举信息失败", e);
+        }
+    }
+
     public <T extends Enum<T>> T enumOfId(Class<T> tClass, Object id) {
-        Map<Object, Enum> objectEnumMap = ENUM_CACHE.get(tClass);
+        Map<String, Enum> objectEnumMap = ENUM_CACHE.get(tClass);
         if (CollectionUtils.isEmpty(objectEnumMap)) {
             final EnumMeta enumMeta = getEnumMeta(tClass);
             final T[] enumConstants = tClass.getEnumConstants();
@@ -88,30 +103,38 @@ public class EnumHandler {
         if (enumMeta != null) {
             return enumMeta;
         }
-        // 判断枚举是否实现了字典接口
-        if (Dict.class.isAssignableFrom(tClass)) {
-            enumMeta = new EnumMeta();
-            Method getMethod = ReflectionUtils.findMethod(tClass, "getValue");
-            enumMeta.setIdMethod(getMethod);
-        } else {
-            final Field[] fields = tClass.getDeclaredFields();
-            if (fields.length > 0) {
-                Field enumIdField = null;
-                for (Field field : fields) {
-                    final EnumId enumId = field.getDeclaredAnnotation(EnumId.class);
-                    if (enumId != null) {
-                        enumIdField = field;
-                        break;
+        final Field[] fields = tClass.getDeclaredFields();
+        if (fields.length > 0) {
+            Field enumIdField = null;
+            List<Field> appearFields = new ArrayList<>();
+            for (Field field : fields) {
+                final EnumId enumId = field.getDeclaredAnnotation(EnumId.class);
+                if (enumId != null) {
+                    enumIdField = field;
+                } else {
+                    final EnumAppear enumAppear = field.getDeclaredAnnotation(EnumAppear.class);
+                    if (enumAppear != null) {
+                        appearFields.add(field);
                     }
                 }
-                if (enumIdField != null) {
-                    enumMeta = new EnumMeta();
-                    final String idName = enumIdField.getName();
-                    enumMeta.setIdName(idName);
-                    // 获取get方法
-                    Method fieldGetMethod = findFieldGetMethod(tClass, idName);
-                    enumMeta.setIdClass(getPackageClass(enumIdField.getType()));
-                    enumMeta.setIdMethod(fieldGetMethod);
+            }
+            if (enumIdField != null) {
+                enumMeta = new EnumMeta();
+                final String idFieldName = enumIdField.getName();
+                enumMeta.setIdName(idFieldName);
+                Method fieldGetMethod = findFieldGetMethod(tClass, idFieldName);
+                enumMeta.setIdClass(getPackageClass(enumIdField.getType()));
+                enumMeta.setIdMethod(fieldGetMethod);
+                // 其他展示的字段
+                if (!CollectionUtils.isEmpty(appearFields)) {
+                    Map<String, Method> appearMap = new HashMap<>(appearFields.size());
+                    for (Field appearField : appearFields) {
+                        final String fieldName = appearField.getName();
+                        appearMap.put(fieldName, findFieldGetMethod(tClass, fieldName));
+                    }
+                    enumMeta.setAppearMap(appearMap);
+                } else {
+                    enumMeta.setAppearMap(Collections.emptyMap());
                 }
             }
         }
@@ -143,28 +166,19 @@ public class EnumHandler {
     }
 
     /**
-     * 枚举id元信息
+     * 枚举元信息
      */
     @Data
     private static class EnumMeta {
-        /**
-         * 空元信息
-         */
+
         public final static EnumMeta EMPTY = new EnumMeta();
 
-        /**
-         * id类型
-         */
         private Class<?> idClass;
 
-        /**
-         * id名称
-         */
         private String idName;
 
-        /**
-         * id方法
-         */
         private Method idMethod;
+
+        private Map<String, Method> appearMap;
     }
 }

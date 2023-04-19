@@ -1,6 +1,5 @@
 package cn.cpoet.blog.core.configuration;
 
-import cn.cpoet.blog.api.constant.SystemConst;
 import cn.cpoet.blog.core.support.EnumHandler;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;

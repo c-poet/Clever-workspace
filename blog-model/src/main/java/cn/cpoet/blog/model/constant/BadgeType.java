@@ -1,36 +1,44 @@
 package cn.cpoet.blog.model.constant;
 
-import cn.cpoet.blog.api.core.Dict;
+import cn.cpoet.blog.api.annotation.EnumAppear;
+import cn.cpoet.blog.api.annotation.EnumDict;
+import cn.cpoet.blog.api.annotation.EnumId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * @author CPoet
  */
 @Getter
+@EnumDict
+@Accessors(fluent = true)
 @RequiredArgsConstructor
-public enum BadgeType implements Dict {
+public enum BadgeType {
     /**
      * 无
      */
-    NONE("none", 1, "无"),
+    NONE(1, "none", "无"),
 
     /**
      * 圆点
      */
-    DOT("dot", 2, "圆点"),
+    DOT(2, "dot", "圆点"),
 
     /**
      * new
      */
-    NEW("new", 3, "New"),
+    NEW(3, "new", "New"),
 
     /**
      * 数字n
      */
-    NUMBER("number", 4, "数字");
+    NUMBER(4, "number", "数字");
 
+    @EnumId
+    private final int id;
+    @EnumAppear
     private final String code;
-    private final Integer value;
-    private final String label;
+    @EnumAppear
+    private final String desc;
 }

@@ -1,11 +1,3 @@
-/** 字典 */
-export interface Dict {
-  code: string;
-  label: string;
-  value: string;
-  desc: string;
-}
-
 /** 功能权限 */
 export interface Permission {
     id: number | null;
@@ -15,8 +7,8 @@ export interface Permission {
     icon: string;
     path: string;
     url: string;
-    type: string
-    badgeType: string;
+    type: number
+    badgeType: number;
     badge: string;
     isSingle: boolean;
     hidden: boolean;

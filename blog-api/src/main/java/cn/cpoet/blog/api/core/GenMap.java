@@ -298,7 +298,7 @@ public class GenMap implements Map<String, Object>, Serializable {
      */
     private Map<String, Object> checkAndGetInner() {
         if (inner == null) {
-            inner = new HashMap<>();
+            inner = new HashMap<>(1 << 4);
         }
         return inner;
     }
