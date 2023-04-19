@@ -97,14 +97,14 @@
 </template>
 
 <script lang="ts" setup>
-import { post } from "@/api/http";
-import { getDepartmentList } from "@/api/url";
 import type { BaseFormType, DialogType } from "@/components/types";
 import { computed, h, onMounted, reactive, ref } from "vue";
 import { ElInput, ElMessage, ElMessageBox } from "element-plus";
 import _ from "lodash";
 import { useDataTable } from "@/hooks";
 import { FormRenderItem } from "@/components/common/FormRender";
+import { insertGroup, updateGroup, listGroupTree } from '@/api/admin/Group.api';
+
 const DP_CODE_FLAG = "dp_code_";
 
 const tableColumns = reactive([
@@ -121,6 +121,7 @@ const tableColumns = reactive([
     prop: "actions",
   },
 ]);
+
 const dialog = ref<DialogType>();
 const baseForm = ref();
 const dialogTitle = ref("添加部门");
@@ -136,6 +137,7 @@ const parentFormItem = reactive({
     this.value = 0;
   },
 });
+
 const depCodeFormItem: FormRenderItem = {
   label: "部门编号",
   type: "input",
@@ -174,6 +176,7 @@ const depCodeFormItem: FormRenderItem = {
     );
   },
 };
+
 const formItems = reactive<FormItem[]>([
   {
     label: "部门名称",
@@ -196,6 +199,7 @@ const formItems = reactive<FormItem[]>([
   },
   depCodeFormItem,
 ]);
+
 const onUpdateItem = (item: DepartmentModelType) => {
   dialogTitle.value = "编辑部门";
   formItems.forEach((it) => {
@@ -209,7 +213,6 @@ const onUpdateItem = (item: DepartmentModelType) => {
     }
   });
   parentFormItem.value = item.parentId;
-
   depCodeFormItem.disabled = true;
   dialog.value?.show(() => {
     if (!baseForm.value?.checkParams()) {
@@ -225,11 +228,11 @@ const onUpdateItem = (item: DepartmentModelType) => {
     }, 3000);
   });
 };
+
 const doRefresh = () => {
-  post({
-    url: getDepartmentList,
-  }).then(handleSuccess);
+  listGroupTree().then(handleSuccess);
 };
+
 function filterItems(
   srcArray: Array<DepartmentModelType>,
   filterItem: DepartmentModelType
@@ -259,6 +262,7 @@ const onDeleteItem = (item: any) => {
     })
     .catch(console.log);
 };
+
 const onAddItem = () => {
   dialogTitle.value = "添加部门";
   formItems.forEach((it: any) => it.reset());
@@ -270,14 +274,13 @@ const onAddItem = () => {
     (dialog.value as any).loading = true;
     const formParams = baseForm.value?.generatorParams();
     formParams.parentId = parentFormItem.value;
-    setTimeout(() => {
-      ElMessage.success(
-        "模拟添加成功，添加参数为：" + JSON.stringify(formParams)
-      );
+    insertGroup(formParams).then(() => {
+      doRefresh();
       dialog.value?.close();
-    }, 1000);
+    }).finally(() => (dialog.value as any).loading = false);
   });
 };
+
 parentFormItem.selectOptions = computed(() => {
   return dataList.value?.map((it: any) => {
     return {
@@ -286,5 +289,6 @@ parentFormItem.selectOptions = computed(() => {
     };
   });
 });
+
 onMounted(doRefresh);
 </script>
