@@ -93,7 +93,7 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionRepository
             .findById(id)
             .doOnSuccess(permission -> {
-                if (Boolean.TRUE.equals(permission.getBuildIn())) {
+                if (permission != null && Boolean.TRUE.equals(permission.getBuildIn())) {
                     throw new BusException("内置权限不允许删除");
                 }
             })
