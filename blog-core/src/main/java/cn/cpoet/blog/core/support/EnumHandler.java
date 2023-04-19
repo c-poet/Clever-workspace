@@ -52,7 +52,7 @@ public class EnumHandler {
     }
 
     public boolean isTargetEnum(Class<?> clazz) {
-        return clazz != null && clazz.isEnum() && getEnumMeta((Class) clazz) != null;
+        return clazz != null && clazz.isEnum() && getEnumMeta((Class) clazz) != EnumMeta.EMPTY;
     }
 
     public <T extends Enum<T>> T enumOfId(Class<T> tClass, Object id) {
@@ -106,9 +106,10 @@ public class EnumHandler {
                 enumMeta.setIdMethod(fieldGetMethod);
             }
         }
-        if (enumMeta != null) {
-            ENUM_ID_META_CACHE.put(tClass, enumMeta);
+        if (enumMeta == null) {
+            enumMeta = EnumMeta.EMPTY;
         }
+        ENUM_ID_META_CACHE.put(tClass, enumMeta);
         return enumMeta;
     }
 
@@ -137,10 +138,24 @@ public class EnumHandler {
      */
     @Data
     private static class EnumMeta {
+        /**
+         * 空元信息
+         */
+        public final static EnumMeta EMPTY = new EnumMeta();
+
+        /**
+         * id类型
+         */
         private Class<?> idClass;
 
+        /**
+         * id名称
+         */
         private String idName;
 
+        /**
+         * id方法
+         */
         private Method idMethod;
     }
 }
