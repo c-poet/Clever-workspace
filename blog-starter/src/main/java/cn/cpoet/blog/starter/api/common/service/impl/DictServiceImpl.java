@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -26,7 +27,7 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public Mono<Map<String, Dict>> getDict(String code) {
-        return listDict(code).collectMap(Dict::getCode, Function.identity());
+        return listDict(code).collectMap(Dict::getCode, Function.identity(), LinkedHashMap::new);
     }
 
     @Override
