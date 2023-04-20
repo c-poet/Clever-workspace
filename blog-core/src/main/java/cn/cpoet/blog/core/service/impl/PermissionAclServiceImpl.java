@@ -11,7 +11,15 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author CPoet
@@ -25,10 +33,10 @@ public class PermissionAclServiceImpl implements PermissionAclService {
     private final PermissionAclRepository permissionAclRepository;
 
     @Override
-    public Flux<PermissionAcl> listByItem(Long itemId, PermissionAclType permissionAclType) {
+    public Flux<PermissionAcl> listByItem(Long itemId, PermissionAclType type) {
         PermissionAcl permissionAcl = new PermissionAcl();
         permissionAcl.setItemId(itemId);
-        permissionAcl.setType(permissionAclType);
+        permissionAcl.setType(type);
         return permissionAclRepository.findAll(Example.of(permissionAcl));
     }
 
@@ -48,5 +56,50 @@ public class PermissionAclServiceImpl implements PermissionAclService {
             criteria = criteria == null ? Criteria.byExample(groupAcl) : criteria.orOperator(Criteria.byExample(groupAcl));
         }
         return criteria == null ? Flux.empty() : mongoTemplate.find(Query.query(criteria), PermissionAcl.class);
+    }
+
+    @Override
+    public Mono<Void> save(Long itemId, PermissionAclType type, List<Long> permissionIds) {
+        // 清空所有的授权信息
+        if (CollectionUtils.isEmpty(permissionIds)) {
+            return deleteByItemAndType(itemId, type);
+        }
+        return listByItem(itemId, type)
+            .collectList()
+            .flatMap(permissionAclList -> {
+                Set<Long> aclSet = new HashSet<>(permissionIds);
+                Iterator<PermissionAcl> it = permissionAclList.iterator();
+                while (it.hasNext()) {
+                    PermissionAcl next = it.next();
+                    if (aclSet.contains(next.getPermissionId())) {
+                        aclSet.remove(next.getPermissionId());
+                        it.remove();
+                    }
+                }
+                return permissionAclRepository
+                    .deleteAll(permissionAclList)
+                    .map(item -> aclSet);
+            }).map(addSet -> {
+                return addSet.stream().map(permissionId -> {
+                    PermissionAcl permissionAcl = new PermissionAcl();
+                    permissionAcl.setItemId(itemId);
+                    permissionAcl.setPermissionId(permissionId);
+                    permissionAcl.setType(type);
+                    return permissionAcl;
+                }).collect(Collectors.toList());
+            })
+            .flatMapMany(permissionAclRepository::insert)
+            .ignoreElements()
+            .flatMap(item -> Mono.empty());
+    }
+
+    @Override
+    public Mono<Void> deleteByItemAndType(Long itemId, PermissionAclType type) {
+        Criteria criteria = Criteria
+            .where(PermissionAcl.Fields.itemId).is(itemId)
+            .and(PermissionAcl.Fields.type).is(type);
+        return mongoTemplate.findAllAndRemove(Query.query(criteria), PermissionAcl.class)
+            .collectList()
+            .flatMap(permissionAclList -> Mono.empty());
     }
 }

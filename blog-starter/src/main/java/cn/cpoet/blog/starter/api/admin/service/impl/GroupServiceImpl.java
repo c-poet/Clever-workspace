@@ -87,14 +87,23 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Mono<Void> deleteGroupById(Long id) {
-        return userService
-            .existsByGroups(Collections.singletonList(id))
-            .flatMap(existsGroup -> {
-                if (Boolean.TRUE.equals(existsGroup)) {
-                    return Mono.error(new BusException("分组下存在用户，拒绝删除"));
+        return groupRepository
+            .findById(id)
+            .doOnSuccess(group -> {
+                if (group != null && Boolean.TRUE.equals(group.getBuildIn())) {
+                    throw new BusException("内置用户组，拒绝删除");
                 }
-                return groupRepository.deleteById(id);
-            });
+            })
+            .flatMap(group -> userService
+                .existsByGroups(Collections.singletonList(id))
+                .map(existsGroup -> {
+                    if (Boolean.TRUE.equals(existsGroup)) {
+                        throw new BusException("分组下存在用户，拒绝删除");
+                    }
+                    return group;
+                })
+            )
+            .flatMap(groupRepository::delete);
     }
 
     @Override
