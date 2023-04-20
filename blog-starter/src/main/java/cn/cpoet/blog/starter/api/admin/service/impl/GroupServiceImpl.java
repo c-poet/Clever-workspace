@@ -4,6 +4,7 @@ import cn.cpoet.blog.api.constant.SystemConst;
 import cn.cpoet.blog.core.exception.BusException;
 import cn.cpoet.blog.core.mongo.MongoTemplate;
 import cn.cpoet.blog.core.service.UserService;
+import cn.cpoet.blog.core.util.BeanUtil;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.Group;
 import cn.cpoet.blog.repo.repository.GroupRepository;
@@ -12,7 +13,6 @@ import cn.cpoet.blog.starter.api.admin.service.GroupService;
 import cn.cpoet.blog.starter.api.admin.vo.GroupNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -81,10 +81,7 @@ public class GroupServiceImpl implements GroupService {
     public Mono<Group> updateGroup(Group group) {
         return groupRepository
             .findById(group.getId())
-            .map(old -> {
-                BeanUtils.copyProperties(group, old);
-                return old;
-            })
+            .map(old -> BeanUtil.copyEditableProperties(group, old))
             .flatMap(groupRepository::save);
     }
 
