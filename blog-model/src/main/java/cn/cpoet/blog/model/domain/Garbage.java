@@ -18,12 +18,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @FieldNameConstants
 public class Garbage extends BaseRcEntity {
 
-    @Indexed
-    @Schema(title = "文档id")
-    private Long documentId;
-
     @Schema(title = "集合名称")
-    private String collectionName;
+    private String name;
 
     @Schema(title = "文档内容")
     private GenMap document;

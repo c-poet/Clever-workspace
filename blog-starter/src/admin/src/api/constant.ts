@@ -21,15 +21,30 @@ export const PermissionAclType = {
   PERSON_PERMISSION: { id: 2, desc: '用户权限' }
 };
 
+/** 用户 */
+export const DEFAULT_USER: models.User = {
+  name: '',
+  nickName: '',
+  username: '',
+  avatar: '',
+  email: '',
+  mobile: '',
+  groupId: DEFAULT_ID,
+  locked: false,
+  enabled: false,
+  id: null,
+  sex: 0
+}
+
 /** 分组默认值 */
 export const DEFAULT_GROUP: models.Group = {
-  id: null,
   parentId: DEFAULT_PID,
   code: '',
   name: '',
   enabled: true,
   order: DEFAULT_ORDER,
   description: '',
+  id: null,
 }
 
 /** 权限默认值 */

@@ -15,10 +15,7 @@ import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -67,8 +64,11 @@ public class PermissionAclServiceImpl implements PermissionAclService {
         return listByItem(itemId, type)
             .collectList()
             .flatMap(permissionAclList -> {
-                Set<Long> aclSet = new HashSet<>(permissionIds);
+                if (CollectionUtils.isEmpty(permissionAclList)) {
+                    return Mono.just(permissionIds);
+                }
                 Iterator<PermissionAcl> it = permissionAclList.iterator();
+                Set<Long> aclSet = new HashSet<>(permissionIds);
                 while (it.hasNext()) {
                     PermissionAcl next = it.next();
                     if (aclSet.contains(next.getPermissionId())) {
@@ -76,18 +76,13 @@ public class PermissionAclServiceImpl implements PermissionAclService {
                         it.remove();
                     }
                 }
+                if (CollectionUtils.isEmpty(permissionAclList)) {
+                    return Mono.just(aclSet);
+                }
                 return permissionAclRepository
                     .deleteAll(permissionAclList)
                     .map(item -> aclSet);
-            }).map(addSet -> {
-                return addSet.stream().map(permissionId -> {
-                    PermissionAcl permissionAcl = new PermissionAcl();
-                    permissionAcl.setItemId(itemId);
-                    permissionAcl.setPermissionId(permissionId);
-                    permissionAcl.setType(type);
-                    return permissionAcl;
-                }).collect(Collectors.toList());
-            })
+            }).map(addSet -> genPermissionAcl(itemId, type, addSet))
             .flatMapMany(permissionAclRepository::insert)
             .ignoreElements()
             .flatMap(item -> Mono.empty());
@@ -98,8 +93,22 @@ public class PermissionAclServiceImpl implements PermissionAclService {
         Criteria criteria = Criteria
             .where(PermissionAcl.Fields.itemId).is(itemId)
             .and(PermissionAcl.Fields.type).is(type);
-        return mongoTemplate.findAllAndRemove(Query.query(criteria), PermissionAcl.class)
-            .collectList()
-            .flatMap(permissionAclList -> Mono.empty());
+        return mongoTemplate.remove(Query.query(criteria), PermissionAcl.class)
+            .flatMap(result -> Mono.empty());
+    }
+
+    private PermissionAcl genPermissionAcl(Long itemId, PermissionAclType type, Long permissionId) {
+        PermissionAcl permissionAcl = new PermissionAcl();
+        permissionAcl.setItemId(itemId);
+        permissionAcl.setType(type);
+        permissionAcl.setPermissionId(permissionId);
+        return permissionAcl;
+    }
+
+    private List<PermissionAcl> genPermissionAcl(Long itemId, PermissionAclType type, Collection<Long> permissionIds) {
+        return permissionIds
+            .stream()
+            .map(permissionId -> genPermissionAcl(itemId, type, permissionId))
+            .collect(Collectors.toList());
     }
 }

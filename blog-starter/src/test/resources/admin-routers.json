@@ -9,17 +9,12 @@
             {
                 "parentPath": "/system",
                 "menuUrl": "/system/group",
-                "menuName": "组织管理"
+                "menuName": "用户组管理"
             },
             {
                 "parentPath": "/system",
                 "menuUrl": "/system/user",
                 "menuName": "用户管理"
-            },
-            {
-                "parentPath": "/system",
-                "menuUrl": "/system/role",
-                "menuName": "角色管理"
             },
             {
                 "parentPath": "/system",

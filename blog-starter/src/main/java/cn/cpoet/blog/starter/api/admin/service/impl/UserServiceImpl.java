@@ -7,6 +7,7 @@ import cn.cpoet.blog.core.util.UUIDUtil;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.User;
 import cn.cpoet.blog.repo.repository.UserRepository;
+import cn.cpoet.blog.starter.api.admin.dto.UserDTO;
 import cn.cpoet.blog.starter.api.admin.param.UserParam;
 import cn.cpoet.blog.starter.api.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +43,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<User> insertUser(User user) {
-        user.setSalt(UUIDUtil.random());
-        user.setPassword(userPassCryptoStrategy.encode(user, user.getPassword()));
-        user.setBuildIn(Boolean.FALSE);
-        return userRepository.insert(user);
+    public Mono<User> insertUser(UserDTO userDTO) {
+        userDTO.setSalt(UUIDUtil.random());
+        userDTO.setPassword(userPassCryptoStrategy.encode(userDTO, userDTO.getUserPass()));
+        userDTO.setBuildIn(Boolean.FALSE);
+        return userRepository.insert(userDTO);
     }
 
     @Override

@@ -6,6 +6,7 @@ import cn.cpoet.blog.core.dto.IdDTO;
 import cn.cpoet.blog.core.dto.IdsDTO;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.User;
+import cn.cpoet.blog.starter.api.admin.dto.UserDTO;
 import cn.cpoet.blog.starter.api.admin.param.UserParam;
 import cn.cpoet.blog.starter.api.admin.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,8 +41,8 @@ public class UserController {
 
     @PostMapping("/insertUser")
     @Operation(summary = "新增用户")
-    public Mono<User> insertUser(@RequestBody @Validated(Insert.class) User user) {
-        return userService.insertUser(user);
+    public Mono<User> insertUser(@RequestBody @Validated(Insert.class) UserDTO userDTO) {
+        return userService.insertUser(userDTO);
     }
 
     @PostMapping("/updateUser")

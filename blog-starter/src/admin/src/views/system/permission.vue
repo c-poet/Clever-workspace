@@ -236,14 +236,14 @@ const badgeTypes = ref<Array<any>>([]);
 const { tableLoading, tableConfig, dataList, handleSuccess } = useDataTable();
 const dialogRef = ref<DialogType>();
 
-dictStore.getDict(PERMISSION_TYPE).then((data) => {
-  permissionTypes.value = data;
-  defaultModel.type = permissionTypes.value[0].id;
+dictStore.getDict(PERMISSION_TYPE).then((dict) => {
+  permissionTypes.value = dict;
+  defaultModel.type = dict[0].id;
 });
 
-dictStore.getDict(BADGE_TYPE).then((data) => {
-  badgeTypes.value = data;
-  defaultModel.badgeType = badgeTypes.value[0].id;
+dictStore.getDict(BADGE_TYPE).then((dict) => {
+  badgeTypes.value = dict;
+  defaultModel.badgeType = dict[0].id;
 });
 
 function doRefresh() {

@@ -69,7 +69,7 @@
                 type="warning"
                 size="small"
                 @click="showPermissionDialog(scope.row)"
-                >功能权限</el-button
+                >权限</el-button
               >
             </template>
           </el-table-column>
@@ -124,9 +124,8 @@
           ref="permissionTreeRef"
           :data="permissionTree"
           show-checkbox
-          :check-strictly="true"
           node-key="id"
-          :default-expanded-keys="defaultExpandedKeys"
+          :default-expand-all="true"
         >
           <template #default="{ data }">
             <span>{{ data.name }}【{{ data.code }}】</span>
@@ -145,7 +144,10 @@ import {
   updateGroup,
 } from "@/api/admin/Group.api";
 import { listPermissionTree } from "@/api/admin/Permission.api";
-import { listPermissionId } from "@/api/admin/PermissionAcl.api";
+import {
+  listPermissionId,
+  savePermissionAcl,
+} from "@/api/admin/PermissionAcl.api";
 import {
   CHECK_REGEX01,
   DEFAULT_GROUP,
@@ -181,7 +183,6 @@ const permissionDialog = ref<DialogType>();
 const permissionTreeRef = ref();
 const permissionTree = ref<Array<any>>([]);
 const isPermissionTreeLoaded = ref<boolean>(false);
-const defaultExpandedKeys = ref<number[]>([]);
 
 function doRefresh() {
   listGroupTree().then(handleSuccess);
@@ -224,15 +225,22 @@ function onDeleteItem(item: any) {
 const loadPermissionTree = async () => {
   if (!isPermissionTreeLoaded.value) {
     const { data } = await listPermissionTree();
-    permissionTree.value = data;
     isPermissionTreeLoaded.value = true;
+    permissionTree.value = data;
   }
 };
 
 const showPermissionDialog = async (item: Group) => {
   await loadPermissionTree();
   permissionDialog.value?.show(() => {
-    console.log(permissionTreeRef.value.getCheckedKeys());
+    const data = {
+      itemId: item.id,
+      type: PermissionAclType.GROUP_PERMISSION.id,
+      permissionIds: permissionTreeRef.value.getCheckedKeys(),
+    };
+    savePermissionAcl(data).then(() => {
+      permissionDialog.value?.close();
+    });
   });
   const { data } = await listPermissionId(
     item.id as number,

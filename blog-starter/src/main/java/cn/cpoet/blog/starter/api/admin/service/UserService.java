@@ -2,6 +2,7 @@ package cn.cpoet.blog.starter.api.admin.service;
 
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.User;
+import cn.cpoet.blog.starter.api.admin.dto.UserDTO;
 import cn.cpoet.blog.starter.api.admin.param.UserParam;
 import reactor.core.publisher.Mono;
 
@@ -30,10 +31,10 @@ public interface UserService {
     /**
      * 保存用户
      *
-     * @param user 用户信息
+     * @param userDTO 用户信息
      * @return 用户信息
      */
-    Mono<User> insertUser(User user);
+    Mono<User> insertUser(UserDTO userDTO);
 
     /**
      * 更新用户

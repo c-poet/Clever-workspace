@@ -1,9 +1,13 @@
 package cn.cpoet.blog.model.domain;
 
+import cn.cpoet.blog.api.annotation.Editable;
 import cn.cpoet.blog.api.validation.Insert;
 import cn.cpoet.blog.api.validation.Update;
 import cn.cpoet.blog.model.base.BaseEntity;
+import cn.cpoet.blog.model.constant.SexEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
@@ -20,6 +24,7 @@ import javax.validation.constraints.Pattern;
  * @author CPoet
  */
 @Data
+@Editable
 @Schema(title = "用户")
 @Document("blog_user")
 @FieldNameConstants
@@ -41,12 +46,13 @@ public class User extends BaseEntity {
     @Pattern(regexp = "^[a-zA-Z_][0-9a-zA-Z_]+$", message = "用户名由字母、数字及下划线组成，且首字符不能为数字", groups = {Insert.class, Update.class})
     private String username;
 
+    @JsonIgnore
+    @Editable(value = false)
     @Schema(title = "密码")
-    @NotEmpty(message = "密码不能为空", groups = {Insert.class, Update.class})
-    @Pattern(regexp = "^[a-zA-Z0-9_!@#$%^&*]{6}$", message = "密码由字母、数字及_!@#$%^&*字符组成，且长度不少于6位", groups = {Insert.class, Update.class})
     private String password;
 
     @JsonIgnore
+    @Editable(value = false)
     @Schema(title = "盐值")
     private String salt;
 
@@ -61,10 +67,15 @@ public class User extends BaseEntity {
     @Schema(title = "手机号")
     private String mobile;
 
+    @Schema(title = "性别")
+    @NotNull(message = "性别不能为空", groups = {Insert.class, Update.class})
+    private SexEnum sex;
+
     @Schema(title = "用户组id")
     @NotNull(message = "用户组不能为空", groups = {Insert.class, Update.class})
     private Long groupId;
 
+    @Editable(value = false)
     @Schema(title = "是否内置")
     private Boolean buildIn;
 
