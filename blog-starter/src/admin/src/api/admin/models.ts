@@ -1,3 +1,10 @@
+import { User } from '../models';
+
+/** 用户信息 */
+export interface UserDTO extends User {
+    userPass: string;
+}
+
 /** 菜单树节点 */
 export interface MenuNodeVO {
     id: number;

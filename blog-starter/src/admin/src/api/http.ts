@@ -16,6 +16,9 @@ export interface Response<T = any> {
   code: string | number;
   message: string;
   data: T;
+  total: number;
+  pageNo: number;
+  pageSize: number;
 }
 
 function http<T = any>({
