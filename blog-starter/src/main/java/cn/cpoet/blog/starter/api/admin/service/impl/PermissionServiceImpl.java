@@ -22,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,20 +59,20 @@ public class PermissionServiceImpl implements PermissionService {
     public Flux<PermissionNodeVO> listPermissionTree() {
         return permissionService.listByOrder()
             .map(PermissionNodeVO::of)
-            .reduceWith(() -> new HashMap<Long, ArrayList<PermissionNodeVO>>(1 << 4), (mapper, permission) -> {
+            .reduceWith(() -> new HashMap<Long, List<PermissionNodeVO>>(1 << 4), (mapper, permission) -> {
                 mapper.computeIfAbsent(permission.getParentId(), k -> new ArrayList<>()).add(permission);
                 return mapper;
             })
             .flatMapIterable(mapping -> {
-                for (ArrayList<PermissionNodeVO> children : mapping.values()) {
+                for (List<PermissionNodeVO> children : mapping.values()) {
                     for (PermissionNodeVO child : children) {
-                        ArrayList<PermissionNodeVO> curChildren = mapping.get(child.getId());
+                        List<PermissionNodeVO> curChildren = mapping.get(child.getId());
                         if (!CollectionUtils.isEmpty(curChildren)) {
                             child.setChildren(curChildren);
                         }
                     }
                 }
-                return mapping.get(SystemConst.DEFAULT_PID);
+                return mapping.getOrDefault(SystemConst.DEFAULT_PID, Collections.emptyList());
             });
     }
 

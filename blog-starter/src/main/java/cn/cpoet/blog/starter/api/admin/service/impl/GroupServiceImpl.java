@@ -53,20 +53,20 @@ public class GroupServiceImpl implements GroupService {
     public Flux<GroupNodeVO> listGroupTree() {
         return groupService.listByOrder()
             .map(GroupNodeVO::of)
-            .reduceWith(() -> new HashMap<Long, ArrayList<GroupNodeVO>>(1 << 4), (mapper, permission) -> {
+            .reduceWith(() -> new HashMap<Long, List<GroupNodeVO>>(1 << 4), (mapper, permission) -> {
                 mapper.computeIfAbsent(permission.getParentId(), k -> new ArrayList<>()).add(permission);
                 return mapper;
             })
             .flatMapIterable(mapping -> {
-                for (ArrayList<GroupNodeVO> children : mapping.values()) {
+                for (List<GroupNodeVO> children : mapping.values()) {
                     for (GroupNodeVO child : children) {
-                        ArrayList<GroupNodeVO> curChildren = mapping.get(child.getId());
+                        List<GroupNodeVO> curChildren = mapping.get(child.getId());
                         if (!CollectionUtils.isEmpty(curChildren)) {
                             child.setChildren(curChildren);
                         }
                     }
                 }
-                return mapping.get(SystemConst.DEFAULT_PID);
+                return mapping.getOrDefault(SystemConst.DEFAULT_PID, Collections.emptyList());
             });
     }
 
