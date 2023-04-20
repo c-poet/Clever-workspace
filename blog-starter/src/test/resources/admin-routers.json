@@ -8,8 +8,8 @@
         "children": [
             {
                 "parentPath": "/system",
-                "menuUrl": "/system/department",
-                "menuName": "部门管理"
+                "menuUrl": "/system/group",
+                "menuName": "组织管理"
             },
             {
                 "parentPath": "/system",
@@ -23,8 +23,8 @@
             },
             {
                 "parentPath": "/system",
-                "menuUrl": "/system/menu",
-                "menuName": "菜单管理",
+                "menuUrl": "/system/permission",
+                "menuName": "功能管理",
                 "cacheable": true
             }
         ]
