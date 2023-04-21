@@ -1,10 +1,15 @@
 package cn.cpoet.blog.api.annotation.term;
 
+import java.lang.annotation.*;
+
 /**
  * like
  *
  * @author CPoet
  */
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Like {
     /**
      * 字段名
