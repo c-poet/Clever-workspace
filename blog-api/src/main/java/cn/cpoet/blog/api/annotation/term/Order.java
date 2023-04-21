@@ -1,5 +1,7 @@
 package cn.cpoet.blog.api.annotation.term;
 
+import cn.cpoet.blog.api.constant.OrderMode;
+
 import java.lang.annotation.*;
 
 /**
@@ -23,5 +25,5 @@ public @interface Order {
      *
      * @return 是否倒序
      */
-    boolean desc() default false;
+    OrderMode mode() default OrderMode.ASC;
 }

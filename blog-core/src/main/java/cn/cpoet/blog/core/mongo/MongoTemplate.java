@@ -48,7 +48,7 @@ public class MongoTemplate extends ReactiveMongoTemplate {
                 if (total == 0) {
                     return Mono.empty();
                 }
-                return find(param.fillQuery(query), entityClass)
+                return find(query.with(param.toPageRequest()), entityClass)
                     .collectList()
                     .map(data -> PageVO.ok(total, data, param));
             });

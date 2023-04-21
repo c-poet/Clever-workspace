@@ -1,6 +1,8 @@
 package cn.cpoet.blog.starter.admin.service;
 
 import cn.cpoet.blog.api.constant.SystemConst;
+import cn.cpoet.blog.core.mongo.term.QueryGenerator;
+import cn.cpoet.blog.core.mongo.term.QueryGeneratorFactory;
 import cn.cpoet.blog.core.util.CamelUtil;
 import cn.cpoet.blog.model.constant.PermissionAclType;
 import cn.cpoet.blog.model.constant.PermissionType;
@@ -9,6 +11,7 @@ import cn.cpoet.blog.model.domain.PermissionAcl;
 import cn.cpoet.blog.repo.repository.PermissionAclRepository;
 import cn.cpoet.blog.repo.repository.PermissionRepository;
 import cn.cpoet.blog.repo.repository.UserRepository;
+import cn.cpoet.blog.starter.api.admin.param.PermissionParam;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -35,6 +38,15 @@ public class PermissionServiceTest {
     private PermissionRepository permissionRepository;
     @Autowired
     private PermissionAclRepository permissionAclRepository;
+
+    @Autowired
+    private QueryGeneratorFactory queryGeneratorFactory;
+
+    @Test
+    public void test() {
+        QueryGenerator<PermissionParam> queryGenerator = queryGeneratorFactory.get(PermissionParam.class);
+        System.out.println(queryGenerator);
+    }
 
     @Test
     public void initPermission() throws IOException {
