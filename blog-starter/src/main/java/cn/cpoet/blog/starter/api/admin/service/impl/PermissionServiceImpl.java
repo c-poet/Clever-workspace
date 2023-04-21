@@ -12,6 +12,7 @@ import cn.cpoet.blog.starter.api.admin.service.PermissionService;
 import cn.cpoet.blog.starter.api.admin.vo.PermissionNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
@@ -40,13 +41,14 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public Mono<PageVO<Permission>> listPermission(PermissionParam permissionParam) {
-        return mongoTemplate.findParam(permissionParam, Permission.class);
+    public Mono<PageVO<Permission>> listPermission(PermissionParam param) {
+        return mongoTemplate.findPageParam(param, Permission.class);
     }
 
     @Override
-    public Flux<PermissionNodeVO> listPermissionTree() {
-        return permissionService.listByOrder()
+    public Flux<PermissionNodeVO> listPermissionTree(PermissionParam param) {
+        return mongoTemplate
+            .findParam(param, Permission.class, Sort.by(Permission.Fields.order))
             .map(PermissionNodeVO::of)
             .reduceWith(() -> new HashMap<Long, List<PermissionNodeVO>>(1 << 4), (mapper, permission) -> {
                 mapper.computeIfAbsent(permission.getParentId(), k -> new ArrayList<>()).add(permission);

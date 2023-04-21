@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<PageVO<User>> listUser(UserParam userParam) {
-        return mongoTemplate.findParam(userParam, User.class);
+        return mongoTemplate.findPageParam(userParam, User.class);
     }
 
     @Override

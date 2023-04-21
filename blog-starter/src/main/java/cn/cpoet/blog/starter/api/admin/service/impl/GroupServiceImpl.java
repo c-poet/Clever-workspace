@@ -13,6 +13,7 @@ import cn.cpoet.blog.starter.api.admin.service.GroupService;
 import cn.cpoet.blog.starter.api.admin.vo.GroupNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
@@ -34,7 +35,6 @@ public class GroupServiceImpl implements GroupService {
     private final UserService userService;
     private final MongoTemplate mongoTemplate;
     private final GroupRepository groupRepository;
-    private final cn.cpoet.blog.core.service.GroupService groupService;
 
     @Override
     public Mono<Group> getGroupById(Long groupId) {
@@ -42,13 +42,14 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Mono<PageVO<Group>> listGroup(GroupParam groupParam) {
-        return mongoTemplate.findParam(groupParam, Group.class);
+    public Mono<PageVO<Group>> listGroup(GroupParam param) {
+        return mongoTemplate.findPageParam(param, Group.class);
     }
 
     @Override
-    public Flux<GroupNodeVO> listGroupTree() {
-        return groupService.listByOrder()
+    public Flux<GroupNodeVO> listGroupTree(GroupParam param) {
+        return mongoTemplate
+            .findParam(param, Group.class, Sort.by(Group.Fields.order))
             .map(GroupNodeVO::of)
             .reduceWith(() -> new HashMap<Long, List<GroupNodeVO>>(1 << 4), (mapper, permission) -> {
                 mapper.computeIfAbsent(permission.getParentId(), k -> new ArrayList<>()).add(permission);

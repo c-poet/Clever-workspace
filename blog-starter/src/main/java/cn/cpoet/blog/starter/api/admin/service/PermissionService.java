@@ -24,17 +24,18 @@ public interface PermissionService {
     /**
      * 分页查询权限列表
      *
-     * @param permissionParam 查询参数
+     * @param param 查询参数
      * @return 权限列表
      */
-    Mono<PageVO<Permission>> listPermission(PermissionParam permissionParam);
+    Mono<PageVO<Permission>> listPermission(PermissionParam param);
 
     /**
      * 查询权限树形
      *
+     * @param param 查询参数
      * @return 权限树形
      */
-    Flux<PermissionNodeVO> listPermissionTree();
+    Flux<PermissionNodeVO> listPermissionTree(PermissionParam param);
 
     /**
      * 新增权限信息

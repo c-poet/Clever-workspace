@@ -24,17 +24,18 @@ public interface GroupService {
     /**
      * 分页查询分组
      *
-     * @param groupParam 分组查询参数
+     * @param param 分组查询参数
      * @return 查询结果
      */
-    Mono<PageVO<Group>> listGroup(GroupParam groupParam);
+    Mono<PageVO<Group>> listGroup(GroupParam param);
 
     /**
      * 查询用户分组树
      *
+     * @param param 查询参数
      * @return 用户分组树
      */
-    Flux<GroupNodeVO> listGroupTree();
+    Flux<GroupNodeVO> listGroupTree(GroupParam param);
 
     /**
      * 新增分组

@@ -36,14 +36,14 @@ public class PermissionController {
 
     @GetMapping("/listPermission")
     @Operation(summary = "查询权限列表")
-    public Mono<PageVO<Permission>> listPermission(@Validated PermissionParam permissionParam) {
-        return permissionService.listPermission(permissionParam);
+    public Mono<PageVO<Permission>> listPermission(@Validated PermissionParam param) {
+        return permissionService.listPermission(param);
     }
 
     @GetMapping("/listPermissionTree")
     @Operation(summary = "查询权限树")
-    public Flux<PermissionNodeVO> listPermissionTree() {
-        return permissionService.listPermissionTree();
+    public Flux<PermissionNodeVO> listPermissionTree(PermissionParam param) {
+        return permissionService.listPermissionTree(param);
     }
 
     @PostMapping("/insertPermission")

@@ -33,14 +33,14 @@ public class GroupController {
 
     @GetMapping("/listGroup")
     @Operation(summary = "分页查询分组")
-    public Mono<PageVO<Group>> listGroup(@RequestBody @Validated GroupParam groupParam) {
-        return groupService.listGroup(groupParam);
+    public Mono<PageVO<Group>> listGroup(@Validated GroupParam param) {
+        return groupService.listGroup(param);
     }
 
     @GetMapping("/listGroupTree")
     @Operation(summary = "查询分组树")
-    public Flux<GroupNodeVO> listGroupTree() {
-        return groupService.listGroupTree();
+    public Flux<GroupNodeVO> listGroupTree(GroupParam param) {
+        return groupService.listGroupTree(param);
     }
 
     @PostMapping("/insertGroup")
