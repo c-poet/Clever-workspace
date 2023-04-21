@@ -1,6 +1,6 @@
 package cn.cpoet.blog.starter.api.admin.param;
 
-import cn.cpoet.blog.core.param.PageParam;
+import cn.cpoet.blog.core.param.PageOrderParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -9,5 +9,5 @@ import lombok.Data;
  */
 @Data
 @Schema(title = "分组参数")
-public class GroupParam extends PageParam {
+public class GroupParam extends PageOrderParam {
 }

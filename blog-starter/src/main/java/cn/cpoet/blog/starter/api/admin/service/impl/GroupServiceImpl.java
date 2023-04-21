@@ -13,8 +13,6 @@ import cn.cpoet.blog.starter.api.admin.service.GroupService;
 import cn.cpoet.blog.starter.api.admin.vo.GroupNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
@@ -45,8 +43,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Mono<PageVO<Group>> listGroup(GroupParam groupParam) {
-        Criteria criteria = new Criteria();
-        return mongoTemplate.find(Query.query(criteria), groupParam, Group.class);
+        return mongoTemplate.findParam(groupParam, Group.class);
     }
 
     @Override

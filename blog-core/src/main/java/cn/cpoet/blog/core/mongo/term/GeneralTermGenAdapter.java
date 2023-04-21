@@ -1,15 +1,13 @@
 package cn.cpoet.blog.core.mongo.term;
 
 import cn.cpoet.blog.api.annotation.term.*;
-import org.springframework.beans.BeanUtils;
+import cn.cpoet.blog.core.util.BeanUtil;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,23 +35,7 @@ public class GeneralTermGenAdapter implements TermGenAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public Class<? extends Annotation>[] accepts() {
-        return new Class[]{Eq.class, Ge.class, Gt.class, In.class, Le.class, Like.class, Lt.class, Ne.class};
-    }
-
-    /**
-     * 获取get方法名称
-     *
-     * @param beanClass 类
-     * @param field     属性
-     * @return get方法名称
-     */
-    protected String getReadMethodName(Class<?> beanClass, Field field) {
-        PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(beanClass, field.getName());
-        if (descriptor == null) {
-            return null;
-        }
-        Method readMethod = descriptor.getReadMethod();
-        return readMethod == null ? null : (readMethod.getName() + "()");
+        return TOKEN_MAPPING.keySet().toArray(new Class[0]);
     }
 
     /**
@@ -85,7 +67,7 @@ public class GeneralTermGenAdapter implements TermGenAdapter {
     @Override
     public String genStatement(Class<?> beanClass, Field field, Annotation annotation) {
         Map<String, Object> attrs = AnnotationUtils.getAnnotationAttributes(annotation);
-        String methodName = getReadMethodName(beanClass, field);
+        String readMethod = BeanUtil.getIntactReadMethodName(beanClass, field);
         String value = String.valueOf(attrs.get("value"));
         if (!StringUtils.hasText(value)) {
             value = field.getName();
@@ -101,12 +83,12 @@ public class GeneralTermGenAdapter implements TermGenAdapter {
             if (like.left()) {
                 statement += "\".*\" + ";
             }
-            statement += "b." + methodName;
+            statement += "b." + readMethod;
             if (like.right()) {
                 statement += " + \".*\"";
             }
-            return genCheckStatement(field, methodName, statement + ");");
+            return genCheckStatement(field, readMethod, statement + ");");
         }
-        return genCheckStatement(field, methodName, "c = c.and(\"" + fieldName + "\")." + token + "(b." + methodName + ");");
+        return genCheckStatement(field, readMethod, "c = c.and(\"" + fieldName + "\")." + token + "(b." + readMethod + ");");
     }
 }

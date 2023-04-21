@@ -12,8 +12,6 @@ import cn.cpoet.blog.starter.api.admin.param.UserParam;
 import cn.cpoet.blog.starter.api.admin.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -38,8 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<PageVO<User>> listUser(UserParam userParam) {
-        Criteria criteria = new Criteria();
-        return mongoTemplate.find(Query.query(criteria), userParam, User.class);
+        return mongoTemplate.findParam(userParam, User.class);
     }
 
     @Override

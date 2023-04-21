@@ -2,6 +2,7 @@ package cn.cpoet.blog.core.configuration;
 
 import cn.cpoet.blog.core.mongo.CustomMappingMongoConverter;
 import cn.cpoet.blog.core.mongo.MongoTemplate;
+import cn.cpoet.blog.core.mongo.term.QueryGeneratorFactory;
 import cn.cpoet.blog.core.support.EnumConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +32,9 @@ public class CoreMongoConfig {
     @Primary
     @Bean({"reactiveMongoTemplate", "mongoTemplate"})
     public MongoTemplate monoTemplate(ReactiveMongoDatabaseFactory databaseFactory,
-                                      MappingMongoConverter mongoConverter) {
-        return new MongoTemplate(databaseFactory, mongoConverter);
+                                      MappingMongoConverter mongoConverter,
+                                      QueryGeneratorFactory queryGeneratorFactory) {
+        return new MongoTemplate(databaseFactory, mongoConverter, queryGeneratorFactory);
     }
 
     @Bean

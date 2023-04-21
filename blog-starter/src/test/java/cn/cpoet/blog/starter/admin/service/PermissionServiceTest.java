@@ -1,17 +1,17 @@
 package cn.cpoet.blog.starter.admin.service;
 
 import cn.cpoet.blog.api.constant.SystemConst;
-import cn.cpoet.blog.core.mongo.term.QueryGenerator;
-import cn.cpoet.blog.core.mongo.term.QueryGeneratorFactory;
+import cn.cpoet.blog.core.mongo.MongoTemplate;
 import cn.cpoet.blog.core.util.CamelUtil;
 import cn.cpoet.blog.model.constant.PermissionAclType;
 import cn.cpoet.blog.model.constant.PermissionType;
 import cn.cpoet.blog.model.domain.Permission;
 import cn.cpoet.blog.model.domain.PermissionAcl;
+import cn.cpoet.blog.model.domain.User;
 import cn.cpoet.blog.repo.repository.PermissionAclRepository;
 import cn.cpoet.blog.repo.repository.PermissionRepository;
 import cn.cpoet.blog.repo.repository.UserRepository;
-import cn.cpoet.blog.starter.api.admin.param.PermissionParam;
+import cn.cpoet.blog.starter.api.admin.param.UserParam;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -29,23 +29,31 @@ import java.util.List;
 
 @SpringBootTest
 public class PermissionServiceTest {
+
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private PermissionRepository permissionRepository;
     @Autowired
     private PermissionAclRepository permissionAclRepository;
-
     @Autowired
-    private QueryGeneratorFactory queryGeneratorFactory;
+    private MongoTemplate mongoTemplate;
+
 
     @Test
     public void test() {
-        QueryGenerator<PermissionParam> queryGenerator = queryGeneratorFactory.get(PermissionParam.class);
-        System.out.println(queryGenerator);
+        UserParam userParam = new UserParam();
+        userParam.setName("Cpoet");
+        userParam.setUsername("cpoet");
+        userParam.setMobile("182122");
+        userParam.setGroupId(-1L);
+        userParam.setLocked(Boolean.FALSE);
+        userParam.setPageNo(1);
+        userParam.setPageSize(100);
+        mongoTemplate.findParam(userParam, User.class)
+            .subscribe(System.out::println);
     }
 
     @Test

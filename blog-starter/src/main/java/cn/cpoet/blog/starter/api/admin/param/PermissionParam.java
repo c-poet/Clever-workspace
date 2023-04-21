@@ -1,7 +1,7 @@
 package cn.cpoet.blog.starter.api.admin.param;
 
 import cn.cpoet.blog.api.annotation.term.Like;
-import cn.cpoet.blog.core.param.PageParam;
+import cn.cpoet.blog.core.param.PageOrderParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @Schema(title = "功能权限查询")
-public class PermissionParam extends PageParam {
+public class PermissionParam extends PageOrderParam {
     @Like(left = false)
     @Schema(title = "功能编码")
     private String code;

@@ -14,16 +14,17 @@ import java.lang.annotation.*;
 @Documented
 public @interface Order {
     /**
-     * 字段名
+     * 默认的模式
      *
-     * @return 字段名
+     * @return 默认模式
      */
-    String value() default "";
+    OrderMode value() default OrderMode.ASC;
 
     /**
-     * 是否倒序
+     * 默认的排序字段
+     * <p>变量未设定时才使用该值</p>
      *
-     * @return 是否倒序
+     * @return 默认的排序字段
      */
-    OrderMode mode() default OrderMode.ASC;
+    String[] fields() default {};
 }

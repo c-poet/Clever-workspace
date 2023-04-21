@@ -12,11 +12,8 @@ import cn.cpoet.blog.starter.api.admin.service.PermissionService;
 import cn.cpoet.blog.starter.api.admin.vo.PermissionNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,14 +41,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Mono<PageVO<Permission>> listPermission(PermissionParam permissionParam) {
-        Criteria criteria = new Criteria();
-        if (StringUtils.hasText(permissionParam.getName())) {
-            criteria = criteria.and(Permission.Fields.name).is(permissionParam.getName());
-        }
-        if (StringUtils.hasText(permissionParam.getCode())) {
-            criteria = criteria.and(Permission.Fields.code).is(permissionParam.getCode());
-        }
-        return mongoTemplate.find(Query.query(criteria), permissionParam, Permission.class);
+        return mongoTemplate.findParam(permissionParam, Permission.class);
     }
 
     @Override
