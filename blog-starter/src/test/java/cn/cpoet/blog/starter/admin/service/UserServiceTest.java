@@ -26,6 +26,7 @@ public class UserServiceTest {
         User user = new User();
         user.setName("CPoet");
         user.setUsername("cpoet");
+        user.setNickName("编程小白");
         user.setEnabled(Boolean.TRUE);
         user.setBuildIn(Boolean.TRUE);
         user.setSalt(UUIDUtil.random());
