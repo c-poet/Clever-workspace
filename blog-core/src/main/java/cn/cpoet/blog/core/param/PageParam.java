@@ -35,6 +35,6 @@ public class PageParam implements Serializable {
         if (pageNo == null || pageNo <= 0 || pageSize == null || pageSize <= 0) {
             return Pageable.unpaged();
         }
-        return PageRequest.of(pageNo, pageSize);
+        return PageRequest.of(pageNo - 1, pageSize);
     }
 }
