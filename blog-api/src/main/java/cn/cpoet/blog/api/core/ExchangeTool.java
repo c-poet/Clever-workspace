@@ -34,8 +34,7 @@ public abstract class ExchangeTool {
     }
 
     public static String getHeader(ServerWebExchange webExchange, String key) {
-        List<String> headers = getHeaders(webExchange, key);
-        return CollectionUtils.isEmpty(headers) ? null : headers.get(0);
+        return getHeader(webExchange.getRequest(), key);
     }
 
     public static List<String> getHeaders(ContextView contextView, String key) {
@@ -44,7 +43,15 @@ public abstract class ExchangeTool {
     }
 
     public static List<String> getHeaders(ServerWebExchange webExchange, String key) {
-        ServerHttpRequest request = webExchange.getRequest();
+        return getHeaders(webExchange.getRequest(), key);
+    }
+
+    public static String getHeader(ServerHttpRequest request, String key) {
+        List<String> headers = getHeaders(request, key);
+        return CollectionUtils.isEmpty(headers) ? null : headers.get(0);
+    }
+
+    public static List<String> getHeaders(ServerHttpRequest request, String key) {
         return request.getHeaders().get(key);
     }
 }

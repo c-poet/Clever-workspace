@@ -4,6 +4,7 @@ import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.User;
 import cn.cpoet.blog.starter.api.admin.dto.UserDTO;
 import cn.cpoet.blog.starter.api.admin.param.UserParam;
+import cn.cpoet.blog.starter.api.admin.vo.UserVO;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface UserService {
      * @param userParam 查询参数
      * @return 用户列表
      */
-    Mono<PageVO<User>> listUser(UserParam userParam);
+    Mono<PageVO<UserVO>> listUser(UserParam userParam);
 
     /**
      * 保存用户

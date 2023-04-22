@@ -27,16 +27,6 @@ public interface SystemConst {
     String CONF_PREFIX = "app.blog";
 
     /**
-     * bool值真
-     */
-    int BOOL_TRUE = 1;
-
-    /**
-     * bool值假
-     */
-    int BOOL_FALSE = 0;
-
-    /**
      * 默认id生成器
      */
     String ID_GENERATOR = "idGenerator";

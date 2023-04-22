@@ -28,6 +28,15 @@ public class RetVO<T> implements Serializable {
     @Schema(title = "响应时间")
     private Long timestamp;
 
+    public RetVO() {
+    }
+
+    public RetVO(RetVO<?> other, T data) {
+        code = other.code;
+        message = other.message;
+        this.data = data;
+    }
+
     public static <T> RetVO<T> ok(T data) {
         return of(StatusConst.OK, data);
     }

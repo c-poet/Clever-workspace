@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
@@ -22,7 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public Mono<LoginVO> login(@RequestBody @Validated LoginDTO loginDTO) {
-        return authService.login(loginDTO);
+    public Mono<LoginVO> login(@RequestBody @Validated LoginDTO loginDTO, ServerWebExchange exchange) {
+        return authService.login(loginDTO, exchange);
     }
 }

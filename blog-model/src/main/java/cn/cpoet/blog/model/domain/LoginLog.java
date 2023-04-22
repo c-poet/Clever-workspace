@@ -19,8 +19,17 @@ public class LoginLog extends BaseRcEntity {
     @Schema(title = "登录用户uid")
     private Long userId;
 
+    @Schema(title = "登录用户的姓名")
+    private String name;
+
     @Schema(title = "登录用户的账号")
     private String username;
+
+    @Schema(title = "登录用户的昵称")
+    private String nickName;
+
+    @Schema(title = "登录用户的邮箱")
+    private String email;
 
     @Schema(title = "登录的ip地址")
     private String ipAddress;

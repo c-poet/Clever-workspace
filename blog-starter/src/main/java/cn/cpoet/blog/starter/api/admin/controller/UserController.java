@@ -9,6 +9,7 @@ import cn.cpoet.blog.model.domain.User;
 import cn.cpoet.blog.starter.api.admin.dto.UserDTO;
 import cn.cpoet.blog.starter.api.admin.param.UserParam;
 import cn.cpoet.blog.starter.api.admin.service.UserService;
+import cn.cpoet.blog.starter.api.admin.vo.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class UserController {
 
     @GetMapping("/listUser")
     @Operation(summary = "分页查询用户")
-    public Mono<PageVO<User>> listUser(@Validated UserParam userParam) {
+    public Mono<PageVO<UserVO>> listUser(@Validated UserParam userParam) {
         return userService.listUser(userParam);
     }
 

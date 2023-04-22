@@ -5,8 +5,11 @@ import cn.cpoet.blog.core.constant.StatusConst;
 import cn.cpoet.blog.core.param.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author CPoet
@@ -22,6 +25,28 @@ public class PageVO<T> extends RetVO<List<T>> {
 
     @Schema(title = "分页大小")
     private Integer pageSize;
+
+    public PageVO() {
+    }
+
+    public PageVO(PageVO<?> other, List<T> data) {
+        super(other, data);
+        total = other.total;
+        pageNo = other.pageNo;
+        pageSize = other.pageSize;
+    }
+
+    public <R> PageVO<R> map(Function<T, R> mapper) {
+        List<R> list = this.getData()
+            .stream()
+            .map(mapper)
+            .collect(Collectors.toList());
+        return new PageVO<>(this, list);
+    }
+
+    public boolean isEmpty() {
+        return CollectionUtils.isEmpty(getData());
+    }
 
     public static <T> PageVO<T> ok(Long total, List<T> data, PageParam param) {
         return of(StatusConst.OK, total, data, param);
