@@ -10,19 +10,19 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>cn.cpoet.blog</groupId>
-  <artifactId>Clever-blog</artifactId>
+  <groupId>cn.cpoet.workspace</groupId>
+  <artifactId>Clever-workspace</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>blog-theme</module>
-    <module>blog-starter</module>
-    <module>blog-auth</module>
-    <module>blog-core</module>
-    <module>blog-api</module>
-    <module>blog-plugin</module>
-    <module>blog-model</module>
-    <module>blog-repo</module>
+    <module>workspace-theme</module>
+    <module>workspace-starter</module>
+    <module>workspace-auth</module>
+    <module>workspace-core</module>
+    <module>workspace-api</module>
+    <module>workspace-plugin</module>
+    <module>workspace-model</module>
+    <module>workspace-repo</module>
   </modules>
 
   <properties>
@@ -34,23 +34,31 @@
     <!-- token -->
     <jjwt.version>0.11.2</jjwt.version>
     <!-- open-api -->
-    <springdoc-openapi.version>1.6.9</springdoc-openapi.version>
-    <!-- mybatis -->
-    <mybatis-spring-boot-starter.version>2.2.1</mybatis-spring-boot-starter.version>
+    <springdoc-openapi-webmvc.version>1.6.9</springdoc-openapi-webmvc.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.mybatis.spring.boot</groupId>
-        <artifactId>mybatis-spring-boot-starter</artifactId>
-        <version>${mybatis-spring-boot-starter.version}</version>
-      </dependency>
-
-      <dependency>
         <groupId>org.javassist</groupId>
         <artifactId>javassist</artifactId>
         <version>${javassist.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-webmvc-core</artifactId>
+        <version>${springdoc-openapi-webmvc.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -75,32 +83,32 @@
 
       <!-- 内部模块 -->
       <dependency>
-        <groupId>cn.cpoet.blog</groupId>
-        <artifactId>blog-api</artifactId>
+        <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-api</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>cn.cpoet.blog</groupId>
-        <artifactId>blog-model</artifactId>
+        <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-model</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>cn.cpoet.blog</groupId>
-        <artifactId>blog-repo</artifactId>
+        <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-repo</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>cn.cpoet.blog</groupId>
-        <artifactId>blog-core</artifactId>
+        <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-core</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>cn.cpoet.blog</groupId>
-        <artifactId>blog-auth</artifactId>
+        <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-auth</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
@@ -113,10 +121,9 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- 使用webflux -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-webflux</artifactId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
     <dependency>
@@ -131,16 +138,15 @@
 
     <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-webflux-core</artifactId>
-      <version>${springdoc-openapi.version}</version>
+      <artifactId>springdoc-openapi-webmvc-core</artifactId>
       <exclusions>
         <exclusion>
-          <artifactId>spring-webflux</artifactId>
           <groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
         </exclusion>
         <exclusion>
-          <artifactId>spring-web</artifactId>
           <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
