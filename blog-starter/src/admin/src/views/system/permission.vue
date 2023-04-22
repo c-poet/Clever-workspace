@@ -247,7 +247,7 @@ dictStore.getDict(BADGE_TYPE).then((dict) => {
 });
 
 function doRefresh() {
-  listPermissionTree().then(handleSuccess);
+  listPermissionTree({}).then(handleSuccess);
 }
 
 function onAddItem() {

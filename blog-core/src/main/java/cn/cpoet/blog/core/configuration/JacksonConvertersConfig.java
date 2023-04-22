@@ -11,11 +11,13 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -106,7 +108,7 @@ public class JacksonConvertersConfig {
                 public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
                     try {
                         Object entity = p.getCurrentValue();
-                        Field field = entity.getClass().getDeclaredField(p.getCurrentName());
+                        Field field = ReflectionUtils.findField(entity.getClass(), p.getCurrentName());
                         Class clazz = field.getType();
                         Class idType = enumHandler.getIdType(clazz);
                         return enumHandler.enumOfId(clazz, p.readValueAs(idType));

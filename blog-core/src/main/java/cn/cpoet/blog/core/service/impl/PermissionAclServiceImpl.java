@@ -39,20 +39,22 @@ public class PermissionAclServiceImpl implements PermissionAclService {
 
     @Override
     public Flux<PermissionAcl> listByPerson(Long userId, Long groupId) {
-        Criteria criteria = null;
+        List<Criteria> criteriaList = new ArrayList<>(2);
         if (userId != null) {
             PermissionAcl personAcl = new PermissionAcl();
             personAcl.setItemId(userId);
             personAcl.setType(PermissionAclType.PERSON_PERMISSION);
-            criteria = Criteria.byExample(personAcl);
+            criteriaList.add(Criteria.byExample(personAcl));
         }
         if (groupId != null) {
             PermissionAcl groupAcl = new PermissionAcl();
             groupAcl.setItemId(groupId);
             groupAcl.setType(PermissionAclType.GROUP_PERMISSION);
-            criteria = criteria == null ? Criteria.byExample(groupAcl) : criteria.orOperator(Criteria.byExample(groupAcl));
+            criteriaList.add(Criteria.byExample(groupAcl));
         }
-        return criteria == null ? Flux.empty() : mongoTemplate.find(Query.query(criteria), PermissionAcl.class);
+        return CollectionUtils.isEmpty(criteriaList)
+            ? Flux.empty()
+            : mongoTemplate.find(Query.query(new Criteria().orOperator(criteriaList)), PermissionAcl.class);
     }
 
     @Override

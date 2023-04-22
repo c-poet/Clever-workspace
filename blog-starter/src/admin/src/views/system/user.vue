@@ -79,17 +79,7 @@
           </el-table-column>
           <el-table-column align="center" label="性别" prop="sex">
             <template #default="scope">
-              <div class="gender-container flex justify-center align-center">
-                <img
-                  class="gender-icon"
-                  :src="
-                    scope.row.sex === 1
-                      ? require('@/assets/icon_sex_man.png')
-                      : require('@/assets/icon_sex_woman.png')
-                  "
-                />
-                <span>{{ scope.row.sex === 0 ? "男" : "女" }}</span>
-              </div>
+              <span>{{ sexList[scope.row.sex]?.desc }}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="用户组" prop="groupName" />
@@ -109,9 +99,9 @@
             <template #default="scope">
               <el-tag
                 size="small"
-                :type="scope.row.locked === 1 ? 'success' : 'danger'"
+                :type="scope.row.locked ? 'danger' : 'success'"
               >
-                {{ scope.row.locked === 1 ? "是" : "否" }}
+                {{ scope.row.locked ? "是" : "否" }}
               </el-tag>
             </template>
           </el-table-column>
@@ -119,9 +109,9 @@
             <template #default="scope">
               <el-tag
                 size="small"
-                :type="scope.row.enabled === 1 ? 'success' : 'danger'"
+                :type="scope.row.enabled ? 'success' : 'danger'"
               >
-                {{ scope.row.enabled === 1 ? "是" : "否" }}
+                {{ scope.row.enabled ? "是" : "否" }}
               </el-tag>
             </template>
           </el-table-column>
@@ -146,7 +136,13 @@
                 @click="onEnableItem(scope.row)"
                 >{{ scope.row.locked === 1 ? "解锁" : "锁定" }}</el-button
               >
-              <el-button plain type="warning" size="small">权限</el-button>
+              <el-button
+                plain
+                type="warning"
+                size="small"
+                @click="showPermissionDialog(scope.row)"
+                >权限</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -163,6 +159,8 @@
       <template #content>
         <el-form
           class="base-form-container"
+          ref="editForm"
+          :rules="rules"
           :model="userModel"
           :inline="true"
           label-width="80px"
@@ -221,11 +219,7 @@
           <el-divider border-style="dashed" content-position="left">
             组织设置
           </el-divider>
-          <el-form-item
-            label-width="100"
-            label="所属用户组"
-            prop="name"
-          >
+          <el-form-item label-width="100" label="所属用户组" prop="name">
             <TreeSelector
               v-model:value="userModel.groupId"
               placeholder="请选择所属用户组"
@@ -258,11 +252,26 @@
           <el-divider content-position="left">其它信息</el-divider>
           <el-form-item label="是否启用" prop="path">
             <el-radio-group v-model="userModel.enabled">
-              <el-radio :label="1">是</el-radio>
-              <el-radio :label="0">否</el-radio>
+              <el-radio :label="true">是</el-radio>
+              <el-radio :label="false">否</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
+      </template>
+    </Dialog>
+    <Dialog ref="permissionDialog" title="功能权限">
+      <template #content>
+        <el-tree
+          ref="permissionTreeRef"
+          :data="permissionTree"
+          show-checkbox
+          node-key="id"
+          :default-expand-all="true"
+        >
+          <template #default="{ data }">
+            <span>{{ data.name }}【{{ data.code }}】</span>
+          </template>
+        </el-tree>
       </template>
     </Dialog>
   </div>
@@ -270,16 +279,27 @@
 
 <script lang="ts" setup>
 import { useDataTable } from "@/hooks";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, nextTick } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { listUser } from "@/api/admin/User.api";
+import {
+  listUser,
+  updateUser,
+  insertUser,
+  deleteUserByIds,
+} from "@/api/admin/User.api";
 import { listGroupTree } from "@/api/admin/Group.api";
+import { listPermissionTree } from "@/api/admin/Permission.api";
+import {
+  savePermissionAcl,
+  listPermissionId,
+} from "@/api/admin/PermissionAcl.api";
 import { UserDTO } from "@/api/admin/models";
-import { DEFAULT_USER } from "@/api/constant";
+import { DEFAULT_USER, PermissionAclType } from "@/api/constant";
 import { SEX } from "@/api/dicts";
 import useDictStore from "@/store/modules/dict";
 import type { DialogType, TableFooter } from "@/components/types";
 import { assign } from "lodash";
+import { User } from "@/api/models";
 
 const dialogRef = ref<DialogType>();
 const tableFooter = ref<TableFooter>();
@@ -294,12 +314,20 @@ const {
   useHeight,
 } = useDataTable<UserModelType>();
 
+const rules = {};
+
 const dictStore = useDictStore();
 const groupTree = ref<Array<any>>([]);
 const isGroupTreeLoaded = ref<boolean>(false);
 const defaultUser = assign({ userPass: "" }, DEFAULT_USER);
 const userModel = reactive<UserDTO>(assign({}, defaultUser));
 const sexList = ref<Array<any>>([]);
+const editForm = ref();
+
+const permissionDialog = ref<DialogType>();
+const permissionTreeRef = ref();
+const permissionTree = ref<Array<any>>([]);
+const isPermissionTreeLoaded = ref<boolean>(false);
 
 dictStore.getDict(SEX).then((dict) => {
   sexList.value = dict;
@@ -308,7 +336,7 @@ dictStore.getDict(SEX).then((dict) => {
 
 const loadGroupTree = async () => {
   if (!isGroupTreeLoaded.value) {
-    const { data } = await listGroupTree();
+    const { data } = await listGroupTree({ enabled: true });
     isGroupTreeLoaded.value = true;
     groupTree.value = data;
   }
@@ -327,21 +355,30 @@ function doRefresh() {
 }
 
 function onDeleteItems() {
-  ElMessageBox.confirm("确定要删除这些用户吗？", "提示")
-    .then(() => {
-      ElMessage.success(
-        "数据模拟删除成功, 参数为：" +
-          JSON.stringify(selectRows.value?.map((it: any) => it.id))
-      );
-    })
-    .catch(console.log);
+  ElMessageBox.confirm("确定要删除这些用户吗？", "提示").then(() => {
+    const ids = selectRows.value?.map((it: any) => it.id);
+    deleteUserByIds(ids as number[]).then(() => {
+      selectRows.value = [];
+      doRefresh();
+    });
+  });
 }
 
 function onAddItem() {
   loadGroupTree();
   assign(userModel, defaultUser);
   dialogRef.value?.show(() => {
-    console.log(userModel);
+    editForm.value.validate((valid: boolean) => {
+      if (valid) {
+        dialogRef.value?.showLoading();
+        insertUser(userModel)
+          .then(() => {
+            doRefresh();
+            dialogRef.value?.close();
+          })
+          .finally(() => dialogRef.value?.closeLoading());
+      }
+    });
   });
 }
 
@@ -349,11 +386,17 @@ function onUpdateItem(item: any) {
   loadGroupTree();
   assign(userModel, defaultUser, item);
   dialogRef.value?.show(() => {
-    dialogRef.value?.showLoading();
-    setTimeout(() => {
-      ElMessage.success("模拟成功, 参数为：" + JSON.stringify(userModel));
-      dialogRef.value?.close();
-    }, 2000);
+    editForm.value.validate((valid: boolean) => {
+      if (valid) {
+        dialogRef.value?.showLoading();
+        updateUser(userModel)
+          .then(({ data }) => {
+            assign(item, data);
+            dialogRef.value?.close();
+          })
+          .finally(() => dialogRef.value?.closeLoading());
+      }
+    });
   });
 }
 
@@ -370,16 +413,35 @@ function onEnableItem(item: any) {
     .catch(console.log);
 }
 
+const loadPermissionTree = async () => {
+  if (!isPermissionTreeLoaded.value) {
+    const { data } = await listPermissionTree({ enabled: true });
+    isPermissionTreeLoaded.value = true;
+    permissionTree.value = data;
+  }
+};
+
+const showPermissionDialog = async (item: User) => {
+  await loadPermissionTree();
+  permissionDialog.value?.show(() => {
+    const data = {
+      itemId: item.id,
+      type: PermissionAclType.PERSON_PERMISSION.id,
+      permissionIds: permissionTreeRef.value.getCheckedKeys(),
+    };
+    savePermissionAcl(data).then(() => {
+      permissionDialog.value?.close();
+    });
+  });
+  const { data } = await listPermissionId(
+    item.id as number,
+    PermissionAclType.PERSON_PERMISSION.id
+  );
+  nextTick(() => permissionTreeRef.value.setCheckedKeys(data));
+};
+
 onMounted(() => {
   doRefresh();
   useHeight();
 });
 </script>
-
-<style lang="scss" scoped>
-.gender-container {
-  .gender-icon {
-    width: 20px;
-  }
-}
-</style>

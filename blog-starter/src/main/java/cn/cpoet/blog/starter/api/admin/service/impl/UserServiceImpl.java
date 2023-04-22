@@ -3,6 +3,8 @@ package cn.cpoet.blog.starter.api.admin.service.impl;
 import cn.cpoet.blog.core.component.UserPassCryptoStrategy;
 import cn.cpoet.blog.core.exception.BusException;
 import cn.cpoet.blog.core.mongo.MongoTemplate;
+import cn.cpoet.blog.core.util.BeanUtil;
+import cn.cpoet.blog.core.util.EditableUtil;
 import cn.cpoet.blog.core.util.UUIDUtil;
 import cn.cpoet.blog.core.vo.PageVO;
 import cn.cpoet.blog.model.domain.User;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author CPoet
@@ -41,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<User> insertUser(UserDTO userDTO) {
+        if (!Objects.equals(userDTO.getUserPass(), userDTO.getConfirmPass())) {
+            throw new BusException("两次输入的密码不一致");
+        }
         userDTO.setSalt(UUIDUtil.random());
         userDTO.setPassword(userPassCryptoStrategy.encode(userDTO, userDTO.getUserPass()));
         userDTO.setBuildIn(Boolean.FALSE);
@@ -49,7 +55,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<User> updateUser(User user) {
-        return userRepository.save(user);
+        return userRepository.findById(user.getId())
+            .map(old -> BeanUtil.copyEditableProperties(user, old))
+            .flatMap(userRepository::save);
     }
 
     @Override

@@ -7,7 +7,7 @@ export const getPermissionById = (id: number) => get({ url: '/api/admin/permisio
 export const listPermission = (data: any) => get({ url: '/api/admin/permission/listPermission', data });
 
 /** 查询权限树 */
-export const listPermissionTree = () => get({ url: '/api/admin/permission/listPermissionTree' });
+export const listPermissionTree = (data: any) => get({ url: '/api/admin/permission/listPermissionTree', data });
 
 /** 新增功能权限 */
 export const insertPermission = (data: any) => post({ url: '/api/admin/permission/insertPermission', data });

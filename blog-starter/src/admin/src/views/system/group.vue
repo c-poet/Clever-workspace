@@ -185,7 +185,7 @@ const permissionTree = ref<Array<any>>([]);
 const isPermissionTreeLoaded = ref<boolean>(false);
 
 function doRefresh() {
-  listGroupTree().then(handleSuccess);
+  listGroupTree({}).then(handleSuccess);
 }
 
 function onAddItem() {
@@ -224,7 +224,7 @@ function onDeleteItem(item: any) {
 
 const loadPermissionTree = async () => {
   if (!isPermissionTreeLoaded.value) {
-    const { data } = await listPermissionTree();
+    const { data } = await listPermissionTree({ enabled: true });
     isPermissionTreeLoaded.value = true;
     permissionTree.value = data;
   }
