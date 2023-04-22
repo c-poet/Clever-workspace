@@ -20,6 +20,7 @@
               type="danger"
               size="small"
               icon="DeleteIcon"
+              :loading="batchDelLoading"
               :disabled="selectRows!.length === 0"
               @click="onDeleteItems"
             >
@@ -85,41 +86,39 @@
           <el-table-column align="center" label="用户组" prop="groupName" />
           <el-table-column
             align="center"
-            label="上次登录时间"
+            label="最近登录时间"
             prop="lastLoginTime"
             width="160px"
           />
           <el-table-column
             align="center"
-            label="上次登录IP"
+            label="最近登录IP"
             prop="lastLoginIp"
             width="130px"
           />
-          <el-table-column align="center" label="是否锁定">
-            <template #default="scope">
-              <el-tag
-                size="small"
-                :type="scope.row.locked ? 'danger' : 'success'"
-              >
-                {{ scope.row.locked ? "是" : "否" }}
-              </el-tag>
+          <el-table-column align="center" label="锁定">
+            <template v-slot="scope">
+              <el-switch
+                v-model="scope.row.locked"
+                :loading="scope.row._lockedLoading"
+                :before-change="() => onLockedItem(scope.row)"
+              />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="是否启用">
-            <template #default="scope">
-              <el-tag
-                size="small"
-                :type="scope.row.enabled ? 'success' : 'danger'"
-              >
-                {{ scope.row.enabled ? "是" : "否" }}
-              </el-tag>
+          <el-table-column align="center" label="启用">
+            <template v-slot="scope">
+              <el-switch
+                v-model="scope.row.enabled"
+                :loading="scope.row._enabledLoading"
+                :before-change="() => onEnabledItem(scope.row)"
+              />
             </template>
           </el-table-column>
           <el-table-column
             align="center"
             label="操作"
             fixed="right"
-            width="220"
+            width="200"
           >
             <template #default="scope">
               <el-button
@@ -128,13 +127,6 @@
                 plain
                 @click="onUpdateItem(scope.row)"
                 >编辑</el-button
-              >
-              <el-button
-                :type="scope.row.status === 1 ? 'warning' : 'success'"
-                size="small"
-                plain
-                @click="onEnableItem(scope.row)"
-                >{{ scope.row.locked === 1 ? "解锁" : "锁定" }}</el-button
               >
               <el-button
                 plain
@@ -278,9 +270,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useDataTable } from "@/hooks";
+import { useDataTable, useLikeSearch } from "@/hooks";
 import { onMounted, reactive, ref, nextTick } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessageBox } from "element-plus";
 import {
   listUser,
   updateUser,
@@ -329,6 +321,8 @@ const permissionTreeRef = ref();
 const permissionTree = ref<Array<any>>([]);
 const isPermissionTreeLoaded = ref<boolean>(false);
 
+const batchDelLoading = ref(false);
+
 dictStore.getDict(SEX).then((dict) => {
   sexList.value = dict;
   defaultUser.sex = dict[0].id;
@@ -357,10 +351,13 @@ function doRefresh() {
 function onDeleteItems() {
   ElMessageBox.confirm("确定要删除这些用户吗？", "提示").then(() => {
     const ids = selectRows.value?.map((it: any) => it.id);
-    deleteUserByIds(ids as number[]).then(() => {
-      selectRows.value = [];
-      doRefresh();
-    });
+    batchDelLoading.value = true;
+    deleteUserByIds(ids as number[])
+      .then(() => {
+        selectRows.value = [];
+        doRefresh();
+      })
+      .finally(() => (batchDelLoading.value = false));
   });
 }
 
@@ -400,17 +397,22 @@ function onUpdateItem(item: any) {
   });
 }
 
-function onEnableItem(item: any) {
-  ElMessageBox.confirm(
-    "确定要" + (item.status === 1 ? "禁用" : "启用") + "此用户吗？",
-    "提示"
-  )
-    .then(() => {
-      ElMessage.success(
-        "模拟成功, 参数为：" + JSON.stringify({ uid: item.id })
-      );
+function onLockedItem(item: any) {
+  item._lockedLoading = true;
+  return updateUser(assign(item, { locked: !item.locked }))
+    .then(({ data }) => {
+      assign(item, data);
     })
-    .catch(console.log);
+    .finally(() => (item._lockedLoading = false));
+}
+
+function onEnabledItem(item: any) {
+  item._enabledLoading = true;
+  return updateUser(assign(item, { enabled: !item.enabled }))
+    .then(({ data }) => {
+      assign(item, data);
+    })
+    .finally(() => (item._enabledLoading = false));
 }
 
 const loadPermissionTree = async () => {
@@ -429,9 +431,12 @@ const showPermissionDialog = async (item: User) => {
       type: PermissionAclType.PERSON_PERMISSION.id,
       permissionIds: permissionTreeRef.value.getCheckedKeys(),
     };
-    savePermissionAcl(data).then(() => {
-      permissionDialog.value?.close();
-    });
+    permissionDialog.value?.showLoading();
+    savePermissionAcl(data)
+      .then(() => {
+        permissionDialog.value?.close();
+      })
+      .finally(() => permissionDialog.value?.close());
   });
   const { data } = await listPermissionId(
     item.id as number,

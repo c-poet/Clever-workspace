@@ -10,11 +10,7 @@
         :current-page="pageModel.currentPage"
         :page-sizes="pageSizes"
         :page-size="pageModel.pageSize"
-        :layout="
-          $isMobile
-            ? 'total, pager, jumper'
-            : 'total, sizes, prev, pager, next, jumper'
-        "
+        :layout="$isMobile ? 'total, pager, jumper' : 'total, sizes, prev, pager, next, jumper'"
         :total="pageModel.totalSize"
         @size-change="pageSizeChanged"
         @current-change="currentChanged"

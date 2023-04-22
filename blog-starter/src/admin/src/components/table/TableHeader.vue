@@ -15,6 +15,7 @@
             effect="dark"
             :content="showArrow ? '点击展开/收起查询条件' : title"
             placement="top"
+            v-if="title !== ''"
           >
             <el-button
               type="text"
@@ -51,13 +52,7 @@
             <el-col
               v-for="(item, index) of row"
               :key="index"
-              :span="
-                $isMobile
-                  ? 24
-                  : row.length === 1 && item.type === 'action'
-                  ? 24
-                  : item.span || 8
-              "
+              :span="$isMobile ? 24 : row.length === 1 && item.type === 'action' ? 24 : item.span || 8"
             >
               <div
                 v-if="item.type === 'input'"
@@ -187,7 +182,7 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: "基本操作",
+      default: "",
     },
     canCollapsed: {
       type: Boolean,
@@ -283,6 +278,10 @@ export default defineComponent({
 }
 
 .table-header-container {
+  :deep(.el-card) {
+    // 隐藏边框，统一表格样式
+    --el-card-border-color: none;
+  }
   .wrapper {
     display: flex;
     flex-direction: row;

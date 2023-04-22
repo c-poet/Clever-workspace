@@ -36,11 +36,13 @@
           </el-table-column>
           <el-table-column align="center" label="编码" prop="code" />
           <el-table-column align="center" label="名称" prop="name" />
-          <el-table-column align="center" label="是否启用">
-            <template #default="scope">
-              <el-tag :type="scope.row.enabled ? '' : 'danger'" size="small">{{
-                scope.row.enabled ? "是" : "否"
-              }}</el-tag>
+          <el-table-column align="center" label="启用">
+            <template v-slot="scope">
+              <el-switch
+                v-model="scope.row.enabled"
+                :loading="scope.row._enabledLoading"
+                :before-change="() => onEnabledItem(scope.row)"
+              />
             </template>
           </el-table-column>
           <el-table-column
@@ -61,6 +63,7 @@
                 plain
                 type="danger"
                 size="small"
+                :loading="scope.row._deleteLoading"
                 @click="onDeleteItem(scope.row)"
                 >删除</el-button
               >
@@ -193,10 +196,11 @@ function onAddItem() {
   dialogRef.value?.show(() => {
     editForm.value.validate((valid: boolean) => {
       if (valid) {
+        dialogRef.value?.showLoading();
         insertGroup(editModel).then(() => {
           doRefresh();
           dialogRef.value?.close();
-        });
+        }).finally(() => dialogRef.value?.closeLoading());
       }
     });
   });
@@ -207,10 +211,11 @@ function onUpdateItem(item: any) {
   dialogRef.value?.show(() => {
     editForm.value.validate((valid: boolean) => {
       if (valid) {
+        dialogRef.value?.showLoading();
         updateGroup(editModel).then(({ data }) => {
           assign(item, data);
           dialogRef.value?.close();
-        });
+        }).finally(() => dialogRef.value?.closeLoading());
       }
     });
   });
@@ -218,8 +223,19 @@ function onUpdateItem(item: any) {
 
 function onDeleteItem(item: any) {
   ElMessageBox.confirm(`确定删除编码为[${item.code}]的用户组？`).then(() => {
-    deleteGroupById(item.id).then(() => doRefresh());
+    item._deleteLoading = true;
+    deleteGroupById(item.id).then(() => doRefresh())
+    .finally(() => item._deleteLoading = false);
   });
+}
+
+function onEnabledItem(item: any) {
+  item._enabledLoading = true;
+  return updateGroup(assign(item, { enabled: !item.enabled }))
+    .then(({ data }) => {
+      assign(item, data);
+    })
+    .finally(() => (item._enabledLoading = false));
 }
 
 const loadPermissionTree = async () => {
@@ -238,9 +254,10 @@ const showPermissionDialog = async (item: Group) => {
       type: PermissionAclType.GROUP_PERMISSION.id,
       permissionIds: permissionTreeRef.value.getCheckedKeys(),
     };
+    permissionDialog.value?.showLoading();
     savePermissionAcl(data).then(() => {
       permissionDialog.value?.close();
-    });
+    }).finally(() => permissionDialog.value?.closeLoading());
   });
   const { data } = await listPermissionId(
     item.id as number,
