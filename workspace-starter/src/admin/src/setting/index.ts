@@ -21,7 +21,7 @@ export const primaryColors = [
   "#008792",
 ];
 
-const projectName = "Clever-Blog";
+const projectName = "Clever-Workspace";
 const version = packageInfo.version;
 
 const defaultSetting = JSON.parse(localStorage.getItem("sys_setting") || "{}");

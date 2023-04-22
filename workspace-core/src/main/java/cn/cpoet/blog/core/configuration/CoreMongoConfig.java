@@ -9,14 +9,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
-import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
-import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.convert.NoOpDbRefResolver;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
-import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.util.Collections;
 
@@ -26,12 +25,12 @@ import java.util.Collections;
  * @author CPoet
  */
 @Configuration
-@EnableReactiveMongoAuditing
-@EnableReactiveMongoRepositories("cn.cpoet.blog.repo.repository")
+@EnableMongoAuditing
+@EnableMongoRepositories("cn.cpoet.blog.repo.repository")
 public class CoreMongoConfig {
 
     @Primary
-    @Bean({"reactiveMongoTemplate", "mongoTemplate"})
+    @Bean("mongoTemplate")
     public MongoTemplate monoTemplate(MongoDatabaseFactory databaseFactory,
                                       MappingMongoConverter mongoConverter,
                                       QueryGeneratorFactory queryGeneratorFactory) {
