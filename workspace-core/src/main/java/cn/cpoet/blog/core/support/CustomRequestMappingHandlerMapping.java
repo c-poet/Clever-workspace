@@ -3,6 +3,7 @@ package cn.cpoet.blog.core.support;
 import cn.cpoet.blog.core.module.Mapping;
 import cn.cpoet.blog.core.module.Module;
 import cn.cpoet.blog.core.module.ModuleHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -14,6 +15,7 @@ import java.util.function.Predicate;
 /**
  * @author CPoet
  */
+@Component
 public class CustomRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
 
     private final static String PATH_SEPARATOR = "/";

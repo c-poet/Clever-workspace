@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @ComponentScan("cn.cpoet.blog.core")
 public class CoreConfig implements WebMvcConfigurer {
+
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.removeConvertible(String.class, Enum.class);
