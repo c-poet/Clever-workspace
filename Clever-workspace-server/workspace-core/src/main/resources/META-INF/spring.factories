@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.cpoet.blog.core.configuration.CoreConfig
+  cn.cpoet.workspace.core.configuration.CoreConfig
