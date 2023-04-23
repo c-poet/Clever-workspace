@@ -17,7 +17,6 @@ import ACheckboxGroup from './ACheckboxGroup';
 import AButton from './AButton';
 import AButtonGroup from './AButtonGroup';
 import AApiSelect from './AApiSelect';
-import AApiTreeSelect from './AApiTreeSelect';
 import AEmpty from './AEmpty';
 import AInputSearch from './AInputSearch';
 import AYearPicker from './AYearPicker';
@@ -95,7 +94,6 @@ export const VXETablePluginAntd = {
       AButton,
       AButtonGroup,
       AApiSelect,
-      AApiTreeSelect,
       AEmpty,
       AInputSearch,
       AYearPicker,

@@ -47,7 +47,7 @@
         return score;
       });
 
-      function handleChange(e) {
+      function handleChange(e: ChangeEvent) {
         innerValueRef.value = e.target.value;
       }
 
@@ -79,21 +79,21 @@
       position: relative;
       height: 6px;
       margin: 10px auto 6px;
-      border-radius: 6px;
       background-color: @disabled-color;
+      border-radius: 6px;
 
       &::before,
       &::after {
-        content: '';
-        display: block;
         position: absolute;
         z-index: 10;
+        display: block;
         width: 20%;
         height: inherit;
-        border-width: 0 5px;
-        border-style: solid;
-        border-color: @white;
         background-color: transparent;
+        border-color: @white;
+        border-style: solid;
+        border-width: 0 5px;
+        content: '';
       }
 
       &::before {
@@ -108,9 +108,9 @@
         position: absolute;
         width: 0;
         height: inherit;
-        transition: width 0.5s ease-in-out, background 0.25s;
-        border-radius: inherit;
         background-color: transparent;
+        border-radius: inherit;
+        transition: width 0.5s ease-in-out, background 0.25s;
 
         &[data-score='0'] {
           width: 20%;

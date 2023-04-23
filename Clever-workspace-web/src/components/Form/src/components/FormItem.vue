@@ -1,5 +1,4 @@
 <script lang="tsx">
-  import { type Recordable, type Nullable } from '@vben/types';
   import type { PropType, Ref } from 'vue';
   import { computed, defineComponent, toRefs, unref } from 'vue';
   import type { FormActionType, FormProps, FormSchema } from '../types/form';
@@ -10,11 +9,7 @@
   import { BasicHelp } from '/@/components/Basic';
   import { isBoolean, isFunction, isNull } from '/@/utils/is';
   import { getSlot } from '/@/utils/helper/tsxHelper';
-  import {
-    createPlaceholderMessage,
-    NO_AUTO_LINK_COMPONENTS,
-    setComponentRuleType,
-  } from '../helper';
+  import { createPlaceholderMessage, setComponentRuleType } from '../helper';
   import { cloneDeep, upperFirst } from 'lodash-es';
   import { useItemLabelWidth } from '../hooks/useLabelWidth';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -32,11 +27,11 @@
         default: () => ({}),
       },
       allDefaultValues: {
-        type: Object as PropType<Recordable<any>>,
+        type: Object as PropType<Recordable>,
         default: () => ({}),
       },
       formModel: {
-        type: Object as PropType<Recordable<any>>,
+        type: Object as PropType<Recordable>,
         default: () => ({}),
       },
       setFormModel: {
@@ -73,7 +68,7 @@
             ...mergeDynamicData,
             ...allDefaultValues,
             ...formModel,
-          } as Recordable<any>,
+          } as Recordable,
           schema: schema,
         };
       });
@@ -94,7 +89,7 @@
             componentProps,
           );
         }
-        return componentProps as Recordable<any>;
+        return componentProps as Recordable;
       });
 
       const getDisable = computed(() => {
@@ -236,7 +231,7 @@
         if (characterInx !== -1 && !rules[characterInx].validator) {
           rules[characterInx].message =
             rules[characterInx].message ||
-            t('component.form.maxTip', [rules[characterInx].max] as Recordable<any>);
+            t('component.form.maxTip', [rules[characterInx].max] as Recordable);
         }
         return rules;
       }
@@ -255,7 +250,7 @@
         const eventKey = `on${upperFirst(changeEvent)}`;
 
         const on = {
-          [eventKey]: (...args: Nullable<Recordable<any>>[]) => {
+          [eventKey]: (...args: Nullable<Recordable>[]) => {
             const [e] = args;
             if (propsData[eventKey]) {
               propsData[eventKey](...args);
@@ -268,7 +263,7 @@
         const Comp = componentMap.get(component) as ReturnType<typeof defineComponent>;
 
         const { autoSetPlaceHolder, size } = props.formProps;
-        const propsData: Recordable<any> = {
+        const propsData: Recordable = {
           allowClear: true,
           getPopupContainer: (trigger: Element) => trigger.parentNode,
           size,
@@ -285,11 +280,11 @@
         propsData.codeField = field;
         propsData.formValues = unref(getValues);
 
-        const bindValue: Recordable<any> = {
+        const bindValue: Recordable = {
           [valueField || (isCheck ? 'checked' : 'value')]: props.formModel[field],
         };
 
-        const compAttr: Recordable<any> = {
+        const compAttr: Recordable = {
           ...propsData,
           ...on,
           ...bindValue,
@@ -352,21 +347,12 @@
           const showSuffix = !!suffix;
           const getSuffix = isFunction(suffix) ? suffix(unref(getValues)) : suffix;
 
-          // TODO 自定义组件验证会出现问题，因此这里框架默认将自定义组件设置手动触发验证，如果其他组件还有此问题请手动设置autoLink=false
-          if (NO_AUTO_LINK_COMPONENTS.includes(component)) {
-            props.schema &&
-              (props.schema.itemProps! = {
-                autoLink: false,
-                ...props.schema.itemProps,
-              });
-          }
-
           return (
             <Form.Item
               name={field}
               colon={colon}
               class={{ 'suffix-item': showSuffix }}
-              {...(itemProps as Recordable<any>)}
+              {...(itemProps as Recordable)}
               label={renderLabelHelpMessage()}
               rules={handleRules()}
               labelCol={labelCol}

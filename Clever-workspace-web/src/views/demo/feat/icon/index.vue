@@ -64,8 +64,7 @@
     CodepenCircleFilled,
   } from '@ant-design/icons-vue';
 
-  import { IconPicker, SvgIcon } from '/@/components/Icon/index';
-  import Icon from '/@/components/Icon/Icon.vue';
+  import { Icon, IconPicker, SvgIcon } from '/@/components/Icon/index';
 
   import { openWindow } from '/@/utils';
   import { PageWrapper } from '/@/components/Page';

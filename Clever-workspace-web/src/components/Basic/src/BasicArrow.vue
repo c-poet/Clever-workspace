@@ -9,7 +9,7 @@
 </template>
 <script lang="ts" setup>
   import { computed } from 'vue';
-  import Icon from '@/components/Icon/Icon.vue';
+  import { Icon } from '/@/components/Icon';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   const props = defineProps({
@@ -52,10 +52,10 @@
 
   .@{prefix-cls} {
     display: inline-block;
-    transform: rotate(0deg);
-    transform-origin: center center;
-    transition: all 0.3s ease 0.1s;
     cursor: pointer;
+    transform: rotate(0deg);
+    transition: all 0.3s ease 0.1s;
+    transform-origin: center center;
 
     &--active {
       transform: rotate(90deg);

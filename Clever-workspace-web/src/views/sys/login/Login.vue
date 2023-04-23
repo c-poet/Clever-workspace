@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls" class="relative w-full h-full px-4">
     <div class="flex items-center absolute right-4 top-4">
-      <!-- <AppDarkModeToggle class="enter-x mr-2" v-if="!sessionTimeout" /> -->
+      <AppDarkModeToggle class="enter-x mr-2" v-if="!sessionTimeout" />
       <AppLocalePicker
         class="text-white enter-x xl:text-gray-600"
         :show-text="false"
@@ -50,7 +50,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue';
   import { AppLogo } from '/@/components/Application';
-  import { AppLocalePicker } from '/@/components/Application';
+  import { AppLocalePicker, AppDarkModeToggle } from '/@/components/Application';
   import LoginForm from './LoginForm.vue';
   import ForgetPasswordForm from './ForgetPasswordForm.vue';
   import RegisterForm from './RegisterForm.vue';
@@ -85,7 +85,7 @@
       background-color: @dark-bg;
 
       &::before {
-        background-image: url('/@/assets/svg/login-bg-dark.svg');
+        background-image: url(/@/assets/svg/login-bg-dark.svg);
       }
 
       .ant-input,
@@ -93,7 +93,7 @@
         background-color: #232a3b;
       }
 
-      .ant-btn:not(.ant-btn-link, .ant-btn-primary) {
+      .ant-btn:not(.ant-btn-link):not(.ant-btn-primary) {
         border: 1px solid #4a5569;
       }
 
@@ -116,7 +116,6 @@
   .@{prefix-cls} {
     min-height: 100%;
     overflow: hidden;
-
     @media (max-width: @screen-xl) {
       background-color: #293146;
 
@@ -126,18 +125,17 @@
     }
 
     &::before {
-      content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       margin-left: -48%;
-      background-image: url('/@/assets/svg/login-bg.svg');
-      background-repeat: no-repeat;
+      background-image: url(/@/assets/svg/login-bg.svg);
       background-position: 100%;
+      background-repeat: no-repeat;
       background-size: auto 100%;
-
+      content: '';
       @media (max-width: @screen-xl) {
         display: none;
       }
@@ -149,8 +147,8 @@
       height: 30px;
 
       &__title {
-        color: #fff;
         font-size: 16px;
+        color: #fff;
       }
 
       img {
@@ -165,8 +163,8 @@
         height: 80px;
 
         &__title {
-          color: #fff;
           font-size: 24px;
+          color: #fff;
         }
 
         img {
@@ -177,8 +175,8 @@
 
     &-sign-in-way {
       .anticon {
-        color: #888;
         font-size: 22px;
+        color: #888;
         cursor: pointer;
 
         &:hover {
@@ -212,8 +210,8 @@
     }
 
     .ant-divider-inner-text {
-      color: @text-color-secondary;
       font-size: 12px;
+      color: @text-color-secondary;
     }
   }
 </style>

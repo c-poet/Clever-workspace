@@ -36,19 +36,19 @@ export const useAppStore = defineStore({
     beforeMiniInfo: {},
   }),
   getters: {
-    getPageLoading(state): boolean {
-      return state.pageLoading;
+    getPageLoading(): boolean {
+      return this.pageLoading;
     },
-    getDarkMode(state): 'light' | 'dark' | string {
-      return state.darkMode || localStorage.getItem(APP_DARK_MODE_KEY_) || darkMode;
-    },
-
-    getBeforeMiniInfo(state): BeforeMiniState {
-      return state.beforeMiniInfo;
+    getDarkMode(): 'light' | 'dark' | string {
+      return this.darkMode || localStorage.getItem(APP_DARK_MODE_KEY_) || darkMode;
     },
 
-    getProjectConfig(state): ProjectConfig {
-      return state.projectConfig || ({} as ProjectConfig);
+    getBeforeMiniInfo(): BeforeMiniState {
+      return this.beforeMiniInfo;
+    },
+
+    getProjectConfig(): ProjectConfig {
+      return this.projectConfig || ({} as ProjectConfig);
     },
 
     getHeaderSetting(): HeaderSetting {

@@ -16,7 +16,7 @@
     subTitle: string;
     btnText?: string;
     icon?: string;
-    handler?: any;
+    handler?: Fn;
     status?: string;
   }
 
@@ -135,8 +135,8 @@
 
   .@{prefix-cls} {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
 
     .ant-result-icon {
       img {

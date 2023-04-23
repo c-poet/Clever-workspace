@@ -19,7 +19,6 @@
   </a-cascader>
 </template>
 <script lang="ts">
-  import { type Recordable } from '@vben/types';
   import { defineComponent, PropType, ref, unref, watch, watchEffect } from 'vue';
   import { Cascader } from 'ant-design-vue';
   import { propTypes } from '/@/utils/propTypes';
@@ -28,7 +27,6 @@
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { LoadingOutlined } from '@ant-design/icons-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
-
   interface Option {
     value: string;
     label: string;
@@ -47,7 +45,7 @@
         type: Array,
       },
       api: {
-        type: Function as PropType<(arg?: Recordable<any>) => Promise<Option[]>>,
+        type: Function as PropType<(arg?: Recordable) => Promise<Option[]>>,
         default: null,
       },
       numberToString: propTypes.bool,
@@ -59,12 +57,12 @@
       immediate: propTypes.bool.def(true),
       // init fetch params
       initFetchParams: {
-        type: Object as PropType<Recordable<any>>,
+        type: Object as PropType<Recordable>,
         default: () => ({}),
       },
       // 是否有下级，默认是
       isLeaf: {
-        type: Function as PropType<(arg: Recordable<any>) => boolean>,
+        type: Function as PropType<(arg: Recordable) => boolean>,
         default: null,
       },
       displayRenderArray: {
@@ -93,7 +91,7 @@
 
       function generatorOptions(options: any[]): Option[] {
         const { labelField, valueField, numberToString, childrenField, isLeaf } = props;
-        return options.reduce((prev, next: Recordable<any>) => {
+        return options.reduce((prev, next: Recordable) => {
           if (next) {
             const value = next[valueField];
             const item = {

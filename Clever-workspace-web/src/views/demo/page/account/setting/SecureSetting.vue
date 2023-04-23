@@ -37,11 +37,11 @@
 </script>
 <style lang="less" scoped>
   .extra {
+    float: right;
     margin-top: 10px;
     margin-right: 30px;
-    float: right;
-    color: #1890ff;
     font-weight: normal;
+    color: #1890ff;
     cursor: pointer;
   }
 </style>

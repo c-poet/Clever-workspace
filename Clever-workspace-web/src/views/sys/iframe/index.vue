@@ -14,7 +14,7 @@
   import type { CSSProperties } from 'vue';
   import { ref, unref, computed } from 'vue';
   import { Spin } from 'ant-design-vue';
-  import { useWindowSizeFn } from '@vben/hooks';
+  import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { propTypes } from '/@/utils/propTypes';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLayoutHeight } from '/@/layouts/default/content/useContentViewHeight';
@@ -30,7 +30,7 @@
   const { headerHeightRef } = useLayoutHeight();
 
   const { prefixCls } = useDesign('iframe-page');
-  useWindowSizeFn(calcHeight, { wait: 150, immediate: true });
+  useWindowSizeFn(calcHeight, 150, { immediate: true });
 
   const getWrapStyle = computed((): CSSProperties => {
     return {
@@ -79,12 +79,12 @@
     }
 
     &__main {
-      box-sizing: border-box;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      border: 0;
       background-color: @component-background;
+      border: 0;
+      box-sizing: border-box;
     }
   }
 </style>

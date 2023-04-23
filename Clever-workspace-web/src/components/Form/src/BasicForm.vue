@@ -64,6 +64,7 @@
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { cloneDeep } from 'lodash-es';
+  import { isFunction, isArray } from '/@/utils/is';
 
   export default defineComponent({
     name: 'BasicForm',
@@ -71,7 +72,7 @@
     props: basicProps,
     emits: ['advanced-change', 'reset', 'submit', 'register', 'field-value-change'],
     setup(props, { emit, attrs }) {
-      const formModel = reactive({});
+      const formModel = reactive<Recordable>({});
       const modalFn = useModalContext();
 
       const advanceState = reactive<AdvanceState>({
@@ -81,17 +82,17 @@
         actionSpan: 6,
       });
 
-      const defaultValueRef = ref({});
+      const defaultValueRef = ref<Recordable>({});
       const isInitedDefaultRef = ref(false);
       const propsRef = ref<Partial<FormProps>>({});
-      const schemaRef = ref<FormSchema[] | null>(null);
-      const formElRef = ref<FormActionType | null>(null);
+      const schemaRef = ref<Nullable<FormSchema[]>>(null);
+      const formElRef = ref<Nullable<FormActionType>>(null);
 
       const { prefixCls } = useDesign('basic-form');
 
       // Get the basic configuration of the form
       const getProps = computed((): FormProps => {
-        return { ...props, ...unref(propsRef) };
+        return { ...props, ...unref(propsRef) } as FormProps;
       });
 
       const getFormClass = computed(() => {
@@ -104,7 +105,7 @@
       });
 
       // Get uniform row style and Row configuration for the entire form
-      const getRow = computed(() => {
+      const getRow = computed((): Recordable => {
         const { baseRowStyle = {}, rowProps } = unref(getProps);
         return {
           style: baseRowStyle,
@@ -112,7 +113,9 @@
         };
       });
 
-      const getBindValue = computed(() => ({ ...attrs, ...props, ...unref(getProps) }));
+      const getBindValue = computed(
+        () => ({ ...attrs, ...props, ...unref(getProps) } as Recordable),
+      );
 
       const getSchema = computed((): FormSchema[] => {
         const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
@@ -242,11 +245,14 @@
 
       function setFormModel(key: string, value: any, schema: FormSchema) {
         formModel[key] = value;
-        emit('field-value-change', key, value);
-        // TODO 优化验证，这里如果是autoLink=false手动关联的情况下才会再次触发此函数
-        if (schema && schema.itemProps && !schema.itemProps.autoLink) {
+        const { validateTrigger } = unref(getBindValue);
+        if (isFunction(schema.dynamicRules) || isArray(schema.rules)) {
+          return;
+        }
+        if (!validateTrigger || validateTrigger === 'change') {
           validateFields([key]).catch((_) => {});
         }
+        emit('field-value-change', key, value);
       }
 
       function handleEnterPress(e: KeyboardEvent) {
@@ -295,7 +301,9 @@
         formActionType: formActionType as any,
         setFormModel,
         getFormClass,
-        getFormActionBindProps: computed(() => ({ ...getProps.value, ...advanceState })),
+        getFormActionBindProps: computed(
+          (): Recordable => ({ ...getProps.value, ...advanceState }),
+        ),
         fieldsIsAdvancedMap,
         ...formActionType,
       };
@@ -330,10 +338,10 @@
 
         .suffix {
           display: inline-flex;
-          align-items: center;
-          margin-top: 1px;
           padding-left: 6px;
+          margin-top: 1px;
           line-height: 1;
+          align-items: center;
         }
       }
     }

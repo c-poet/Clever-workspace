@@ -1,4 +1,5 @@
-import { BasicColumn, FormSchema } from '/@/components/Table';
+import { BasicColumn } from '/@/components/Table';
+import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Switch } from 'ant-design-vue';
 import { setRoleStatus } from '/@/api/demo/system';

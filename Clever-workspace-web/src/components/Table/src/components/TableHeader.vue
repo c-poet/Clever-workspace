@@ -40,7 +40,7 @@
     },
     props: {
       title: {
-        type: [Function, String] as PropType<string | ((data) => string)>,
+        type: [Function, String] as PropType<string | ((data: Recordable) => string)>,
       },
       tableSetting: {
         type: Object as PropType<TableSetting>,
@@ -68,8 +68,8 @@
 
   .@{prefix-cls} {
     &__toolbar {
-      display: flex;
       flex: 1;
+      display: flex;
       align-items: center;
       justify-content: flex-end;
 

@@ -1,5 +1,6 @@
 import { ComputedRef, isRef, nextTick, Ref, ref, unref, watch } from 'vue';
-import { onMountedOrActivated, useWindowSizeFn } from '@vben/hooks';
+import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
+import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
 import { useLayoutHeight } from '/@/layouts/default/content/useContentViewHeight';
 import { getViewportOffset } from '/@/utils/domUtils';
 import { isNumber, isString } from '/@/utils/is';
@@ -172,7 +173,8 @@ export function useContentHeight(
     () => {
       calcContentHeight();
     },
-    { wait: 50, immediate: true },
+    50,
+    { immediate: true },
   );
   watch(
     () => [layoutFooterHeightRef.value],

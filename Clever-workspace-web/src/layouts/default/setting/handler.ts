@@ -5,6 +5,7 @@ import { updateGrayMode } from '/@/logics/theme/updateGrayMode';
 
 import { useAppStore } from '/@/store/modules/app';
 import { ProjectConfig } from '/#/config';
+import { changeTheme } from '/@/logics/theme';
 import { updateDarkTheme } from '/@/logics/theme/dark';
 import { useRootSetting } from '/@/hooks/setting/useRootSetting';
 
@@ -42,6 +43,7 @@ export function handler(event: HandlerEnum, value: any): DeepPartial<ProjectConf
       if (getThemeColor.value === value) {
         return {};
       }
+      changeTheme(value);
 
       return { themeColor: value };
 

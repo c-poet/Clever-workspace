@@ -19,10 +19,10 @@
 <style lang="less">
   .thumb {
     img {
-      display: block;
       position: static;
-      border-radius: 4px;
+      display: block;
       cursor: zoom-in;
+      border-radius: 4px;
       object-fit: cover;
     }
   }

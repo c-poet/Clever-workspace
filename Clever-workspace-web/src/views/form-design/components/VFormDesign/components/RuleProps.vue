@@ -38,7 +38,7 @@
   import { useFormDesignState } from '../../../hooks/useFormDesignState';
   import { isArray } from 'lodash-es';
   import { Form, FormItem, AutoComplete, Input } from 'ant-design-vue';
-  import Icon from '@/components/Icon/Icon.vue';
+  import Icon from '/@/components/Icon';
 
   export default defineComponent({
     name: 'RuleProps',
@@ -253,9 +253,9 @@
   :deep(.icon) {
     width: 1em;
     height: 1em;
-    overflow: hidden;
-    fill: currentcolor;
     vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
   }
 
   .rule-props-content {
@@ -265,10 +265,10 @@
 
     .rule-props-item {
       position: relative;
-      margin-bottom: 5px;
+      background-color: #f0eded;
       padding: 3px 2px;
       border-radius: 5px;
-      background-color: #f0eded;
+      margin-bottom: 5px;
 
       :deep(.ant-form-item) {
         border: 0 !important;
@@ -276,13 +276,13 @@
 
       &-close {
         position: absolute;
-        z-index: 999;
         top: -5px;
         right: -5px;
-        border-radius: 7px;
-        background-color: #a3a0a0;
         color: #ccc;
         cursor: pointer;
+        border-radius: 7px;
+        background-color: #a3a0a0;
+        z-index: 999;
 
         &:hover {
           color: #00c;

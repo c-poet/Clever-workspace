@@ -1,6 +1,5 @@
 import type { Directive } from 'vue';
 import './index.less';
-
 export interface RippleOptions {
   event: string;
   transition: number;

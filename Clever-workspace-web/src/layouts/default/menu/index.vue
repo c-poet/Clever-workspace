@@ -33,7 +33,7 @@
       isHorizontal: propTypes.bool,
       // menu Mode
       menuMode: {
-        type: [String] as PropType<MenuModeEnum | null>,
+        type: [String] as PropType<Nullable<MenuModeEnum>>,
         default: '',
       },
     },
@@ -189,7 +189,7 @@
     &--mobile {
       .@{logo-prefix-cls} {
         &__title {
-          opacity: 1;
+          opacity: 100%;
         }
       }
     }

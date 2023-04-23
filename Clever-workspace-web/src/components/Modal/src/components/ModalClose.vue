@@ -66,8 +66,8 @@
   @prefix-cls: ~'@{namespace}-basic-modal-close';
   .@{prefix-cls} {
     display: flex;
-    align-items: center;
     height: 95%;
+    align-items: center;
 
     > span {
       margin-left: 48px;

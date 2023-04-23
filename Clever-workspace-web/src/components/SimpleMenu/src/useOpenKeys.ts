@@ -1,9 +1,13 @@
 import type { Menu as MenuType } from '/@/router/types';
 import type { MenuState } from './types';
-import { computed, Ref, toRaw, unref } from 'vue';
+
+import { computed, Ref, toRaw } from 'vue';
+
+import { unref } from 'vue';
 import { uniq } from 'lodash-es';
 import { getAllParentPath } from '/@/router/helper/menuHelper';
-import { useTimeoutFn } from '@vben/hooks';
+
+import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { useDebounceFn } from '@vueuse/core';
 
 export function useOpenKeys(
@@ -17,27 +21,25 @@ export function useOpenKeys(
   async function setOpenKeys(path: string) {
     const native = !mixSider.value;
     const menuList = toRaw(menus.value);
+    useTimeoutFn(
+      () => {
+        if (menuList?.length === 0) {
+          menuState.activeSubMenuNames = [];
+          menuState.openNames = [];
+          return;
+        }
+        const keys = getAllParentPath(menuList, path);
 
-    const handle = () => {
-      if (menuList?.length === 0) {
-        menuState.activeSubMenuNames = [];
-        menuState.openNames = [];
-        return;
-      }
-      const keys = getAllParentPath(menuList, path);
-
-      if (!unref(accordion)) {
-        menuState.openNames = uniq([...menuState.openNames, ...keys]);
-      } else {
-        menuState.openNames = keys;
-      }
-      menuState.activeSubMenuNames = menuState.openNames;
-    };
-    if (native) {
-      handle();
-    } else {
-      useTimeoutFn(handle, 30);
-    }
+        if (!unref(accordion)) {
+          menuState.openNames = uniq([...menuState.openNames, ...keys]);
+        } else {
+          menuState.openNames = keys;
+        }
+        menuState.activeSubMenuNames = menuState.openNames;
+      },
+      30,
+      native,
+    );
   }
 
   const getOpenKeys = computed(() => {

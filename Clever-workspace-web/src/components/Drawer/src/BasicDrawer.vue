@@ -52,7 +52,7 @@
   import { ScrollContainer } from '/@/components/Container';
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useAttrs } from '@vben/hooks';
+  import { useAttrs } from '/@/hooks/core/useAttrs';
 
   export default defineComponent({
     components: { Drawer, ScrollContainer, DrawerFooter, DrawerHeader },
@@ -62,13 +62,13 @@
     setup(props, { emit }) {
       const visibleRef = ref(false);
       const attrs = useAttrs();
-      const propsRef = ref<Partial<DrawerProps | null>>(null);
+      const propsRef = ref<Partial<Nullable<DrawerProps>>>(null);
 
       const { t } = useI18n();
       const { prefixVar, prefixCls } = useDesign('basic-drawer');
 
       const drawerInstance: DrawerInstance = {
-        setDrawerProps: setDrawerProps as any,
+        setDrawerProps: setDrawerProps,
         emitVisible: undefined,
       };
 
@@ -77,7 +77,7 @@
       instance && emit('register', drawerInstance, instance.uid);
 
       const getMergeProps = computed((): DrawerProps => {
-        return deepMerge(toRaw(props), unref(propsRef)) as any;
+        return deepMerge(toRaw(props), unref(propsRef));
       });
 
       const getProps = computed((): DrawerProps => {
@@ -153,7 +153,7 @@
       );
 
       // Cancel event
-      async function onClose(e) {
+      async function onClose(e: Recordable) {
         const { closeFunc } = unref(getProps);
         emit('close', e);
         if (closeFunc && isFunction(closeFunc)) {
@@ -215,8 +215,8 @@
       background-color: @component-background;
 
       .scrollbar__wrap {
-        margin-bottom: 0 !important;
         padding: 16px !important;
+        margin-bottom: 0 !important;
       }
 
       > .scrollbar > .scrollbar__bar.is-horizontal {
@@ -229,11 +229,11 @@
     position: absolute;
 
     .ant-drawer-header {
-      box-sizing: border-box;
       width: 100%;
       height: @detail-header-height;
       padding: 0;
       border-top: 1px solid @border-color-base;
+      box-sizing: border-box;
     }
 
     .ant-drawer-title {

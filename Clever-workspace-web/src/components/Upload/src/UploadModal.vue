@@ -180,7 +180,7 @@
         }
         try {
           item.status = UploadResultStatus.UPLOADING;
-          const ret = await props.api?.(
+          const { data } = await props.api?.(
             {
               data: {
                 ...(props.uploadParams || {}),
@@ -194,7 +194,6 @@
               item.percent = complete;
             },
           );
-          const { data } = ret;
           item.status = UploadResultStatus.SUCCESS;
           item.responseData = data;
           return {
@@ -314,9 +313,9 @@
       margin-bottom: 8px;
 
       &__btn {
-        flex: 1;
         margin-left: 8px;
         text-align: right;
+        flex: 1;
       }
     }
   }

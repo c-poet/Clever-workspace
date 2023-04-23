@@ -1,5 +1,5 @@
 <template>
-  <div :class="prefixCls">
+  <div>
     <draggable
       tag="ul"
       :model-value="list"
@@ -34,25 +34,23 @@
   import { defineComponent, reactive } from 'vue';
   import { IVFormComponent } from '../../../typings/v-form-component';
   import draggable from 'vuedraggable';
-  import Icon from '@/components/Icon/Icon.vue';
-  import { useDesign } from '/@/hooks/web/useDesign';
+  // import { toRefs } from '@vueuse/core';
+  import { Icon } from '/@/components/Icon';
 
   export default defineComponent({
     name: 'CollapseItem',
     components: { draggable, Icon },
     props: {
       list: {
-        type: [Array],
+        type: [Array] as PropType<IVFormComponent[]>,
         default: () => [],
       },
       handleListPush: {
-        type: Function,
+        type: Function as PropType<(item: IVFormComponent) => void>,
         default: null,
       },
     },
     setup(props, { emit }) {
-      const { prefixCls } = useDesign('form-design-collapse-item');
-
       const state = reactive({});
       const handleStart = (e: any, list1: IVFormComponent[]) => {
         emit('start', list1[e.oldIndex].component);
@@ -65,48 +63,44 @@
       const cloneItem = (one) => {
         return props.handleListPush(one);
       };
-      return { prefixCls, state, handleStart, handleAdd, cloneItem };
+      return { state, handleStart, handleAdd, cloneItem };
     },
   });
 </script>
 
 <style lang="less" scoped>
-  @prefix-cls: ~'@{namespace}-form-design-collapse-item';
+  @import url(../styles/variable.less);
 
-  @import url('../styles/variable.less');
+  ul {
+    padding: 5px;
+    list-style: none;
+    display: flex;
+    margin-bottom: 0;
+    flex-wrap: wrap;
+    // background: #efefef;
 
-  .@{prefix-cls} {
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      margin-bottom: 0;
-      padding: 5px;
-      list-style: none;
-      // background: #efefef;
+    li {
+      padding: 8px 12px;
+      transition: all 0.3s;
+      width: calc(50% - 6px);
+      margin: 2.7px;
+      height: 36px;
+      line-height: 20px;
+      cursor: move;
+      border: 1px solid @border-color;
+      border-radius: 3px;
 
-      li {
-        width: calc(50% - 6px);
-        height: 36px;
-        margin: 2.7px;
-        padding: 8px 12px;
-        transition: all 0.3s;
-        border: 1px solid @border-color;
-        border-radius: 3px;
-        line-height: 20px;
-        cursor: move;
-
-        &:hover {
-          position: relative;
-          border: 1px solid @primary-color;
-          // z-index: 1;
-          box-shadow: 0 2px 6px @primary-color;
-          color: @primary-color;
-        }
+      &:hover {
+        color: @primary-color;
+        border: 1px solid @primary-color;
+        position: relative;
+        // z-index: 1;
+        box-shadow: 0 2px 6px @primary-color;
       }
     }
+  }
 
-    svg {
-      display: inline !important;
-    }
+  svg {
+    display: inline !important;
   }
 </style>

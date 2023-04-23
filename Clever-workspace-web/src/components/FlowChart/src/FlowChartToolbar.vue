@@ -19,7 +19,7 @@
 
   import { defineComponent, ref, onUnmounted, unref, nextTick, watchEffect } from 'vue';
   import { Divider, Tooltip } from 'ant-design-vue';
-  import Icon from '@/components/Icon/Icon.vue';
+  import { Icon } from '/@/components/Icon';
 
   import { useFlowChartContext } from './useFlowContext';
   import { ToolbarTypeEnum } from './enum';
@@ -142,8 +142,8 @@
   }
   .@{prefix-cls} {
     height: 36px;
-    border-bottom: 1px solid @border-color-base;
     background-color: @app-content-background;
+    border-bottom: 1px solid @border-color-base;
 
     .disabeld {
       color: @disabled-color;
@@ -151,8 +151,8 @@
 
     &__icon {
       display: inline-block;
-      margin-right: 10px;
       padding: 2px 4px;
+      margin-right: 10px;
 
       &:hover {
         color: @primary-color;

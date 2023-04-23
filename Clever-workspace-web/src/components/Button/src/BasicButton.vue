@@ -8,18 +8,20 @@
   </Button>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
+  import { defineComponent } from 'vue';
   import { Button } from 'ant-design-vue';
-  import { computed, unref } from 'vue';
-  import Icon from '@/components/Icon/Icon.vue';
-  import { buttonProps } from './props';
-  import { useAttrs } from '@vben/hooks';
-
-  defineOptions({
+  export default defineComponent({
     name: 'AButton',
     extends: Button,
     inheritAttrs: false,
   });
+</script>
+<script lang="ts" setup>
+  import { computed, unref } from 'vue';
+  import Icon from '/@/components/Icon/src/Icon.vue';
+  import { buttonProps } from './props';
+  import { useAttrs } from '/@/hooks/core/useAttrs';
 
   const props = defineProps(buttonProps);
   // get component class

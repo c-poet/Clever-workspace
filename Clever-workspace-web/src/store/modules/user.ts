@@ -6,8 +6,10 @@ import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi } from '/@/api/sys/user';
+import { GetUserInfoModel } from '/@/api/sys/model/userModel';
+import { doLogout, getUserInfo } from '/@/api/sys/user';
+import { login } from '/@/api/admin/Auth';
+import { LoginDTO } from '/@/api/admin/models';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
@@ -40,20 +42,20 @@ export const useUserStore = defineStore({
     lastUpdateTime: 0,
   }),
   getters: {
-    getUserInfo(state): UserInfo {
-      return state.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
+    getUserInfo(): UserInfo {
+      return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
     },
-    getToken(state): string {
-      return state.token || getAuthCache<string>(TOKEN_KEY);
+    getToken(): string {
+      return this.token || getAuthCache<string>(TOKEN_KEY);
     },
-    getRoleList(state): RoleEnum[] {
-      return state.roleList.length > 0 ? state.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
+    getRoleList(): RoleEnum[] {
+      return this.roleList.length > 0 ? this.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
     },
-    getSessionTimeout(state): boolean {
-      return !!state.sessionTimeout;
+    getSessionTimeout(): boolean {
+      return !!this.sessionTimeout;
     },
-    getLastUpdateTime(state): number {
-      return state.lastUpdateTime;
+    getLastUpdateTime(): number {
+      return this.lastUpdateTime;
     },
   },
   actions: {
@@ -83,16 +85,18 @@ export const useUserStore = defineStore({
      * @description: login
      */
     async login(
-      params: LoginParams & {
+      params: LoginDTO & {
         goHome?: boolean;
         mode?: ErrorMessageMode;
       },
     ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
-        const data = await loginApi(loginParams, mode);
+        console.log(123, loginParams);
+        console.log(123, params);
+        const data = await login(loginParams, mode);
         const { token } = data;
-
+        console.log(123, data);
         // save token
         this.setToken(token);
         return this.afterLoginAction(goHome);

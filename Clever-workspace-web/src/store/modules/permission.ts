@@ -60,20 +60,20 @@ export const usePermissionStore = defineStore({
     frontMenuList: [],
   }),
   getters: {
-    getPermCodeList(state): string[] | number[] {
-      return state.permCodeList;
+    getPermCodeList(): string[] | number[] {
+      return this.permCodeList;
     },
-    getBackMenuList(state): Menu[] {
-      return state.backMenuList;
+    getBackMenuList(): Menu[] {
+      return this.backMenuList;
     },
-    getFrontMenuList(state): Menu[] {
-      return state.frontMenuList;
+    getFrontMenuList(): Menu[] {
+      return this.frontMenuList;
     },
-    getLastBuildMenuTime(state): number {
-      return state.lastBuildMenuTime;
+    getLastBuildMenuTime(): number {
+      return this.lastBuildMenuTime;
     },
-    getIsDynamicAddedRoute(state): boolean {
-      return state.isDynamicAddedRoute;
+    getIsDynamicAddedRoute(): boolean {
+      return this.isDynamicAddedRoute;
     },
   },
   actions: {

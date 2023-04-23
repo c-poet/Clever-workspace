@@ -4,6 +4,7 @@ import { useTitle as usePageTitle } from '@vueuse/core';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useRouter } from 'vue-router';
 import { useLocaleStore } from '/@/store/modules/locale';
+
 import { REDIRECT_NAME } from '/@/router/constant';
 
 /**

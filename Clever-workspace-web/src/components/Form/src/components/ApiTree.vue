@@ -10,27 +10,25 @@
 </template>
 
 <script lang="ts">
-  import { type Recordable, type AnyFunction } from '@vben/types';
-  import { type PropType, computed, defineComponent, watch, ref, onMounted, unref } from 'vue';
+  import { computed, defineComponent, watch, ref, onMounted, unref } from 'vue';
   import { Tree } from 'ant-design-vue';
   import { isArray, isFunction } from '/@/utils/is';
   import { get } from 'lodash-es';
   import { propTypes } from '/@/utils/propTypes';
   import { LoadingOutlined } from '@ant-design/icons-vue';
-
   export default defineComponent({
     name: 'ApiTree',
     components: { ATree: Tree, LoadingOutlined },
     props: {
-      api: { type: Function as PropType<(arg?: Recordable<any>) => Promise<Recordable<any>>> },
+      api: { type: Function as PropType<(arg?: Recordable) => Promise<Recordable>> },
       params: { type: Object },
       immediate: { type: Boolean, default: true },
       resultField: propTypes.string.def(''),
-      afterFetch: { type: Function as PropType<AnyFunction> },
+      afterFetch: { type: Function as PropType<Fn> },
     },
     emits: ['options-change', 'change'],
     setup(props, { attrs, emit }) {
-      const treeData = ref<Recordable<any>[]>([]);
+      const treeData = ref<Recordable[]>([]);
       const isFirstLoaded = ref<Boolean>(false);
       const loading = ref(false);
       const getAttrs = computed(() => {
@@ -82,7 +80,7 @@
         if (!isArray(result)) {
           result = get(result, props.resultField);
         }
-        treeData.value = (result as Recordable<any>[]) || [];
+        treeData.value = (result as Recordable[]) || [];
         isFirstLoaded.value = true;
         emit('options-change', treeData.value);
       }

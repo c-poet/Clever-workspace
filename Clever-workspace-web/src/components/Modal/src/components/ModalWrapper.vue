@@ -18,8 +18,7 @@
     nextTick,
     onUnmounted,
   } from 'vue';
-  import { useWindowSizeFn } from '@vben/hooks';
-  import { type AnyFunction } from '@vben/types';
+  import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { ScrollContainer } from '/@/components/Container';
   import { createModalContext } from '../hooks/useModalContext';
   import { useMutationObserver } from '@vueuse/core';
@@ -44,14 +43,14 @@
     props,
     emits: ['height-change', 'ext-height'],
     setup(props, { emit }) {
-      const wrapperRef = ref(null);
-      const spinRef = ref(null);
+      const wrapperRef = ref<ComponentRef>(null);
+      const spinRef = ref<ElRef>(null);
       const realHeightRef = ref(0);
       const minRealHeightRef = ref(0);
 
       let realHeight = 0;
 
-      let stopElResizeFn: AnyFunction = () => {};
+      let stopElResizeFn: Fn = () => {};
 
       useWindowSizeFn(setModalHeight.bind(null, false));
 
@@ -117,7 +116,7 @@
         const wrapperRefDom = unref(wrapperRef);
         if (!wrapperRefDom) return;
 
-        const bodyDom = (wrapperRefDom as any).$el.parentElement;
+        const bodyDom = wrapperRefDom.$el.parentElement;
         if (!bodyDom) return;
         bodyDom.style.padding = '0';
         await nextTick();
@@ -140,7 +139,7 @@
             maxHeight -= 26;
           }
           await nextTick();
-          const spinEl: any = unref(spinRef);
+          const spinEl = unref(spinRef);
 
           if (!spinEl) return;
           await nextTick();

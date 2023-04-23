@@ -1,4 +1,5 @@
-import { defineComponent, computed, ref } from 'vue';
+import { defineComponent } from 'vue';
+import { computed, ref } from 'vue';
 import { BasicTableProps } from './types';
 import { basicProps } from './props';
 import { ignorePropKeys } from './const';

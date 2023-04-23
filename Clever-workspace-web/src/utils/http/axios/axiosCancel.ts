@@ -1,60 +1,60 @@
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig, Canceler } from 'axios';
+import axios from 'axios';
+import { isFunction } from '/@/utils/is';
 
-// 用于存储每个请求的标识和取消函数
-const pendingMap = new Map<string, AbortController>();
+// Used to store the identification and cancellation function of each request
+let pendingMap = new Map<string, Canceler>();
 
-const getPendingUrl = (config: AxiosRequestConfig): string => {
-  return [config.method, config.url].join('&');
-};
+export const getPendingUrl = (config: AxiosRequestConfig) => [config.method, config.url].join('&');
 
 export class AxiosCanceler {
   /**
-   * 添加请求
-   * @param config 请求配置
+   * Add request
+   * @param {Object} config
    */
-  public addPending(config: AxiosRequestConfig): void {
+  addPending(config: AxiosRequestConfig) {
     this.removePending(config);
     const url = getPendingUrl(config);
-    const controller = new AbortController();
-    config.signal = config.signal || controller.signal;
-    if (!pendingMap.has(url)) {
-      // 如果当前请求不在等待中，将其添加到等待中
-      pendingMap.set(url, controller);
-    }
+    config.cancelToken =
+      config.cancelToken ||
+      new axios.CancelToken((cancel) => {
+        if (!pendingMap.has(url)) {
+          // If there is no current request in pending, add it
+          pendingMap.set(url, cancel);
+        }
+      });
   }
 
   /**
-   * 清除所有等待中的请求
+   * @description: Clear all pending
    */
-  public removeAllPending(): void {
-    pendingMap.forEach((abortController) => {
-      if (abortController) {
-        abortController.abort();
-      }
+  removeAllPending() {
+    pendingMap.forEach((cancel) => {
+      cancel && isFunction(cancel) && cancel();
     });
-    this.reset();
+    pendingMap.clear();
   }
 
   /**
-   * 移除请求
-   * @param config 请求配置
+   * Removal request
+   * @param {Object} config
    */
-  public removePending(config: AxiosRequestConfig): void {
+  removePending(config: AxiosRequestConfig) {
     const url = getPendingUrl(config);
+
     if (pendingMap.has(url)) {
-      // 如果当前请求在等待中，取消它并将其从等待中移除
-      const abortController = pendingMap.get(url);
-      if (abortController) {
-        abortController.abort(url);
-      }
+      // If there is a current request identifier in pending,
+      // the current request needs to be cancelled and removed
+      const cancel = pendingMap.get(url);
+      cancel && cancel(url);
       pendingMap.delete(url);
     }
   }
 
   /**
-   * 重置
+   * @description: reset
    */
-  public reset(): void {
-    pendingMap.clear();
+  reset(): void {
+    pendingMap = new Map<string, Canceler>();
   }
 }

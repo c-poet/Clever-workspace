@@ -2,6 +2,7 @@
   import type { CSSProperties, PropType } from 'vue';
   import { computed, defineComponent, nextTick, ref, toRaw, unref, watchEffect } from 'vue';
   import type { BasicColumn } from '../../types/table';
+  import type { EditRecordRow } from './index';
   import { CheckOutlined, CloseOutlined, FormOutlined } from '@ant-design/icons-vue';
   import { CellComponent } from './CellComponent';
 
@@ -25,13 +26,11 @@
     },
     props: {
       value: {
-        type: [String, Number, Boolean, Object] as PropType<
-          string | number | boolean | Record<string, any>
-        >,
+        type: [String, Number, Boolean, Object] as PropType<string | number | boolean | Recordable>,
         default: '',
       },
       record: {
-        type: Object as any,
+        type: Object as PropType<EditRecordRow>,
       },
       column: {
         type: Object as PropType<BasicColumn>,
@@ -45,7 +44,7 @@
       const elRef = ref();
       const ruleVisible = ref(false);
       const ruleMessage = ref('');
-      const optionsRef = ref([]);
+      const optionsRef = ref<LabelValueOptions>([]);
       const currentValueRef = ref<any>(props.value);
       const defaultValueRef = ref<any>(props.value);
       const spinning = ref<boolean>(false);
@@ -72,7 +71,7 @@
 
         const value = isCheckValue ? (isNumber(val) && isBoolean(val) ? val : !!val) : val;
 
-        let compProps = props.column?.editComponentProps ?? ({} as any);
+        let compProps = props.column?.editComponentProps ?? {};
         const { record, column, index } = props;
 
         if (isFunction(compProps)) {
@@ -84,7 +83,7 @@
         delete compProps.onChange;
 
         const component = unref(getComponent);
-        const apiSelectProps: Record<string, any> = {};
+        const apiSelectProps: Recordable = {};
         if (component === 'ApiSelect') {
           apiSelectProps.cache = true;
         }
@@ -132,7 +131,8 @@
           return value;
         }
 
-        const options = unref(getComponentProps)?.options ?? (unref(optionsRef) || []);
+        const options: LabelValueOptions =
+          unref(getComponentProps)?.options ?? (unref(optionsRef) || []);
         const option = options.find((item) => `${item.value}` === `${value}`);
 
         return option?.label ?? value;
@@ -184,11 +184,11 @@
         if (!e) {
           currentValueRef.value = e;
         } else if (component === 'Checkbox') {
-          currentValueRef.value = e.target.checked;
+          currentValueRef.value = (e as ChangeEvent).target.checked;
         } else if (component === 'Switch') {
           currentValueRef.value = e;
         } else if (e?.target && Reflect.has(e.target, 'value')) {
-          currentValueRef.value = e.target.value;
+          currentValueRef.value = (e as ChangeEvent).target.value;
         } else if (isString(e) || isBoolean(e) || isNumber(e) || isArray(e)) {
           currentValueRef.value = e;
         }
@@ -216,8 +216,8 @@
             return false;
           }
           if (isFunction(editRule)) {
-            const res = await editRule(currentValue, record);
-            if (res) {
+            const res = await editRule(currentValue, record as Recordable);
+            if (!!res) {
               ruleMessage.value = res;
               ruleVisible.value = true;
               return false;
@@ -316,25 +316,25 @@
       }
 
       // only ApiSelect or TreeSelect
-      function handleOptionsChange(options) {
+      function handleOptionsChange(options: LabelValueOptions) {
         const { replaceFields } = unref(getComponentProps);
         const component = unref(getComponent);
         if (component === 'ApiTreeSelect') {
           const { title = 'title', value = 'value', children = 'children' } = replaceFields || {};
-          let listOptions = treeToList(options, { children });
+          let listOptions: Recordable[] = treeToList(options, { children });
           listOptions = listOptions.map((item) => {
             return {
               label: item[title],
               value: item[value],
             };
           });
-          optionsRef.value = listOptions;
+          optionsRef.value = listOptions as LabelValueOptions;
         } else {
           optionsRef.value = options;
         }
       }
 
-      function initCbs(cbs: 'submitCbs' | 'validCbs' | 'cancelCbs', handle) {
+      function initCbs(cbs: 'submitCbs' | 'validCbs' | 'cancelCbs', handle: Fn) {
         if (props.record) {
           /* eslint-disable  */
           isArray(props.record[cbs])
@@ -476,9 +476,9 @@
   .edit-cell-rule-popover {
     .ant-popover-inner-content {
       padding: 4px 8px;
+      color: @error-color;
       // border: 1px solid @error-color;
       border-radius: 2px;
-      color: @error-color;
     }
   }
   .@{prefix-cls} {
@@ -506,20 +506,20 @@
 
     .ellipsis-cell {
       .cell-content {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-break: break-word;
-        white-space: nowrap;
         overflow-wrap: break-word;
+        word-break: break-word;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
 
     &__normal {
       &-icon {
-        display: none;
         position: absolute;
         top: 4px;
         right: 0;
+        display: none;
         width: 20px;
         cursor: pointer;
       }

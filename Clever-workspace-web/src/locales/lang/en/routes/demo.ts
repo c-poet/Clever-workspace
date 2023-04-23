@@ -29,6 +29,10 @@ export default {
     drawer: 'Drawer',
     desc: 'Desc',
 
+    lazy: 'Lazy',
+    lazyBasic: 'Basic',
+    lazyTransition: 'Animation',
+
     verify: 'Verify',
     verifyDrag: 'Drag ',
     verifyRotate: 'Picture Restore',

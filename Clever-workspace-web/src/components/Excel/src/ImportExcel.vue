@@ -18,7 +18,6 @@
   import { dateUtil } from '/@/utils/dateUtil';
 
   import type { ExcelData } from './typing';
-
   export default defineComponent({
     name: 'ImportExcel',
     props: {
@@ -197,7 +196,7 @@
       /**
        * @description 文件选择器关闭后,判断取消状态
        */
-      function handleFocusChange() {
+       function handleFocusChange() {
         const timeId = setInterval(() => {
           if (cancelRef.value === true) {
             emit('cancel');
