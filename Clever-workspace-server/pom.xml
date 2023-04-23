@@ -15,10 +15,9 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>workspace-starter</module>
+    <module>workspace-api</module>
     <module>workspace-auth</module>
     <module>workspace-core</module>
-    <module>workspace-api</module>
     <module>workspace-model</module>
     <module>workspace-repo</module>
     <module>workspace-modules</module>

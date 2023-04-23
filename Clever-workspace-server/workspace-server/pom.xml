@@ -10,11 +10,34 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>workspace-server</artifactId>
-  <description>单体应用下主程序</description>
+  <description>单体应用主程序</description>
 
   <properties>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>cn.cpoet.workspace</groupId>
+      <artifactId>workspace-module-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>cn.cpoet.workspace</groupId>
+      <artifactId>workspace-module-admin</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${project.name}-${project.version}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>
