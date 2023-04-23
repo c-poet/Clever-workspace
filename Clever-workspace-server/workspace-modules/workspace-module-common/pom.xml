@@ -16,4 +16,20 @@
     <maven.compiler.target>8</maven.compiler.target>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>cn.cpoet.workspace</groupId>
+      <artifactId>workspace-auth</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cn.cpoet.workspace</groupId>
+      <artifactId>workspace-service</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cn.cpoet.workspace</groupId>
+      <artifactId>workspace-core</artifactId>
+    </dependency>
+  </dependencies>
 </project>

@@ -15,7 +15,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>workspace-annotation</module>
+    <module>workspace-api</module>
     <module>workspace-auth</module>
     <module>workspace-core</module>
     <module>workspace-model</module>
@@ -24,6 +24,7 @@
     <module>workspace-gateway</module>
     <module>workspace-server</module>
     <module>workspace-utils</module>
+    <module>workspace-service</module>
   </modules>
 
   <properties>
@@ -40,6 +41,8 @@
     <jjwt.version>0.11.2</jjwt.version>
     <!-- open-api -->
     <springdoc-openapi-webmvc.version>1.6.9</springdoc-openapi-webmvc.version>
+    <!-- druid数据库连接池 -->
+    <druid-spring-boot-starter.version>1.2.16</druid-spring-boot-starter.version>
   </properties>
 
   <dependencyManagement>
@@ -109,7 +112,7 @@
       <!-- 内部模块 -->
       <dependency>
         <groupId>cn.cpoet.workspace</groupId>
-        <artifactId>workspace-annotation</artifactId>
+        <artifactId>workspace-api</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -128,6 +131,12 @@
       <dependency>
         <groupId>cn.cpoet.workspace</groupId>
         <artifactId>workspace-mapper</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-service</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -188,6 +197,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>standalone</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+
+    <profile>
+      <id>springcloud</id>
+    </profile>
+  </profiles>
 
   <repositories>
     <repository>

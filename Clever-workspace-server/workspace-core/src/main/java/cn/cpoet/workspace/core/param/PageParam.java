@@ -1,10 +1,9 @@
 package cn.cpoet.workspace.core.param;
 
-import cn.cpoet.workspace.core.mongo.term.SimpleQueryGeneratorFactory;
+import cn.cpoet.workspace.api.core.Pageable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import lombok.EqualsAndHashCode;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -12,9 +11,10 @@ import java.io.Serializable;
 /**
  * @author CPoet
  */
-@Data
+@Setter
+@EqualsAndHashCode
 @Schema(title = "分页查询参数")
-public class PageParam implements Serializable {
+public class PageParam implements Pageable, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,16 +26,14 @@ public class PageParam implements Serializable {
     @NotNull(message = "每页大小不能为空")
     private Integer pageSize;
 
-    /**
-     * 转换为{@link PageRequest}
-     * <p>{@link  SimpleQueryGeneratorFactory}中会使用该方法</p>
-     *
-     * @return {@link Pageable}
-     */
-    public Pageable toPageable() {
-        if (pageNo == null || pageNo <= 0 || pageSize == null || pageSize <= 0) {
-            return Pageable.unpaged();
-        }
-        return PageRequest.of(pageNo - 1, pageSize);
+
+    @Override
+    public int getPageNo() {
+        return pageNo != null && pageNo > 0 ? pageNo : 0;
+    }
+
+    @Override
+    public int getPageSize() {
+        return pageSize != null && pageSize > 0 ? pageSize : 0;
     }
 }

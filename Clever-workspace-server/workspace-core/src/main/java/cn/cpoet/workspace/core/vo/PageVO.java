@@ -1,7 +1,7 @@
 package cn.cpoet.workspace.core.vo;
 
-import cn.cpoet.workspace.core.constant.Status;
-import cn.cpoet.workspace.core.constant.StatusConst;
+import cn.cpoet.workspace.api.core.Status;
+import cn.cpoet.workspace.api.constant.StatusConst;
 import cn.cpoet.workspace.core.param.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

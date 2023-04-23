@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.cpoet.workspace.service.ServiceConfig,\
+  cn.cpoet.workspace.feign.FeignConfig

@@ -4,18 +4,18 @@ import cn.cpoet.workspace.model.base.BaseRcEntity;
 import cn.cpoet.workspace.model.constant.PermissionAclType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
  * @author CPoet
  */
 @Data
+@Entity
 @Schema(title = "资源访问控制")
-@Document("blog_permission_acl")
-@FieldNameConstants
+@Table(name = "sys_permission_acl")
 public class PermissionAcl extends BaseRcEntity {
 
     @Schema(title = "访问对象id")

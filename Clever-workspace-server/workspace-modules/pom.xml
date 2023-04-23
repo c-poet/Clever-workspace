@@ -21,12 +21,4 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
   </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>cn.cpoet.workspace</groupId>
-      <artifactId>workspace-core</artifactId>
-    </dependency>
-  </dependencies>
-
 </project>

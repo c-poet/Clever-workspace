@@ -4,9 +4,6 @@ import cn.cpoet.workspace.api.context.AppContextHolder;
 import cn.cpoet.workspace.api.exception.AppException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
-import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.data.convert.ReadingConverter;
-import org.springframework.data.convert.WritingConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 自定义枚举类型转化
- * <p>
- * mongo对枚举类型的处理与其它类型不同，因此需要自定义读写{@link Converter}触发自定义处理，其次需要实现{@link GenericConverter}来处理
- * 数据的转化任务，具体看{@link org.springframework.data.mongodb.core.convert.MappingMongoConverter}实现逻辑。
- * </p>
  *
  * @author wanggf
  */
@@ -73,14 +66,12 @@ public class EnumConverters {
         }
     }
 
-    @ReadingConverter
     static class FakeEnumConverterImpl extends Obj2EnumConverter<Enum> {
         public FakeEnumConverterImpl() {
             super(Enum.class);
         }
     }
 
-    @WritingConverter
     static class Enum2StrConverter implements Converter<Enum, String> {
         @Override
         public String convert(Enum source) {
@@ -92,7 +83,6 @@ public class EnumConverters {
         }
     }
 
-    @WritingConverter
     static class Enum2IntegerConverter implements Converter<Enum, Integer> {
         @Override
         public Integer convert(Enum source) {

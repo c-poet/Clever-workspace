@@ -20,7 +20,12 @@
   <dependencies>
     <dependency>
       <groupId>cn.cpoet.workspace</groupId>
-      <artifactId>workspace-annotation</artifactId>
+      <artifactId>workspace-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>javax.persistence-api</artifactId>
     </dependency>
   </dependencies>
 </project>

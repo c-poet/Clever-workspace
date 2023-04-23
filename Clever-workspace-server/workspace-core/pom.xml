@@ -20,12 +20,7 @@
   <dependencies>
     <dependency>
       <groupId>cn.cpoet.workspace</groupId>
-      <artifactId>workspace-annotation</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>cn.cpoet.workspace</groupId>
-      <artifactId>workspace-mapper</artifactId>
+      <artifactId>workspace-api</artifactId>
     </dependency>
 
     <dependency>

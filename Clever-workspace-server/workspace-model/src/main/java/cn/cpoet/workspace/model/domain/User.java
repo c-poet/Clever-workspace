@@ -8,11 +8,10 @@ import cn.cpoet.workspace.model.constant.SexEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,10 +21,10 @@ import javax.validation.constraints.Pattern;
  * @author CPoet
  */
 @Data
+@Entity
 @Editable
 @Schema(title = "用户")
-@Document("blog_user")
-@FieldNameConstants
+@Table(name = "sys_user")
 public class User extends BaseEntity {
 
     @Schema(title = "姓名")
@@ -39,7 +38,6 @@ public class User extends BaseEntity {
     private String nickName;
 
     @Schema(title = "用户名")
-    @Indexed(unique = true)
     @NotEmpty(message = "用户名不能为空", groups = {Insert.class, Update.class})
     @Pattern(regexp = "^[a-zA-Z_][0-9a-zA-Z_]+$", message = "用户名由字母、数字及下划线组成，且首字符不能为数字", groups = {Insert.class, Update.class})
     private String username;

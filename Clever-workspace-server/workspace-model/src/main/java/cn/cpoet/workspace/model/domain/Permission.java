@@ -8,10 +8,9 @@ import cn.cpoet.workspace.model.constant.BadgeType;
 import cn.cpoet.workspace.model.constant.PermissionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -20,17 +19,16 @@ import javax.validation.constraints.Pattern;
  * @author CPoet
  */
 @Data
-@Schema(title = "权限/资源")
-@Document("blog_permission")
+@Entity
 @Editable
-@FieldNameConstants
+@Schema(title = "权限/资源")
+@Table(name = "sys_permission")
 public class Permission extends BaseEntity {
 
     @Schema(title = "父级id")
     @NotNull(message = "父级不能为空", groups = {Insert.class, Update.class})
     private Long parentId;
 
-    @Indexed(unique = true)
     @Schema(title = "权限编码")
     @NotEmpty(message = "权限编码不能为空", groups = {Insert.class, Update.class})
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "功能编码由数字、字母及下划线组成")

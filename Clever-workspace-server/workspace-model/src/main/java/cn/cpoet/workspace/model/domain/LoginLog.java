@@ -3,18 +3,18 @@ package cn.cpoet.workspace.model.domain;
 import cn.cpoet.workspace.model.base.BaseRcEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
  * @author CPoet
  */
 @Data
+@Entity
 @Schema(title = "登录日志")
-@Document("blog_login_log")
-@FieldNameConstants
+@Table(name = "sys_login_log")
 public class LoginLog extends BaseRcEntity {
     @Schema(title = "登录用户uid")
     private Long userId;
