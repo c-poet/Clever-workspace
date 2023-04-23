@@ -4,7 +4,7 @@ import cn.cpoet.workspace.core.mongo.MongoTemplate;
 import cn.cpoet.workspace.core.service.LoginLogService;
 import cn.cpoet.workspace.model.base.BaseRcEntity;
 import cn.cpoet.workspace.model.domain.LoginLog;
-import cn.cpoet.workspace.repo.repository.LoginLogRepository;
+import cn.cpoet.workspace.mapper.LoginLogMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class LoginLogServiceImpl implements LoginLogService {
 
     private final MongoTemplate mongoTemplate;
-    private final LoginLogRepository loginLogRepository;
+    private final LoginLogMapper loginLogRepository;
 
     @Override
     public LoginLog saveLog(LoginLog loginLog) {

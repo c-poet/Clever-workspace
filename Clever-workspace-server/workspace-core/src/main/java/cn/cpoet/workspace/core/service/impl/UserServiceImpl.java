@@ -3,7 +3,7 @@ package cn.cpoet.workspace.core.service.impl;
 import cn.cpoet.workspace.core.mongo.MongoTemplate;
 import cn.cpoet.workspace.core.service.UserService;
 import cn.cpoet.workspace.model.domain.User;
-import cn.cpoet.workspace.repo.repository.UserRepository;
+import cn.cpoet.workspace.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,7 +21,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final MongoTemplate mongoTemplate;
-    private final UserRepository userRepository;
+    private final UserMapper userRepository;
 
     @Override
     public boolean existsByGroups(List<Long> groupIds) {

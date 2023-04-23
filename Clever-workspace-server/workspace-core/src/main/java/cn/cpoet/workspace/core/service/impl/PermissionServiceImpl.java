@@ -7,7 +7,7 @@ import cn.cpoet.workspace.model.base.BaseRcEntity;
 import cn.cpoet.workspace.model.constant.PermissionType;
 import cn.cpoet.workspace.model.domain.Permission;
 import cn.cpoet.workspace.model.domain.PermissionAcl;
-import cn.cpoet.workspace.repo.repository.PermissionRepository;
+import cn.cpoet.workspace.mapper.PermissionMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class PermissionServiceImpl implements PermissionService {
 
     private final MongoTemplate mongoTemplate;
-    private final PermissionRepository permissionRepository;
+    private final PermissionMapper permissionRepository;
     private final PermissionAclService permissionAclService;
 
     @Override

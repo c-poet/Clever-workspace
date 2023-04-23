@@ -1,14 +1,14 @@
-package cn.cpoet.workspace.repo.repository;
+package cn.cpoet.workspace.mapper;
 
 import cn.cpoet.workspace.model.domain.User;
-import cn.cpoet.workspace.repo.base.BaseRepository;
+import cn.cpoet.workspace.mapper.base.BaseMapper;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author CPoet
  */
 @Repository
-public interface UserRepository extends BaseRepository<User> {
+public interface UserMapper extends BaseMapper<User> {
     /**
      * 根据用户名查询
      *

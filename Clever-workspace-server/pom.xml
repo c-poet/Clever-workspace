@@ -19,16 +19,21 @@
     <module>workspace-auth</module>
     <module>workspace-core</module>
     <module>workspace-model</module>
-    <module>workspace-repo</module>
+    <module>workspace-mapper</module>
     <module>workspace-modules</module>
     <module>workspace-gateway</module>
     <module>workspace-server</module>
+    <module>workspace-utils</module>
   </modules>
 
   <properties>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- spring-cloud -->
+    <spring-cloud-dependencies.version>2021.0.1</spring-cloud-dependencies.version>
+    <!-- tk.mybatis -->
+    <mapper-spring-boot-starter.version>4.2.2</mapper-spring-boot-starter.version>
     <!-- javassist -->
     <javassist.version>3.29.2-GA</javassist.version>
     <!-- token -->
@@ -40,9 +45,29 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud-dependencies.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
         <groupId>org.javassist</groupId>
         <artifactId>javassist</artifactId>
         <version>${javassist.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>tk.mybatis</groupId>
+        <artifactId>mapper-spring-boot-starter</artifactId>
+        <version>${mapper-spring-boot-starter.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+        <version>${druid-spring-boot-starter.version}</version>
       </dependency>
 
       <dependency>
@@ -90,13 +115,19 @@
 
       <dependency>
         <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-utils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cn.cpoet.workspace</groupId>
         <artifactId>workspace-model</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <dependency>
         <groupId>cn.cpoet.workspace</groupId>
-        <artifactId>workspace-repo</artifactId>
+        <artifactId>workspace-mapper</artifactId>
         <version>${project.version}</version>
       </dependency>
 

@@ -11,8 +11,8 @@ import cn.cpoet.workspace.core.vo.PageVO;
 import cn.cpoet.workspace.model.domain.Group;
 import cn.cpoet.workspace.model.domain.LoginLog;
 import cn.cpoet.workspace.model.domain.User;
-import cn.cpoet.workspace.repo.repository.GroupRepository;
-import cn.cpoet.workspace.repo.repository.UserRepository;
+import cn.cpoet.workspace.mapper.GroupMapper;
+import cn.cpoet.workspace.mapper.UserMapper;
 import cn.cpoet.workspace.module.admin.dto.UserDTO;
 import cn.cpoet.workspace.module.admin.param.UserParam;
 import cn.cpoet.workspace.module.admin.service.UserService;
@@ -35,8 +35,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final MongoTemplate mongoTemplate;
-    private final UserRepository userRepository;
-    private final GroupRepository groupRepository;
+    private final UserMapper userRepository;
+    private final GroupMapper groupRepository;
     private final LoginLogService loginLogService;
     private final UserPassCryptoStrategy userPassCryptoStrategy;
 

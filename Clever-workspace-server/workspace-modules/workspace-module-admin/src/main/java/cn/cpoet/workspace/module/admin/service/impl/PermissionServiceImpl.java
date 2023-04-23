@@ -6,7 +6,7 @@ import cn.cpoet.workspace.core.mongo.MongoTemplate;
 import cn.cpoet.workspace.core.util.BeanUtil;
 import cn.cpoet.workspace.core.vo.PageVO;
 import cn.cpoet.workspace.model.domain.Permission;
-import cn.cpoet.workspace.repo.repository.PermissionRepository;
+import cn.cpoet.workspace.mapper.PermissionMapper;
 import cn.cpoet.workspace.module.admin.param.PermissionParam;
 import cn.cpoet.workspace.module.admin.service.PermissionService;
 import cn.cpoet.workspace.module.admin.vo.PermissionNodeVO;
@@ -27,7 +27,7 @@ import java.util.*;
 public class PermissionServiceImpl implements PermissionService {
 
     private final MongoTemplate mongoTemplate;
-    private final PermissionRepository permissionRepository;
+    private final PermissionMapper permissionRepository;
     private final cn.cpoet.workspace.core.service.PermissionService permissionService;
 
     @Override

@@ -7,7 +7,7 @@ import cn.cpoet.workspace.core.service.UserService;
 import cn.cpoet.workspace.core.util.BeanUtil;
 import cn.cpoet.workspace.core.vo.PageVO;
 import cn.cpoet.workspace.model.domain.Group;
-import cn.cpoet.workspace.repo.repository.GroupRepository;
+import cn.cpoet.workspace.mapper.GroupMapper;
 import cn.cpoet.workspace.module.admin.param.GroupParam;
 import cn.cpoet.workspace.module.admin.service.GroupService;
 import cn.cpoet.workspace.module.admin.vo.GroupNodeVO;
@@ -29,7 +29,7 @@ public class GroupServiceImpl implements GroupService {
 
     private final UserService userService;
     private final MongoTemplate mongoTemplate;
-    private final GroupRepository groupRepository;
+    private final GroupMapper groupRepository;
 
     @Override
     public Group getGroupById(Long groupId) {

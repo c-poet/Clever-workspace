@@ -8,7 +8,7 @@ import cn.cpoet.workspace.core.service.LoginLogService;
 import cn.cpoet.workspace.core.util.RequestUtil;
 import cn.cpoet.workspace.model.domain.LoginLog;
 import cn.cpoet.workspace.model.domain.User;
-import cn.cpoet.workspace.repo.repository.UserRepository;
+import cn.cpoet.workspace.mapper.UserMapper;
 import cn.cpoet.workspace.module.common.dto.LoginDTO;
 import cn.cpoet.workspace.module.common.service.AuthService;
 import cn.cpoet.workspace.module.common.vo.LoginVO;
@@ -30,7 +30,7 @@ import java.util.Map;
 public class AuthServiceImpl implements AuthService {
 
     private final HttpServletRequest request;
-    private final UserRepository userRepository;
+    private final UserMapper userRepository;
     private final LoginLogService loginLogService;
     private final UserPassCryptoStrategy userPassCryptoStrategy;
 

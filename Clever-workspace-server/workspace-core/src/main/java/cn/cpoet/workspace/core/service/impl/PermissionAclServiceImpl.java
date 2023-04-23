@@ -4,7 +4,7 @@ import cn.cpoet.workspace.core.mongo.MongoTemplate;
 import cn.cpoet.workspace.core.service.PermissionAclService;
 import cn.cpoet.workspace.model.constant.PermissionAclType;
 import cn.cpoet.workspace.model.domain.PermissionAcl;
-import cn.cpoet.workspace.repo.repository.PermissionAclRepository;
+import cn.cpoet.workspace.mapper.PermissionAclMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class PermissionAclServiceImpl implements PermissionAclService {
 
     private final MongoTemplate mongoTemplate;
-    private final PermissionAclRepository permissionAclRepository;
+    private final PermissionAclMapper permissionAclRepository;
 
     @Override
     public List<PermissionAcl> listByItem(Long itemId, PermissionAclType type) {
