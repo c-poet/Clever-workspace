@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.cpoet.workspace.ibatis.configuration.IBatisConfig
+  cn.cpoet.workspace.mapper.MapperConfig

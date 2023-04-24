@@ -1,4 +1,4 @@
-package cn.cpoet.workspace.ibatis.configuration;
+package cn.cpoet.workspace.mapper;
 
 import tk.mybatis.spring.annotation.MapperScan;
 
@@ -6,6 +6,5 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @author CPoet
  */
 @MapperScan(basePackages = "cn.cpoet.workspace.mapper")
-public class IBatisConfig {
-
+public class MapperConfig {
 }

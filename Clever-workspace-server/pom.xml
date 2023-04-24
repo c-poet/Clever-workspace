@@ -25,6 +25,7 @@
     <module>workspace-server</module>
     <module>workspace-utils</module>
     <module>workspace-service</module>
+    <module>workspace-ibatis</module>
   </modules>
 
   <properties>
@@ -119,6 +120,12 @@
       <dependency>
         <groupId>cn.cpoet.workspace</groupId>
         <artifactId>workspace-utils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cn.cpoet.workspace</groupId>
+        <artifactId>workspace-ibatis</artifactId>
         <version>${project.version}</version>
       </dependency>
 
