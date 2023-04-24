@@ -2,7 +2,6 @@ package cn.cpoet.workspace.service;
 
 import cn.cpoet.workspace.ibatis.mapper.BaseMapper;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,5 +32,5 @@ public interface BaseService<T> {
      * @param ids id列表
      * @return 数据列表
      */
-    List<T> listById(Collection<Long> ids);
+    List<T> listById(List<Long> ids);
 }

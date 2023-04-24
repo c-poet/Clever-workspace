@@ -1,6 +1,7 @@
 package cn.cpoet.workspace.core.support;
 
 import cn.cpoet.workspace.api.annotation.EnumDict;
+import cn.cpoet.workspace.api.core.EnumHandler;
 import cn.cpoet.workspace.api.core.GenMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package cn.cpoet.workspace.core.support;
+package cn.cpoet.workspace.api.core;
 
 import cn.cpoet.workspace.api.annotation.EnumAppear;
 import cn.cpoet.workspace.api.annotation.EnumId;

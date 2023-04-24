@@ -23,9 +23,24 @@
       <artifactId>workspace-api</artifactId>
     </dependency>
 
+      <dependency>
+          <groupId>cn.cpoet.workspace</groupId>
+          <artifactId>workspace-utils</artifactId>
+      </dependency>
+
     <dependency>
       <groupId>tk.mybatis</groupId>
       <artifactId>mapper-spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid-spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
     </dependency>
   </dependencies>
 

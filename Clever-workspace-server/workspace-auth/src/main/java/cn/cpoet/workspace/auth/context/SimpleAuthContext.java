@@ -8,7 +8,7 @@ import cn.cpoet.workspace.auth.subject.AuthSubject;
 import cn.cpoet.workspace.auth.subject.GuestSubject;
 import cn.cpoet.workspace.auth.subject.SystemSubject;
 import cn.cpoet.workspace.auth.util.JwtUtil;
-import cn.cpoet.workspace.auth.util.TypeUtil;
+import cn.cpoet.workspace.util.TypeUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package cn.cpoet.workspace.core.configuration;
 
-import cn.cpoet.workspace.core.support.EnumHandler;
+import cn.cpoet.workspace.api.core.EnumHandler;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;

@@ -1,7 +1,5 @@
 package cn.cpoet.workspace.module.admin.service.impl;
 
-import cn.cpoet.workspace.api.exception.BusException;
-import cn.cpoet.workspace.core.util.BeanUtil;
 import cn.cpoet.workspace.core.vo.PageVO;
 import cn.cpoet.workspace.mapper.GroupMapper;
 import cn.cpoet.workspace.model.domain.Group;
@@ -12,9 +10,7 @@ import cn.cpoet.workspace.module.admin.vo.GroupNodeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

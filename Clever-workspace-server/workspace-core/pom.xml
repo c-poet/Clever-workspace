@@ -23,6 +23,11 @@
       <artifactId>workspace-api</artifactId>
     </dependency>
 
+      <dependency>
+          <groupId>cn.cpoet.workspace</groupId>
+          <artifactId>workspace-utils</artifactId>
+      </dependency>
+
     <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>

@@ -2,7 +2,7 @@ package cn.cpoet.workspace.auth.subject;
 
 import cn.cpoet.workspace.api.constant.SubjectType;
 import cn.cpoet.workspace.auth.constant.AuthSubjectConst;
-import cn.cpoet.workspace.auth.util.TypeUtil;
+import cn.cpoet.workspace.util.TypeUtil;
 
 import java.util.Map;
 

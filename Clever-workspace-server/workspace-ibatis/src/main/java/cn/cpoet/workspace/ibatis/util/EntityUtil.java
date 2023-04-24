@@ -5,15 +5,12 @@ import cn.cpoet.workspace.api.context.AppContextHolder;
 import cn.cpoet.workspace.api.core.IdGenerator;
 import cn.cpoet.workspace.api.exception.AppException;
 import cn.cpoet.workspace.ibatis.mapper.EntityMapper;
-import cn.cpoet.workspace.model.base.BaseEntity;
-import cn.cpoet.workspace.model.base.BaseRcEntity;
 import org.apache.ibatis.binding.MapperProxy;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -97,13 +94,13 @@ public abstract class EntityUtil {
      * @return 实体
      */
     public static <T> T fillEntity(T entity) {
-        if (entity instanceof BaseRcEntity) {
-            if (!(entity instanceof BaseEntity)) {
-                return fillEntity(entity, false);
-            }
-            BaseEntity baseEntity = (BaseEntity) entity;
-            return fillEntity(entity, baseEntity.getVersion() == null || baseEntity.getId() == null);
-        }
+//        if (entity instanceof BaseRcEntity) {
+//            if (!(entity instanceof BaseEntity)) {
+//                return fillEntity(entity, false);
+//            }
+//            BaseEntity baseEntity = (BaseEntity) entity;
+//            return fillEntity(entity, baseEntity.getVersion() == null || baseEntity.getId() == null);
+//        }
         return entity;
     }
 
@@ -116,25 +113,25 @@ public abstract class EntityUtil {
      * @return 实体
      */
     public static <T> T fillEntity(T entity, boolean isNew) {
-        if (entity instanceof BaseRcEntity) {
-            Long userId = AppContextHolder.getAuthContext().curSubject().getId();
-            LocalDateTime now = LocalDateTime.now();
-            if (isNew) {
-                BaseRcEntity baseRcEntity = (BaseRcEntity) entity;
-                baseRcEntity.setId(nextId());
-                baseRcEntity.setCreateUser(userId);
-                baseRcEntity.setCreateTime(now);
-                baseRcEntity.setDeleted(Boolean.FALSE);
-            }
-            if (entity instanceof BaseEntity) {
-                BaseEntity baseEntity = (BaseEntity) entity;
-                if (isNew) {
-                    baseEntity.setVersion(0);
-                }
-                baseEntity.setUpdateUser(userId);
-                baseEntity.setUpdateTime(now);
-            }
-        }
+//        if (entity instanceof BaseRcEntity) {
+//            Long userId = AppContextHolder.getAuthContext().curSubject().getId();
+//            LocalDateTime now = LocalDateTime.now();
+//            if (isNew) {
+//                BaseRcEntity baseRcEntity = (BaseRcEntity) entity;
+//                baseRcEntity.setId(nextId());
+//                baseRcEntity.setCreateUser(userId);
+//                baseRcEntity.setCreateTime(now);
+//                baseRcEntity.setDeleted(Boolean.FALSE);
+//            }
+//            if (entity instanceof BaseEntity) {
+//                BaseEntity baseEntity = (BaseEntity) entity;
+//                if (isNew) {
+//                    baseEntity.setVersion(0);
+//                }
+//                baseEntity.setUpdateUser(userId);
+//                baseEntity.setUpdateTime(now);
+//            }
+//        }
         return entity;
     }
 }

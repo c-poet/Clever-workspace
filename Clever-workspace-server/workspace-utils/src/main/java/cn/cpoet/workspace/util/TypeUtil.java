@@ -1,4 +1,4 @@
-package cn.cpoet.workspace.auth.util;
+package cn.cpoet.workspace.util;
 
 /**
  * 类型转换工具

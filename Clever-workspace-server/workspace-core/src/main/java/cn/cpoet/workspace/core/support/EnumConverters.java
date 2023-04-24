@@ -1,6 +1,7 @@
 package cn.cpoet.workspace.core.support;
 
 import cn.cpoet.workspace.api.context.AppContextHolder;
+import cn.cpoet.workspace.api.core.EnumHandler;
 import cn.cpoet.workspace.api.exception.AppException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;

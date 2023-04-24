@@ -4,7 +4,6 @@ import cn.cpoet.workspace.ibatis.mapper.BaseMapper;
 import cn.cpoet.workspace.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,7 +25,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public List<T> listById(Collection<Long> ids) {
-        return baseMapper.listById(ids);
+    public List<T> listById(List<Long> ids) {
+        return baseMapper.selectByIdList(ids);
     }
 }

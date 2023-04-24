@@ -1,6 +1,6 @@
 package cn.cpoet.workspace.core.component;
 
-import cn.cpoet.workspace.core.util.Md5Util;
+import cn.cpoet.workspace.util.Md5Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package cn.cpoet.workspace.core.util;
+package cn.cpoet.workspace.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

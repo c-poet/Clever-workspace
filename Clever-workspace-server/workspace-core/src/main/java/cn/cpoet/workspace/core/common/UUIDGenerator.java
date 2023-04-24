@@ -2,7 +2,7 @@ package cn.cpoet.workspace.core.common;
 
 import cn.cpoet.workspace.api.constant.SystemConst;
 import cn.cpoet.workspace.api.core.IdGenerator;
-import cn.cpoet.workspace.core.util.UUIDUtil;
+import cn.cpoet.workspace.util.UUIDUtil;
 
 /**
  * 获取uuid
