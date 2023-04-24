@@ -1,6 +1,8 @@
 package cn.cpoet.workspace.ibatis.mapper;
 
 import cn.cpoet.workspace.ibatis.support.TermProvider;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.SelectProvider;
 import tk.mybatis.mapper.annotation.RegisterMapper;
 
@@ -30,4 +32,22 @@ public interface TermMapper<T> {
      */
     @SelectProvider(value = TermProvider.class, method = "dynamicSQL")
     List<T> find(Object bean);
+
+    /**
+     * 分页查询
+     *
+     * @param bean 查询条件
+     * @return 查询结果
+     */
+    @SelectProvider(value = TermProvider.class, method = "dynamicSQL")
+    Page<T> findPage(Object bean);
+
+    /**
+     * 分页查询
+     *
+     * @param bean 查询条件
+     * @return 查询结果
+     */
+    @SelectProvider(value = TermProvider.class, method = "dynamicSQL")
+    PageInfo<T> findPageInfo(Object bean);
 }

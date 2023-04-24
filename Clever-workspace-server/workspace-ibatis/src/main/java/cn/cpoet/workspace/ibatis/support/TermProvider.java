@@ -32,4 +32,24 @@ public class TermProvider extends MapperTemplate {
     public String find(MappedStatement ms) {
         return "";
     }
+
+    /**
+     * 分页查询
+     *
+     * @param ms {@link MappedStatement}
+     * @return sql
+     */
+    public String findPage(MappedStatement ms) {
+        return "";
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param ms {@link MappedStatement}
+     * @return sql
+     */
+    public String findPageInfo(MappedStatement ms) {
+        return "";
+    }
 }
