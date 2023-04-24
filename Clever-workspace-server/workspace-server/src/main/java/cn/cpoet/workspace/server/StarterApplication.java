@@ -1,17 +1,14 @@
 package cn.cpoet.workspace.server;
 
-import cn.cpoet.workspace.core.support.CustomAnnotationBeanNameGenerator;
-import org.springframework.boot.SpringApplication;
+import cn.cpoet.workspace.core.support.AppBootstrap;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * blog starter
- *
  * @author CPoet
  */
-@SpringBootApplication(nameGenerator = CustomAnnotationBeanNameGenerator.class)
+@SpringBootApplication
 public class StarterApplication {
     public static void main(String[] args) {
-        SpringApplication.run(StarterApplication.class, args);
+        AppBootstrap.run(StarterApplication.class, args);
     }
 }

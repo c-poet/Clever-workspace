@@ -1,7 +1,7 @@
 package cn.cpoet.workspace.core.support;
 
 import cn.cpoet.workspace.api.annotation.EnumDict;
-import cn.cpoet.workspace.api.core.EnumHandler;
+import cn.cpoet.workspace.api.core.EnumTool;
 import cn.cpoet.workspace.api.core.GenMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,6 @@ public class EnumDictHandler implements InitializingBean {
      */
     private final static String PACKAGE_PREFIX = "/cn/cpoet";
     private final static String CLASS_PATTERN = "/**/*.class";
-    private final EnumHandler enumHandler;
     private final ResourcePatternResolver resourcePatternResolver;
     private final Map<String, Class<? extends Enum<?>>> enumDictMapping = new HashMap<>();
 
@@ -51,7 +50,7 @@ public class EnumDictHandler implements InitializingBean {
         }
         List<GenMap> dictList = new ArrayList<>(constants.length);
         for (Enum<?> constant : constants) {
-            dictList.add(enumHandler.getEnumAppear(constant));
+            dictList.add(EnumTool.getEnumAppear(constant));
         }
         return dictList;
     }

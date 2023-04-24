@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * @author CPoet
  */
-@ComponentScan("cn.cpoet.blog.auth")
+@ComponentScan("cn.cpoet.workspace.auth")
 public class AuthConfig {
     @Bean
     @ConfigurationProperties(prefix = SystemConst.CONF_PREFIX + ".auth")

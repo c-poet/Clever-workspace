@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @author CPoet
  */
-@ComponentScan("cn.cpoet.blog.core")
+@ComponentScan("cn.cpoet.workspace.core")
 public class CoreConfig implements WebMvcConfigurer {
 
     @Override

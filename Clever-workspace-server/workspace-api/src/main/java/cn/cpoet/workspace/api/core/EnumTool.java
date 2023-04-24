@@ -2,9 +2,7 @@ package cn.cpoet.workspace.api.core;
 
 import cn.cpoet.workspace.api.annotation.EnumAppear;
 import cn.cpoet.workspace.api.annotation.EnumId;
-import cn.cpoet.workspace.api.core.GenMap;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
@@ -15,9 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author CPoet
  */
-@Component
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class EnumHandler {
+public class EnumTool {
 
     private final static String READER_METHOD_PREFIX = "get";
 
@@ -26,8 +23,8 @@ public class EnumHandler {
     /**
      * 枚举id类型缓存
      */
-    private final Map<Class<?>, EnumMeta> ENUM_ID_META_CACHE = new ConcurrentHashMap<>();
-    private final Map<Class<?>, Map<String, Enum>> ENUM_CACHE = new ConcurrentHashMap<>();
+    private final static Map<Class<?>, EnumMeta> ENUM_ID_META_CACHE = new ConcurrentHashMap<>();
+    private final static Map<Class<?>, Map<String, Enum>> ENUM_CACHE = new ConcurrentHashMap<>();
 
     static {
         TYPE_PACK_MAPPER.put(int.class, Integer.class);
@@ -39,7 +36,7 @@ public class EnumHandler {
         TYPE_PACK_MAPPER.put(char.class, Character.class);
     }
 
-    public <T extends Enum<T>> Object getId(Enum<T> enumObj) {
+    public static <T extends Enum<T>> Object getId(Enum<T> enumObj) {
         final EnumMeta enumMeta = getEnumMeta(enumObj.getClass());
         try {
             return enumMeta.getIdMethod().invoke(enumObj);
@@ -48,15 +45,15 @@ public class EnumHandler {
         }
     }
 
-    public Class<?> getIdType(Class<? extends Enum> clazz) {
+    public static Class<?> getIdType(Class<? extends Enum> clazz) {
         return getEnumMeta(clazz).getIdClass();
     }
 
-    public boolean isTargetEnum(Class<?> clazz) {
+    public static boolean isTargetEnum(Class<?> clazz) {
         return clazz != null && clazz.isEnum() && getEnumMeta((Class) clazz) != EnumMeta.EMPTY;
     }
 
-    public <T extends Enum<T>> GenMap getEnumAppear(Enum<T> enumObj) {
+    public static <T extends Enum<T>> GenMap getEnumAppear(Enum<T> enumObj) {
         final EnumMeta enumMeta = getEnumMeta(enumObj.getClass());
         try {
             GenMap enumAppear = new GenMap();
@@ -72,7 +69,7 @@ public class EnumHandler {
         }
     }
 
-    public <T extends Enum<T>> T enumOfId(Class<T> tClass, Object id) {
+    public static <T extends Enum<T>> T enumOfId(Class<T> tClass, Object id) {
         Map<String, Enum> objectEnumMap = ENUM_CACHE.get(tClass);
         if (CollectionUtils.isEmpty(objectEnumMap)) {
             final EnumMeta enumMeta = getEnumMeta(tClass);
@@ -98,7 +95,7 @@ public class EnumHandler {
         return (T) anEnum;
     }
 
-    private <T extends Enum<T>> EnumMeta getEnumMeta(Class<T> tClass) {
+    private static <T extends Enum<T>> EnumMeta getEnumMeta(Class<T> tClass) {
         EnumMeta enumMeta = ENUM_ID_META_CACHE.get(tClass);
         if (enumMeta != null) {
             return enumMeta;
@@ -145,14 +142,14 @@ public class EnumHandler {
         return enumMeta;
     }
 
-    private Class<?> getPackageClass(Class<?> clazz) {
+    private static Class<?> getPackageClass(Class<?> clazz) {
         if (!clazz.isPrimitive()) {
             return clazz;
         }
         return TYPE_PACK_MAPPER.get(clazz);
     }
 
-    private Method findFieldGetMethod(Class<?> clazz, String fieldName) {
+    private static Method findFieldGetMethod(Class<?> clazz, String fieldName) {
         try {
             return clazz.getDeclaredMethod(fieldName);
         } catch (NoSuchMethodException ignored) {

@@ -1,6 +1,6 @@
 package cn.cpoet.workspace.core.configuration;
 
-import cn.cpoet.workspace.api.core.EnumHandler;
+import cn.cpoet.workspace.api.core.EnumTool;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -86,7 +86,7 @@ public class JacksonConvertersConfig {
     }
 
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(EnumHandler enumHandler) {
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer(EnumTool enumTool) {
         return builder -> {
             // 时间处理
             builder
@@ -100,7 +100,7 @@ public class JacksonConvertersConfig {
             builder.serializerByType(Enum.class, new JsonSerializer<Enum>() {
                 @Override
                 public void serialize(Enum value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-                    gen.writeObject(enumHandler.getId(value));
+                    gen.writeObject(enumTool.getId(value));
                 }
             }).deserializerByType(Enum.class, new JsonDeserializer<Object>() {
                 @Override
@@ -109,8 +109,8 @@ public class JacksonConvertersConfig {
                         Object entity = p.getCurrentValue();
                         Field field = ReflectionUtils.findField(entity.getClass(), p.getCurrentName());
                         Class clazz = field.getType();
-                        Class idType = enumHandler.getIdType(clazz);
-                        return enumHandler.enumOfId(clazz, p.readValueAs(idType));
+                        Class idType = enumTool.getIdType(clazz);
+                        return enumTool.enumOfId(clazz, p.readValueAs(idType));
                     } catch (Exception e) {
                         throw new JsonMappingException("反序列化失败", e);
                     }

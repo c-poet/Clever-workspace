@@ -1,7 +1,6 @@
 package cn.cpoet.workspace.ibatis.support;
 
-import cn.cpoet.workspace.api.context.AppContextHolder;
-import cn.cpoet.workspace.api.core.EnumHandler;
+import cn.cpoet.workspace.api.core.EnumTool;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
@@ -12,15 +11,10 @@ import java.sql.*;
  */
 public class IBatisEnumTypeHandler<E extends Enum<E>> implements TypeHandler<E> {
 
-    private static EnumHandler enumHandler;
     private final Class<E> type;
 
     public IBatisEnumTypeHandler(Class<E> type) {
         this.type = type;
-        // 获取枚举处理器
-        if (enumHandler == null) {
-            enumHandler = AppContextHolder.getAppContext().getBean(EnumHandler.class);
-        }
     }
 
     @Override
@@ -28,26 +22,26 @@ public class IBatisEnumTypeHandler<E extends Enum<E>> implements TypeHandler<E> 
         if (parameter == null) {
             ps.setObject(i, Types.NULL);
         } else {
-            Object id = enumHandler.getId(parameter);
+            Object id = EnumTool.getId(parameter);
             ps.setObject(i, id);
         }
     }
 
     @Override
     public E getResult(ResultSet rs, String columnName) throws SQLException {
-        Object object = rs.getObject(columnName, enumHandler.getIdType(type));
-        return object == null ? null : enumHandler.enumOfId(type, object);
+        Object object = rs.getObject(columnName, EnumTool.getIdType(type));
+        return object == null ? null : EnumTool.enumOfId(type, object);
     }
 
     @Override
     public E getResult(ResultSet rs, int columnIndex) throws SQLException {
-        Object object = rs.getObject(columnIndex, enumHandler.getIdType(type));
-        return object == null ? null : enumHandler.enumOfId(type, object);
+        Object object = rs.getObject(columnIndex, EnumTool.getIdType(type));
+        return object == null ? null : EnumTool.enumOfId(type, object);
     }
 
     @Override
     public E getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        Object object = cs.getObject(columnIndex, enumHandler.getIdType(type));
-        return object == null ? null : enumHandler.enumOfId(type, object);
+        Object object = cs.getObject(columnIndex, EnumTool.getIdType(type));
+        return object == null ? null : EnumTool.enumOfId(type, object);
     }
 }

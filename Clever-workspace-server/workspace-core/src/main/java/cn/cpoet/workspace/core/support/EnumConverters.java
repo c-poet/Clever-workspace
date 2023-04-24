@@ -1,7 +1,7 @@
 package cn.cpoet.workspace.core.support;
 
 import cn.cpoet.workspace.api.context.AppContextHolder;
-import cn.cpoet.workspace.api.core.EnumHandler;
+import cn.cpoet.workspace.api.core.EnumTool;
 import cn.cpoet.workspace.api.exception.AppException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
@@ -53,9 +53,9 @@ public class EnumConverters {
             if (constants.length == 0) {
                 throw new AppException("未经实现的枚举类型");
             }
-            EnumHandler enumHandler = AppContextHolder.getBean(EnumHandler.class);
-            if (enumHandler.isTargetEnum(targetType)) {
-                return (T) enumHandler.enumOfId((Class<Enum>) targetType, source);
+            EnumTool enumTool = AppContextHolder.getBean(EnumTool.class);
+            if (enumTool.isTargetEnum(targetType)) {
+                return (T) enumTool.enumOfId((Class<Enum>) targetType, source);
             }
             if (source instanceof Integer) {
                 int index = (int) source;
@@ -76,9 +76,9 @@ public class EnumConverters {
     static class Enum2StrConverter implements Converter<Enum, String> {
         @Override
         public String convert(Enum source) {
-            EnumHandler enumHandler = AppContextHolder.getBean(EnumHandler.class);
-            if (enumHandler.isTargetEnum(source.getClass())) {
-                return String.valueOf(enumHandler.getId(source));
+            EnumTool enumTool = AppContextHolder.getBean(EnumTool.class);
+            if (enumTool.isTargetEnum(source.getClass())) {
+                return String.valueOf(enumTool.getId(source));
             }
             return source.name();
         }
@@ -87,9 +87,9 @@ public class EnumConverters {
     static class Enum2IntegerConverter implements Converter<Enum, Integer> {
         @Override
         public Integer convert(Enum source) {
-            EnumHandler enumHandler = AppContextHolder.getBean(EnumHandler.class);
-            if (enumHandler.isTargetEnum(source.getClass())) {
-                Object id = enumHandler.getId(source);
+            EnumTool enumTool = AppContextHolder.getBean(EnumTool.class);
+            if (enumTool.isTargetEnum(source.getClass())) {
+                Object id = enumTool.getId(source);
                 if (id instanceof Integer) {
                     return (Integer) id;
                 }

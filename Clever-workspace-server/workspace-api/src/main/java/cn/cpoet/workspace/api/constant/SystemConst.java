@@ -24,7 +24,7 @@ public interface SystemConst {
     /**
      * 配置前缀
      */
-    String CONF_PREFIX = "app.blog";
+    String CONF_PREFIX = "app.workspace";
 
     /**
      * 默认id生成器
