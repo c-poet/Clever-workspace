@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public abstract class BaseEntity extends BaseRcEntity {
 
     @Version
     @JsonIgnore
+    @Column(name = "version")
     @Schema(title = "数据版本号")
     @Editable(value = false)
     private Integer version;
@@ -29,10 +31,12 @@ public abstract class BaseEntity extends BaseRcEntity {
     @Schema(title = "更新用户")
     @JsonIgnoreProperties(allowGetters = true)
     @Editable(value = false)
+    @Column(name = "update_user")
     private Long updateUser;
 
     @Schema(title = "更新时间")
     @JsonIgnoreProperties(allowGetters = true)
     @Editable(value = false)
+    @Column(name = "update_time")
     private LocalDateTime updateTime;
 }
