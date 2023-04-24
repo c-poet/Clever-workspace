@@ -19,7 +19,7 @@ public interface TermMapper<T> {
      * @param bean 查询条件
      * @return 查询结果
      */
-    @SelectProvider(value = TermProvider.class)
+    @SelectProvider(value = TermProvider.class, method = "dynamicSQL")
     T findOne(Object bean);
 
     /**
@@ -28,6 +28,6 @@ public interface TermMapper<T> {
      * @param bean 查询条件
      * @return 查询结果
      */
-    @SelectProvider(value = TermProvider.class)
+    @SelectProvider(value = TermProvider.class, method = "dynamicSQL")
     List<T> find(Object bean);
 }
