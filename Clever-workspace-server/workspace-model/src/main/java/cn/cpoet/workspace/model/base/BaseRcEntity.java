@@ -1,12 +1,15 @@
 package cn.cpoet.workspace.model.base;
 
 import cn.cpoet.workspace.api.annotation.Editable;
+import cn.cpoet.workspace.api.audit.CreateBy;
+import cn.cpoet.workspace.api.audit.CreateDate;
 import cn.cpoet.workspace.api.validation.Delete;
 import cn.cpoet.workspace.api.validation.Insert;
 import cn.cpoet.workspace.api.validation.Update;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import tk.mybatis.mapper.annotation.LogicDelete;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -33,18 +36,21 @@ public abstract class BaseRcEntity implements Entity<Long> {
     @Editable(value = false)
     private Long id;
 
+    @CreateBy
     @Column(name = "create_user")
     @Schema(title = "创建用户")
     @JsonIgnoreProperties(allowGetters = true)
     @Editable(value = false)
     private Long createUser;
 
+    @CreateDate
     @Column(name = "create_time")
     @Schema(title = "创建时间")
     @JsonIgnoreProperties(allowGetters = true)
     @Editable(value = false)
     private LocalDateTime createTime;
 
+    @LogicDelete
     @Column(name = "deleted")
     @Schema(title = "是否删除")
     @Editable(value = false)

@@ -27,5 +27,11 @@
       <groupId>javax.persistence</groupId>
       <artifactId>javax.persistence-api</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>tk.mybatis</groupId>
+      <artifactId>mapper-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 </project>

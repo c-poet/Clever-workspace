@@ -23,10 +23,10 @@
       <artifactId>workspace-api</artifactId>
     </dependency>
 
-      <dependency>
-          <groupId>cn.cpoet.workspace</groupId>
-          <artifactId>workspace-utils</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>cn.cpoet.workspace</groupId>
+      <artifactId>workspace-utils</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>tk.mybatis</groupId>
