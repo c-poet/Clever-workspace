@@ -1,6 +1,6 @@
 package cn.cpoet.workspace.model.domain;
 
-import cn.cpoet.workspace.model.base.BaseRcEntity;
+import cn.cpoet.workspace.model.base.TenantRcEntity;
 import cn.cpoet.workspace.model.constant.PermissionAclType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Schema(title = "资源访问控制")
 @Table(name = "sys_permission_acl")
-public class PermissionAcl extends BaseRcEntity {
+public class PermissionAcl extends TenantRcEntity {
+    private static final long serialVersionUID = 1L;
 
     @Schema(title = "访问对象id")
     @NotNull(message = "授权对象的id不能为空")

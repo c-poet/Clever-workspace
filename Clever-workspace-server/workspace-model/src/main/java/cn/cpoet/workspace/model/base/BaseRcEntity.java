@@ -1,8 +1,8 @@
 package cn.cpoet.workspace.model.base;
 
 import cn.cpoet.workspace.api.annotation.Editable;
-import cn.cpoet.workspace.api.audit.CreateBy;
-import cn.cpoet.workspace.api.audit.CreateDate;
+import cn.cpoet.workspace.api.context.AppContextHolder;
+import cn.cpoet.workspace.api.core.IdTool;
 import cn.cpoet.workspace.api.validation.Delete;
 import cn.cpoet.workspace.api.validation.Insert;
 import cn.cpoet.workspace.api.validation.Update;
@@ -11,9 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import tk.mybatis.mapper.annotation.LogicDelete;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
@@ -36,14 +34,12 @@ public abstract class BaseRcEntity implements Entity<Long> {
     @Editable(value = false)
     private Long id;
 
-    @CreateBy
     @Column(name = "create_user")
     @Schema(title = "创建用户")
     @JsonIgnoreProperties(allowGetters = true)
     @Editable(value = false)
     private Long createUser;
 
-    @CreateDate
     @Column(name = "create_time")
     @Schema(title = "创建时间")
     @JsonIgnoreProperties(allowGetters = true)
@@ -55,4 +51,16 @@ public abstract class BaseRcEntity implements Entity<Long> {
     @Schema(title = "是否删除")
     @Editable(value = false)
     private Boolean deleted;
+
+    @PostPersist
+    public void onInsert() {
+        id  = IdTool.nextId();
+        createUser = AppContextHolder.getAuthContext().curSubject().getId();
+        createTime = LocalDateTime.now();
+        deleted = Boolean.FALSE;
+    }
+
+    @PostUpdate
+    public void onUpdate() {
+    }
 }

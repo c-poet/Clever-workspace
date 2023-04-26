@@ -5,6 +5,13 @@ package cn.cpoet.workspace.api.context;
  */
 public interface AppContext {
     /**
+     * 获取租户上下文
+     *
+     * @return 租户上下文
+     */
+    TenantContext getTenantContext();
+
+    /**
      * 获取认证上下文
      *
      * @return 认证上下文

@@ -3,7 +3,7 @@ package cn.cpoet.workspace.model.domain;
 import cn.cpoet.workspace.api.annotation.Editable;
 import cn.cpoet.workspace.api.validation.Insert;
 import cn.cpoet.workspace.api.validation.Update;
-import cn.cpoet.workspace.model.base.BaseEntity;
+import cn.cpoet.workspace.model.base.TenantEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -21,7 +21,10 @@ import javax.validation.constraints.NotNull;
 @Editable
 @Schema(title = "用户组")
 @Table(name = "sys_group")
-public class Group extends BaseEntity {
+public class Group extends TenantEntity {
+
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "parent_id")
     @Schema(title = "父级用户组")
     @NotNull(message = "父级用户组不能为空", groups = {Insert.class, Update.class})

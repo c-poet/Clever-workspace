@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
+ * 常用状态定义
+ *
  * @author CPoet
  */
 @Getter

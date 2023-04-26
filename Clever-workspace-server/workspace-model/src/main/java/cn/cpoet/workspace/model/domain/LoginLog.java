@@ -1,6 +1,6 @@
 package cn.cpoet.workspace.model.domain;
 
-import cn.cpoet.workspace.model.base.BaseRcEntity;
+import cn.cpoet.workspace.model.base.TenantRcEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -16,7 +16,10 @@ import java.time.LocalDateTime;
 @Entity
 @Schema(title = "登录日志")
 @Table(name = "sys_login_log")
-public class LoginLog extends BaseRcEntity {
+public class LoginLog extends TenantRcEntity {
+
+    private static final long serialVersionUID = 1L;
+
     @Schema(title = "登录用户uid")
     @Column(name = "user_id")
     private Long userId;

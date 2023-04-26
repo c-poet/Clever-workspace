@@ -1,6 +1,6 @@
 package cn.cpoet.workspace.model.domain;
 
-import cn.cpoet.workspace.model.base.BaseEntity;
+import cn.cpoet.workspace.model.base.TenantEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -15,7 +15,9 @@ import javax.persistence.Table;
 @Entity
 @Schema(title = "角色")
 @Table(name = "sys_role")
-public class Role extends BaseEntity {
+public class Role extends TenantEntity {
+    private static final long serialVersionUID = 1L;
+
     @Schema(title = "角色编码")
     @Column(name = "code")
     private String code;

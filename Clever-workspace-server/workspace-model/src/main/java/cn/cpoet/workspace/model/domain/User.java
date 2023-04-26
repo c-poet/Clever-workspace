@@ -3,7 +3,7 @@ package cn.cpoet.workspace.model.domain;
 import cn.cpoet.workspace.api.annotation.Editable;
 import cn.cpoet.workspace.api.validation.Insert;
 import cn.cpoet.workspace.api.validation.Update;
-import cn.cpoet.workspace.model.base.BaseEntity;
+import cn.cpoet.workspace.model.base.TenantEntity;
 import cn.cpoet.workspace.model.constant.SexEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,7 +26,8 @@ import javax.validation.constraints.Pattern;
 @Editable
 @Schema(title = "用户")
 @Table(name = "sys_user")
-public class User extends BaseEntity {
+public class User extends TenantEntity {
+    private static final long serialVersionUID = 1L;
 
     @Schema(title = "姓名")
     @NotEmpty(message = "姓名不能为空", groups = {Insert.class, Update.class,})

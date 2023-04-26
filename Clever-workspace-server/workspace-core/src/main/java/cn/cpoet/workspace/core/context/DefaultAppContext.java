@@ -3,6 +3,7 @@ package cn.cpoet.workspace.core.context;
 import cn.cpoet.workspace.api.context.AppContext;
 import cn.cpoet.workspace.api.context.AppContextHolder;
 import cn.cpoet.workspace.api.context.AuthContext;
+import cn.cpoet.workspace.api.context.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -19,7 +20,13 @@ import org.springframework.stereotype.Component;
 public class DefaultAppContext implements ApplicationContextAware, AppContext {
 
     private AuthContext authContext;
+    private TenantContext tenantContext;
     private ApplicationContext applicationContext;
+
+    @Override
+    public TenantContext getTenantContext() {
+        return tenantContext == null ? (tenantContext = getBean(TenantContext.class)) : tenantContext;
+    }
 
     @Override
     public AuthContext getAuthContext() {

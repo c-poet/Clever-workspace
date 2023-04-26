@@ -2,8 +2,6 @@ package cn.cpoet.workspace.api.context;
 
 import cn.cpoet.workspace.api.constant.SubjectType;
 
-import java.util.Set;
-
 /**
  * 主体
  *
@@ -16,6 +14,13 @@ public interface Subject {
      * @return 主体id
      */
     Long getId();
+
+    /**
+     * 获取租户id
+     *
+     * @return 租户id
+     */
+    Long getTenantId();
 
     /**
      * 获取当前主体姓名
@@ -37,13 +42,6 @@ public interface Subject {
      * @return 用户组id
      */
     Long getGroupId();
-
-    /**
-     * 获取用户权限资源集合
-     *
-     * @return 权限资源集合
-     */
-    Set<String> getPermissions();
 
     /**
      * 获取当前主体类型

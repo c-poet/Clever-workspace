@@ -5,9 +5,6 @@ import cn.cpoet.workspace.api.constant.SystemConst;
 import cn.cpoet.workspace.api.context.Subject;
 import cn.cpoet.workspace.auth.exception.NotAuthException;
 
-import java.util.Collections;
-import java.util.Set;
-
 /**
  * @author CPoet
  */
@@ -24,6 +21,11 @@ public class SystemSubject implements Subject {
     }
 
     @Override
+    public Long getTenantId() {
+        return SystemConst.SYSTEM_TENANT_ID;
+    }
+
+    @Override
     public String getName() {
         throw notAuthException();
     }
@@ -36,11 +38,6 @@ public class SystemSubject implements Subject {
     @Override
     public Long getGroupId() {
         throw notAuthException();
-    }
-
-    @Override
-    public Set<String> getPermissions() {
-        return Collections.emptySet();
     }
 
     @Override

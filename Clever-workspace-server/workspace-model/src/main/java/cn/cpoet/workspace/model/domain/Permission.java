@@ -3,7 +3,7 @@ package cn.cpoet.workspace.model.domain;
 import cn.cpoet.workspace.api.annotation.Editable;
 import cn.cpoet.workspace.api.validation.Insert;
 import cn.cpoet.workspace.api.validation.Update;
-import cn.cpoet.workspace.model.base.BaseEntity;
+import cn.cpoet.workspace.model.base.TenantEntity;
 import cn.cpoet.workspace.model.constant.BadgeType;
 import cn.cpoet.workspace.model.constant.PermissionType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +24,8 @@ import javax.validation.constraints.Pattern;
 @Editable
 @Schema(title = "权限/资源")
 @Table(name = "sys_permission")
-public class Permission extends BaseEntity {
+public class Permission extends TenantEntity {
+    private static final long serialVersionUID = 1L;
 
     @Schema(title = "父级id")
     @NotNull(message = "父级不能为空", groups = {Insert.class, Update.class})

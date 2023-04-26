@@ -1,8 +1,7 @@
 package cn.cpoet.workspace.model.base;
 
 import cn.cpoet.workspace.api.annotation.Editable;
-import cn.cpoet.workspace.api.audit.UpdateBy;
-import cn.cpoet.workspace.api.audit.UpdateDate;
+import cn.cpoet.workspace.api.context.AppContextHolder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,17 +29,28 @@ public abstract class BaseEntity extends BaseRcEntity {
     @Editable(value = false)
     private Integer version;
 
-    @UpdateBy
     @Schema(title = "更新用户")
     @JsonIgnoreProperties(allowGetters = true)
     @Editable(value = false)
     @Column(name = "update_user")
     private Long updateUser;
 
-    @UpdateDate
     @Schema(title = "更新时间")
     @JsonIgnoreProperties(allowGetters = true)
     @Editable(value = false)
     @Column(name = "update_time")
     private LocalDateTime updateTime;
+
+    @Override
+    public void onInsert() {
+        super.onInsert();
+        version = 0;
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        updateUser = AppContextHolder.getAuthContext().curSubject().getId();
+        updateTime = LocalDateTime.now();
+    }
 }

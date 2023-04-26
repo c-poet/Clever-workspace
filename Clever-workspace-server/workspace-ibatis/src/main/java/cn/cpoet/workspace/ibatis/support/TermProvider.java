@@ -50,6 +50,7 @@ public class TermProvider extends MapperTemplate {
      * @return sql
      */
     public String findPageInfo(MappedStatement ms) {
+        setResultType(ms, en);
         return "";
     }
 }
